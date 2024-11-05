@@ -21,27 +21,27 @@
                   <ul class="nav">
                     <li class="nav-item">
                       <a
-                        href="javascript:void(0);"
-                        class="active"
-                        data-bs-toggle="tab"
-                        data-bs-target="#enroll-courses"
-                        >Publish (6)</a
+                          href="javascript:void(0);"
+                          class="active"
+                          data-bs-toggle="tab"
+                          data-bs-target="#enroll-courses"
+                      >Publish ({{ totalCourses }})</a
                       >
                     </li>
                     <li class="nav-item">
                       <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="tab"
-                        data-bs-target="#active-courses"
-                        >Pending (2)</a
+                          href="javascript:void(0);"
+                          data-bs-toggle="tab"
+                          data-bs-target="#active-courses"
+                      >Pending (2)</a
                       >
                     </li>
                     <li class="nav-item">
                       <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="tab"
-                        data-bs-target="#complete-courses"
-                        >Draft (1)</a
+                          href="javascript:void(0);"
+                          data-bs-toggle="tab"
+                          data-bs-target="#complete-courses"
+                      >Draft (1)</a
                       >
                     </li>
                   </ul>
@@ -93,13 +93,21 @@
   <layouts1></layouts1>
 </template>
 <script>
+import {useCourses} from '@/service/instructor/myCourseForUser';
+
 export default {
   data() {
     return {
       title: "My Courses",
       text: "Home",
       text1: "My Courses",
+      totalCourses: 0
     };
+  },
+  async mounted() {
+    const {totalCourses, fetchCourses} = useCourses(); // Gọi useCourses ở đây
+    await fetchCourses(); // Gọi fetchCourses để lấy danh sách khóa học
+    this.totalCourses = totalCourses.value; // Cập nhật tổng số khóa học vào data
   },
 };
 </script>
