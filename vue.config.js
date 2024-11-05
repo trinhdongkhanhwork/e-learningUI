@@ -11,8 +11,8 @@ module.exports = defineConfig({
   },
   chainWebpack: (config) => {
     config.resolve.alias
-      .set('swiper$', 'swiper/js/swiper.js')
-      .end();
+        .set('swiper$', 'swiper/js/swiper.js')
+        .end();
   },
   configureWebpack: {
     module: {
@@ -24,8 +24,11 @@ module.exports = defineConfig({
             name: '[name].[ext]'
           }
         },
-       
+
       ]
     }
+  },
+  devServer: {
+    port: 8081
   },
 });
