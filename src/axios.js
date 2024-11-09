@@ -1,3 +1,4 @@
+// src/axios.js
 import axios from 'axios';
 
 const baseApi = axios.create({
@@ -8,7 +9,7 @@ baseApi.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
         if (token) {
-            config.headers.Authorization = 'Bearer ${token}';
+            config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
@@ -18,3 +19,4 @@ baseApi.interceptors.request.use(
 );
 
 export default baseApi;
+

@@ -1,7 +1,57 @@
 <template>
   <page-header></page-header>
   <coursedetails></coursedetails>
-  <inner-page></inner-page>
+  <!-- <inner-page></inner-page> -->
+  <div>
+    <div class="inner-banner">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="instructor-wrap border-bottom-0 m-0">
+              <div class="about-instructor align-items-center">
+                <div class="abt-instructor-img">
+                  <router-link to="/instructor/instructor-profile"
+                  ><img
+                      src="@/assets/img/user/user1.jpg"
+                      alt="img"
+                      class="img-fluid"
+                  /></router-link>
+                </div>
+                <div class="instructor-detail me-3">
+                  <h5><router-link to="/instructor/instructor-profile">{{ course.instructor.fullname }}</router-link></h5>
+                  <p>Instructor</p>
+                </div>
+                <div class="rating mb-0">
+                  <i class="fas fa-star filled me-1"></i>
+                  <i class="fas fa-star filled me-1"></i>
+                  <i class="fas fa-star filled me-1"></i>
+                  <i class="fas fa-star filled me-1"></i>
+                  <i class="fas fa-star me-1"></i>
+                  <span class="d-inline-block average-rating"><span>4.5</span> (15)</span>
+                </div>
+              </div>
+              <span class="web-badge mb-3">{{ course.level }}</span>
+            </div>
+            <h2>{{ course.title }}</h2>
+            <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
+              <div class="cou-info">
+                <img src="@/assets/img/icon/icon-01.svg" alt="" />
+                <p>12+ Lesson</p>
+              </div>
+              <div class="cou-info">
+                <img src="@/assets/img/icon/timer-icon.svg" alt="" />
+                <p>9hr 30min</p>
+              </div>
+              <div class="cou-info">
+                <img src="@/assets/img/icon/people.svg" alt="" />
+                <p>32 students enrolled</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Course Content -->
   <section class="page-content course-sec">
     <div class="container">
@@ -13,20 +63,8 @@
               <h5 class="subs-title">Overview</h5>
               <h6>Course Description</h6>
               <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged.
+                {{ course.description }}
               </p>
-              <p>
-                It was popularised in the 1960s with the release of Letraset
-                sheets containing Lorem Ipsum passages, and more recently with
-                desktop publishing software like Aldus PageMaker including
-                versions of Lorem Ipsum.
-              </p>
-
               <h6>What you'll learn</h6>
               <div class="row">
                 <div class="col-md-6">
@@ -48,7 +86,7 @@
                   </ul>
                 </div>
               </div>
-              <h6>Requirements</h6>
+              <!-- <h6>Requirements</h6>
               <ul class="mb-0">
                 <li>
                   You will need a copy of Adobe XD 2023 or above. A free trial
@@ -56,333 +94,37 @@
                 </li>
                 <li>No previous design experience is needed.</li>
                 <li class="mb-0">No previous Adobe XD skills are needed.</li>
-              </ul>
+              </ul> -->
             </div>
           </div>
           <!-- /Overview -->
 
           <!-- Course Content -->
-          <div class="card content-sec">
+          <div class="card content-sec" v-show="sections.length != 0">
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-6">
                   <h5 class="subs-title">Course Content</h5>
                 </div>
-                <div class="col-sm-6 text-sm-end">
+                <!-- <div class="col-sm-6 text-sm-end">
                   <h6>92 Lectures 10:56:11</h6>
-                </div>
+                </div> -->
               </div>
-              <div class="course-card">
+              <div class="course-card" v-for="(section, index) in sections" :key="index">
                 <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#collapseOne"
-                    aria-expanded="false"
-                    >In which areas do you operate?</a
-                  >
+                  <a class="collapsed"
+                     @click="isViewSectionToggle(section.id)">
+                    {{ section.title }}</a>
                 </h6>
-                <div id="collapseOne" class="card-collapse collapse">
+                <div class="card-collapse" v-if="viewSectionToggle[section.id]">
                   <ul>
-                    <li>
+                    <li v-for="(lecture, index) in section.lectures" :key="index">
                       <p>
                         <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.1 Introduction to the User Experience Course
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.2 Exercise: Your first design challenge
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.5 How to use text layers effectively
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#course2"
-                    aria-expanded="false"
-                    >The Brief</a
-                  >
-                </h6>
-                <div id="course2" class="card-collapse collapse" style="">
-                  <ul>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.1 Introduction to the User Experience Course
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.2 Exercise: Your first design challenge
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.5 How to use text layers effectively
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#course3"
-                    aria-expanded="false"
-                    >Wireframing Low Fidelity</a
-                  >
-                </h6>
-                <div id="course3" class="card-collapse collapse" style="">
-                  <ul>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.1 Introduction to the User Experience Course
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.2 Exercise: Your first design challenge
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture1.5 How to use text layers effectively
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title mb-0">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#coursefour"
-                    aria-expanded="false"
-                    >Type, Color & Icon Introduction</a
-                  >
-                </h6>
-                <div id="coursefour" class="card-collapse collapse" style="">
-                  <ul>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture4.1 Introduction to the User Experience Course
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture4.2 Exercise: Your first design challenge
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture4.3 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture4.4 How to solve the previous exercise
-                      </p>
-                      <div>
-                        <a href="javascript:;">Preview</a>
-                        <span>02:53</span>
-                      </div>
-                    </li>
-                    <li>
-                      <p>
-                        <img
-                          src="@/assets/img/icon/play.svg"
-                          alt=""
-                          class="me-2"
-                        />Lecture4.5 How to use text layers effectively
+                            src="@/assets/img/icon/play.svg"
+                            alt=""
+                            class="me-2"/>
+                        {{ lecture.title }}
                       </p>
                       <div>
                         <a href="javascript:;">Preview</a>
@@ -397,7 +139,7 @@
           <!-- /Course Content -->
 
           <!-- Instructor -->
-          <div class="card instructor-sec">
+          <!-- <div class="card instructor-sec">
             <div class="card-body">
               <h5 class="subs-title">About the instructor</h5>
               <div class="instructor-wrap">
@@ -469,18 +211,20 @@
                 <li>5. Worldwide</li>
               </ul>
             </div>
-          </div>
+          </div> -->
           <!-- /Instructor -->
 
           <!-- Reviews -->
-          <div class="card review-sec">
-            <div class="card-body">
-              <h5 class="subs-title">Reviews</h5>
+          <div class="card review-sec" v-if="reviews.length != 0">
+            <div class="card-body" style="padding-bottom: 0;">
+              <h5 class="subs-title" style="margin: 0">Reviews</h5>
+            </div>
+            <div class="card-body" v-for="(review, index) in reviews" :key="index">
               <div class="instructor-wrap">
                 <div class="about-instructor">
                   <div class="abt-instructor-img">
                     <router-link to="/instructor/instructor-profile"
-                      ><img
+                    ><img
                         src="@/assets/img/user/user1.jpg"
                         alt="img"
                         class="img-fluid"
@@ -489,39 +233,31 @@
                   <div class="instructor-detail">
                     <h5>
                       <router-link to="/instructor/instructor-profile"
-                        >Nicole Brown</router-link
+                      >{{ review.fullName }}</router-link
                       >
                     </h5>
                     <p>UX/UI Designer</p>
                   </div>
                 </div>
                 <div class="rating">
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star me-1"></i>
+                  <i class="fas fa-star filled me-1" v-for="n in review.star" :key="n"></i>
+                  <i class="fas fa-star me-1" v-for="n in (5 - review.star)" :key="n"></i>
                   <span class="d-inline-block average-rating"
-                    >4.5 Instructor Rating</span
-                  >
+                  >{{ review.star }} Student Rating</span>
                 </div>
               </div>
-              <p class="rev-info">
-                “ This is the second Photoshop course I have completed with
-                Cristian. Worth every penny and recommend it highly. To get the
-                most out of this course, its best to to take the Beginner to
-                Advanced course first. The sound and video quality is of a good
-                standard. Thank you Cristian. “
+              <p style="font-size: 15px;">
+                {{ review.commentText }}
               </p>
-              <a href="javascript:;" class="btn btn-reply"
+              <!-- <a href="javascript:;" class="btn btn-reply"
                 ><i class="feather-corner-up-left"></i> Reply</a
-              >
+              > -->
             </div>
           </div>
           <!-- /Reviews -->
 
           <!-- Comment -->
-          <div class="card comment-sec">
+          <!-- <div class="card comment-sec">
             <div class="card-body">
               <h5 class="subs-title">Post A comment</h5>
               <form>
@@ -564,7 +300,7 @@
                 </div>
               </form>
             </div>
-          </div>
+          </div> -->
           <!-- /Comment -->
         </div>
 
@@ -575,9 +311,9 @@
               <div class="card">
                 <div class="card-body">
                   <a
-                    href="https://www.youtube.com/embed/1trvO6dqQUI"
-                    class="video-thumbnail"
-                    data-fancybox=""
+                      href="https://www.youtube.com/embed/1trvO6dqQUI"
+                      class="video-thumbnail"
+                      data-fancybox=""
                   >
                     <div class="play-icon">
                       <i class="fa-solid fa-play"></i>
@@ -592,22 +328,23 @@
                     <div class="row gx-2">
                       <div class="col-md-6">
                         <router-link
-                          to="course-wishlist"
-                          class="btn btn-wish w-100"
-                          ><i class="feather-heart"></i> Add to
+                            to="course-wishlist"
+                            class="btn btn-wish w-100"
+                        ><i class="feather-heart"></i> Add to
                           Wishlist</router-link
                         >
                       </div>
                       <div class="col-md-6">
                         <a href="javascript:;" class="btn btn-wish w-100"
-                          ><i class="feather-share-2"></i> Share</a
+                        ><i class="feather-share-2"></i> Share</a
                         >
                       </div>
                     </div>
                     <router-link
-                      to="/pages/checkout"
-                      class="btn btn-enroll w-100"
-                      >Enroll Now</router-link
+                        :to="isPayment ? { path: '/course/course-lesson/', query: { id: idCourse } } : { path: '/pages/cart'}"
+                        class="btn btn-enroll w-100"
+                        @click="handleEnroll"
+                    >{{ isPayment ? 'Star' : 'Enroll now'}}</router-link
                     >
                   </div>
                 </div>
@@ -624,9 +361,9 @@
                 <ul>
                   <li>
                     <img
-                      src="@/assets/img/icon/import.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/import.svg"
+                        class="me-2"
+                        alt=""
                     />
                     11 hours on-demand video
                   </li>
@@ -640,25 +377,25 @@
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/mobile.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/mobile.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Access on mobile and TV
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/cloud.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/cloud.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Assignments
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/teacher.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/teacher.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Certificate of Completion
                   </li>
@@ -676,41 +413,41 @@
                 <ul>
                   <li>
                     <img
-                      src="@/assets/img/icon/users.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/users.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Enrolled: <span>32 students</span>
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/timer.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/timer.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Duration: <span>20 hours</span>
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/chapter.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/chapter.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Chapters: <span>15</span>
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/video.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/video.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Video:<span> 12 hours</span>
                   </li>
                   <li>
                     <img
-                      src="@/assets/img/icon/chart.svg"
-                      class="me-2"
-                      alt=""
+                        src="@/assets/img/icon/chart.svg"
+                        class="me-2"
+                        alt=""
                     />
                     Level: <span>Beginner</span>
                   </li>
@@ -726,3 +463,119 @@
   <!-- /Pricing Plan -->
   <layouts1></layouts1>
 </template>
+<script>
+import baseApi from '@/axios';
+import { useStore } from 'vuex';
+import { ref } from "vue";
+
+export default {
+  data() {
+    const store = useStore();
+    const user = ref(store.state.userInfo);
+
+    return {
+      idCourse: null,  // Khai báo idCourse ở đây
+      user,
+      isPayment: false,
+      course: {},
+      sections: [],
+      viewSectionToggle: {},
+      reviews: []
+    }
+  },
+  created() {
+    this.idCourse = this.$route.query.id;  // Gán giá trị cho idCourse trong created
+    this.course = {
+      id: null,
+      title: "",
+      description: "",
+      createdAt: "",
+      categoryId: 3,
+      coverImage: "",
+      price: null,
+      published: null,
+      level: "",
+      instructor: {},
+      sections: []
+    }
+    this.getCourseById(this.idCourse);
+    this.getReviews(this.idCourse);
+    this.isPayments(this.idCourse);
+    const selectedCourseId = localStorage.getItem("selectedCourseId");
+    if (selectedCourseId) {
+      this.getCourseById(selectedCourseId);  // Gọi phương thức để lấy thông tin khóa học
+    }
+  },
+  methods: {
+    getCourseById(idCourse) {
+      baseApi.get(`/api/v1/courses/getCourseById/${idCourse}`)
+          .then(course => {
+            this.course = course.data;
+            this.sections = this.course.sections;
+            console.log("Tìm khóa học thành công");
+          })
+          .catch(error => {
+            console.log("Tìm khóa học thất bại", error);
+          });
+    },
+    getReviews(idCourse) {
+      baseApi.get(`/api/comment/getCommentCourse/${idCourse}`)
+          .then(reviews => {
+            this.reviews = reviews.data;
+            console.log("Tìm review thành công");
+          })
+          .catch(error => {
+            console.log("Tìm review thất bại", error);
+          });
+    },
+    isViewSectionToggle(sectionId) {
+      this.viewSectionToggle[sectionId] = !this.viewSectionToggle[sectionId];
+    },
+    isPayments(idCourse) {
+      const userId = this.user.id;
+      baseApi.get(`/api/payment/isPayment/${idCourse}/${userId}`)
+          .then(value => {
+            if (value.data) {
+              this.isPayment = true;
+            }
+            console.log("Enrollment: " + value.data);
+          });
+    },
+    handleEnroll() {
+      if (!this.isPayment) {  // Kiểm tra nếu chưa thanh toán
+        // Lấy danh sách giỏ hàng từ localStorage hoặc tạo mảng mới nếu chưa có
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Tạo đối tượng khóa học để thêm vào giỏ hàng
+        const courseToAdd = {
+          id: this.course.id,
+          courseId: this.course.id, // Thêm courseId ở đây
+          title: this.course.title,
+          price: this.course.price,
+          coverImage: this.course.coverImage,
+          description: this.course.description,
+          level: this.course.level,
+          enrolledUserCount: this.course.enrolledUserCount,
+          category: this.course.category,
+          instructor: this.course.instructor,
+          // Thêm các thuộc tính khác nếu cần
+        };
+
+        // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
+        if (!cart.some(item => item.id === courseToAdd.id)) {
+          cart.push(courseToAdd);  // Thêm khóa học vào giỏ hàng
+          localStorage.setItem("cart", JSON.stringify(cart));  // Cập nhật localStorage
+          alert("Added to cart successfully!");
+        } else {
+          alert("Course is already in the cart!");
+        }
+      }
+
+      // Điều hướng tùy theo giá trị của isPayment
+      const destination = this.isPayment ? "/course/course-lesson/" : "/pages/cart";
+      this.$router.push({ path: destination, query: { id: this.idCourse } });
+    }
+
+  }
+}
+</script>
