@@ -72,7 +72,7 @@
           <div class="sign-google">
             <ul>
               <li>
-                <a href="#">
+                <a @click.prevent="redirectToGoogleLogin">
                   <img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo"/>
                   Sign In using Google
                 </a>
@@ -101,6 +101,7 @@ import {useRouter} from "vue-router";
 import {Form, Field} from "vee-validate";
 import * as Yup from "yup";
 import axios from "axios";
+import {OAuthConfig} from "@/config/OAuthConfig";
 
 export default {
   components: {Form, Field},
@@ -141,6 +142,26 @@ export default {
         }
       }
     };
+
+    const redirectToGoogleLogin = () => {
+      const callbackUrl = OAuthConfig.redirectUri;
+      const authUrl = OAuthConfig.authUri;
+      const googleClientId = OAuthConfig.clientId;
+
+      const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+          callbackUrl
+      )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+
+      window.location.href = targetUrl;
+    };
+
+
+
+
+    onMounted(() => {
+      checkTokenValidity();
+    });
+
     const checkTokenValidity = async () => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -158,7 +179,9 @@ export default {
       }
     };
 
-    onMounted(checkTokenValidity);
+    onMounted(() => {
+      checkTokenValidity();
+    });
 
     return {
       form,
@@ -166,10 +189,12 @@ export default {
       showPassword,
       toggleShow,
       onSubmit,
+      redirectToGoogleLogin,
     };
   },
 };
 </script>
 
 <style scoped>
+/* Style your login page here */
 </style>
