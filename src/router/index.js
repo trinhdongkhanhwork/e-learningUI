@@ -11,7 +11,6 @@ import courselesson from '@/views/pages/pages/course-lesson.vue'
 import error404 from '@/views/pages/pages/error/error-404.vue'
 import error500 from '@/views/pages/pages/error/error-500.vue'
 import forgotpassword from '@/views/pages/pages/forgot-password.vue'
-import Index from '@/views/pages/home/dashboard-index.vue'
 import login from '@/views/pages/pages/login-index.vue'
 import newpassword from '@/views/pages/pages/new-password.vue'
 import Pages_Index from '@/views/pages/pages/pages-index.vue'
@@ -33,10 +32,10 @@ import Help_Center from '@/views/pages/pages/help-center.vue'
 import Term_Condition from '@/views/pages/pages/term-condition.vue'
 import underconstruction from '@/views/pages/pages/error/under-construction.vue'
 import verificationcode from '@/views/pages/pages/verification-code.vue'
+import Authenticate from '@/views/pages/pages/authenticate.vue'
 
-import Hometwo from '@/views/pages/home/hometwo/hometwo.vue'
+
 import Homethree from '@/views/pages/home/homethree/homethree.vue'
-import Homefour from '@/views/pages/home/homefour/home-four.vue'
 import Student_Dashboard from '@/views/pages/student/student-dashboard.vue';
 import Student_Index from '@/views/pages/student/student-index.vue'
 import Student_Profile from '@/views/pages/student/student-profile.vue'
@@ -205,10 +204,7 @@ const routes = [
     component: Home,
     children: [
       { path: '', redirect: '/home/index' },
-      { path: 'index', component: Index, meta: { headerClass: 'header', NavbarClass: 'header-nav' } },
-      { path: 'index-two', component: Hometwo, meta: { headerClass: 'header header-two', NavbarClass: 'header-nav' } },
-      { path: 'index-three', component: Homethree, meta: { headerClass: 'header-three', NavbarClass: 'header-nav-three' } },
-      { path: 'index-four', component: Homefour, meta: { headerClass: 'header-five', NavbarClass: 'header-nav' } }
+      { path: 'index', component: Homethree, meta: { headerClass: 'header-three', NavbarClass: 'header-nav-three' } }
     ]
   },
   {
@@ -245,6 +241,11 @@ const routes = [
     path: '/register-step-five',
     name: 'register-step-five',
     component: Registerstepfive
+  },
+  {
+    path: '/authenticate',
+    name: 'authenticate',
+    component: Authenticate
   },
   {
     path: '/register-step-four',

@@ -174,8 +174,9 @@ import '@/assets/css/feather.css';
 import "boxicons/css/boxicons.min.css";
 import '@/assets/css/style.css';
 import '@/assets/css/vue.css';
+import {createStore} from "vuex";
 
-  
+
 
 const app = createApp(App)
 
@@ -335,10 +336,37 @@ app.component('date-picker', DatePicker);
 app.component('vue-select', VueSelect)
 app.component(VueFeather.name, VueFeather)
 app.component('vue3-autocounter', Vue3Autocounter)
-app.use(VueApexCharts)
-app.use(CKEditor)
 
-.use(BootstrapVue3)
-.use(BToastPlugin)
-.use(Antd)
-app.use(router).mount('#app');
+const store = createStore({
+    state: {
+        userInfo: JSON.parse(localStorage.getItem('userInfo')) || null
+    },
+    mutations: {
+        setUserInfo(state, userInfo) {
+            state.userInfo = userInfo;
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        },
+        clearUserInfo(state) {
+            state.userInfo = null;
+            localStorage.removeItem('userInfo');
+        }
+    },
+    actions: {
+        setUserInfo({ commit }, userInfo) {
+            commit('setUserInfo', userInfo);
+        },
+        clearUserInfo({ commit }) {
+            commit('clearUserInfo');
+        }
+    }
+});
+
+app.use(store)
+app.use(router);
+app.use(BootstrapVue3);
+app.use(Antd);
+app.use(BToastPlugin);
+app.use(VueApexCharts);
+
+app.use(CKEditor);
+app.mount('#app');
