@@ -20,27 +20,27 @@
                   <ul class="nav">
                     <li class="nav-item">
                       <a
-                        href="javascript:void(0);"
-                        class="active"
-                        data-bs-toggle="tab"
-                        data-bs-target="#enroll-courses"
-                        >Enrolled Courses (06)</a
+                          href="javascript:void(0);"
+                          class="active"
+                          data-bs-toggle="tab"
+                          data-bs-target="#enroll-courses"
+                      >Enrolled Courses ({{ totalCourses }})</a
                       >
                     </li>
                     <li class="nav-item">
                       <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="tab"
-                        data-bs-target="#active-courses"
-                        >Active Courses (03)</a
+                          href="javascript:void(0);"
+                          data-bs-toggle="tab"
+                          data-bs-target="#active-courses"
+                      >Active Courses (03)</a
                       >
                     </li>
                     <li class="nav-item">
                       <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="tab"
-                        data-bs-target="#complete-courses"
-                        >Completed Courses (03)</a
+                          href="javascript:void(0);"
+                          data-bs-toggle="tab"
+                          data-bs-target="#complete-courses"
+                      >Completed Courses (03)</a
                       >
                     </li>
                   </ul>
@@ -91,13 +91,20 @@
   <layouts1></layouts1>
 </template>
 <script>
+import useCourses from '@/service/student/enrollCourse';
 export default {
   data() {
     return {
       title: "Enrolled Courses",
       text: "Home",
       text1: "Enrolled Courses",
+      totalCourses: 0,
     };
+  },
+  async mounted() {
+    const { totalCourses, fetchCourses } = useCourses();
+    await fetchCourses();
+    this.totalCourses = totalCourses.value;
   },
 };
 </script>

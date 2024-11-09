@@ -3,20 +3,20 @@
     <li class="nav-item">
       <div>
         <a
-          href="#"
-          id="dark-mode-toggle"
-          ref="darkModeToggle"
-          class="dark-mode-toggle"
-          @click="enableDarkMode"
+            href="#"
+            id="dark-mode-toggle"
+            ref="darkModeToggle"
+            class="dark-mode-toggle"
+            @click="enableDarkMode"
         >
           <i class="fa-solid fa-moon"></i>
         </a>
         <a
-          href="#"
-          id="light-mode-toggle"
-          class="dark-mode-toggle"
-          ref="lightModeToggle"
-          @click="disableDarkMode"
+            href="#"
+            id="light-mode-toggle"
+            class="dark-mode-toggle"
+            ref="lightModeToggle"
+            @click="disableDarkMode"
         >
           <i class="fa-solid fa-sun"></i>
         </a>
@@ -24,7 +24,7 @@
     </li>
     <li class="nav-item">
       <router-link to="/student/student-messages"
-        ><img src="@/assets/img/icon/messages.svg" alt="img"
+      ><img src="@/assets/img/icon/messages.svg" alt="img"
       /></router-link>
     </li>
     <li class="nav-item cart-nav">
@@ -38,154 +38,72 @@
         </div>
         <div class="wish-content">
           <ul>
-            <li>
+            <li v-for="item in cart" :key="item.id">
               <div class="media">
                 <div class="d-flex media-wide">
                   <div class="avatar">
-                    <router-link to="/pages/course-details">
-                      <img alt="Img" src="@/assets/img/course/course-04.jpg" />
+                    <router-link :to="`/pages/course-details/${item.id}`">
+                      <img :src="require(`@/assets/img/course-list/${item.coverImage}`)" alt="Img" />
                     </router-link>
                   </div>
                   <div class="media-body">
                     <h6>
-                      <router-link to="/pages/course-details"
-                        >Learn Angular...</router-link
-                      >
+                      <router-link :to="`/pages/course-details/${item.id}`">{{ item.title }}</router-link>
                     </h6>
-                    <p>By Dave Franco</p>
-                    <h5>$200 <span>$99.00</span></h5>
+                    <p>{{ item.level }}</p>
+                    <h5>{{ item.price }}</h5>
                   </div>
                 </div>
                 <div class="remove-btn">
-                  <a href="#" class="btn">Remove</a>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media">
-                <div class="d-flex media-wide">
-                  <div class="avatar">
-                    <router-link to="/pages/course-details">
-                      <img alt="Img" src="@/assets/img/course/course-14.jpg" />
-                    </router-link>
-                  </div>
-                  <div class="media-body">
-                    <h6>
-                      <router-link to="/pages/course-details"
-                        >Build Responsive Real...</router-link
-                      >
-                    </h6>
-                    <p>Jenis R.</p>
-                    <h5>$200 <span>$99.00</span></h5>
-                  </div>
-                </div>
-                <div class="remove-btn">
-                  <a href="#" class="btn">Remove</a>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media">
-                <div class="d-flex media-wide">
-                  <div class="avatar">
-                    <router-link to="/pages/course-details">
-                      <img alt="Img" src="@/assets/img/course/course-15.jpg" />
-                    </router-link>
-                  </div>
-                  <div class="media-body">
-                    <h6>
-                      <router-link to="/pages/course-details"
-                        >C# Developers Double ...</router-link
-                      >
-                    </h6>
-                    <p>Jesse Stevens</p>
-                    <h5>$200 <span>$99.00</span></h5>
-                  </div>
-                </div>
-                <div class="remove-btn">
-                  <a href="#" class="btn">Remove</a>
+                  <a href="#" class="btn" @click.prevent="removeFromCart(item.id)">Remove</a>
                 </div>
               </div>
             </li>
           </ul>
-          <div class="total-item">
-            <h6>Subtotal : $ 600</h6>
-            <h5>Total : $ 600</h5>
-          </div>
         </div>
+
       </div>
     </li>
     <li class="nav-item wish-nav">
-      <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+      <a class="dropdown-toggle" data-bs-toggle="dropdown" @click.prevent="fetchWishlist">
         <img src="@/assets/img/icon/wish.svg" alt="img" />
       </a>
       <div class="wishes-list dropdown-menu dropdown-menu-right">
         <div class="wish-content">
           <ul>
-            <li>
+            <li v-if="wishlist.length === 0" class="text-center" style="font-size: 20px;font-family: 'Times New Roman', Times, serif;color: brown;margin-top: 100px;">There are no favorites</li>
+            <li v-for="wish in wishlist" :key="wish.id">
               <div class="media">
                 <div class="d-flex media-wide">
                   <div class="avatar">
-                    <router-link to="/pages/course-details">
-                      <img alt="Img" src="@/assets/img/course/course-04.jpg" />
+                    <router-link :to="`/pages/course-details/${wish.id}`">
+                      <img v-if="wish.coverImage" :src="require(`@/assets/img/course-list/${wish.coverImage}`)" alt="Img" class="img-fluid" />
                     </router-link>
                   </div>
                   <div class="media-body">
                     <h6>
-                      <router-link to="/pages/course-details"
-                        >Learn Angular...</router-link
-                      >
+                      <router-link :to="`/pages/course-details/${wish.id}`">{{ wish.title }}</router-link>
                     </h6>
-                    <p>By Dave Franco</p>
-                    <h5>$200 <span>$99.00</span></h5>
+                    <p>{{ wish.level }}</p>
+                    <h5>{{ wish.price }}</h5>
                     <div class="remove-btn">
-                      <a href="#" class="btn">Add to cart</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media">
-                <div class="d-flex media-wide">
-                  <div class="avatar">
-                    <router-link to="/pages/course-details">
-                      <img alt="Img" src="@/assets/img/course/course-14.jpg" />
-                    </router-link>
-                  </div>
-                  <div class="media-body">
-                    <h6>
-                      <router-link to="/pages/course-details"
-                        >Build Responsive Real...</router-link
-                      >
-                    </h6>
-                    <p>Jenis R.</p>
-                    <h5>$200 <span>$99.00</span></h5>
-                    <div class="remove-btn">
-                      <a href="#" class="btn">Add to cart</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media">
-                <div class="d-flex media-wide">
-                  <div class="avatar">
-                    <router-link to="/pages/course-details">
-                      <img alt="Img" src="@/assets/img/course/course-15.jpg" />
-                    </router-link>
-                  </div>
-                  <div class="media-body">
-                    <h6>
-                      <router-link to="/pages/course-details"
-                        >C# Developers Double ...</router-link
-                      >
-                    </h6>
-                    <p>Jesse Stevens</p>
-                    <h5>$200 <span>$99.00</span></h5>
-                    <div class="remove-btn">
-                      <a href="#" class="btn">Remove</a>
+                      <template v-if="wish.isPayment">
+                        <a
+                            href="#"
+                            class="btn"
+                            style="background-color: blanchedalmond; color: black;"
+                            @click.prevent="viewCourseDetails(wish.id)"
+                        >View Details</a>
+                      </template>
+                      <template v-else>
+                        <a
+                            href="#"
+                            class="btn"
+                            style="background-color: red; color: white;"
+                            @click.prevent="addToCart(wish)"
+                        >Add to cart</a>
+                      </template>
+                      <a class="btn" style="margin-left: 10px;" @click.prevent="unWishlist(wish.id)">Unwishlist</a>
                     </div>
                   </div>
                 </div>
@@ -195,6 +113,8 @@
         </div>
       </div>
     </li>
+
+
     <li class="nav-item noti-nav">
       <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
         <img src="@/assets/img/icon/notification.svg" alt="img" />
@@ -202,14 +122,14 @@
       <div class="notifications dropdown-menu dropdown-menu-right">
         <div class="topnav-dropdown-header">
           <span class="notification-title"
-            >Notifications
+          >Notifications
             <select>
               <option>All</option>
               <option>Unread</option>
             </select>
           </span>
           <a href="javascript:void(0)" class="clear-noti"
-            >Mark all as read <i class="fa-solid fa-circle-check"></i
+          >Mark all as read <i class="fa-solid fa-circle-check"></i
           ></a>
         </div>
         <div class="noti-content">
@@ -219,16 +139,16 @@
                 <div>
                   <router-link to="/pages/notifications" class="avatar">
                     <img
-                      class="avatar-img"
-                      alt="Img"
-                      src="@/assets/img/user/user1.jpg"
+                        class="avatar-img"
+                        alt="Img"
+                        src="@/assets/img/user/user1.jpg"
                     />
                   </router-link>
                 </div>
                 <div class="media-body">
                   <h6>
                     <router-link to="/pages/notifications"
-                      >Lex Murphy requested <span>access to</span> UNIX
+                    >Lex Murphy requested <span>access to</span> UNIX
                       directory tree hierarchy
                     </router-link>
                   </h6>
@@ -243,16 +163,16 @@
                 <div>
                   <router-link to="/pages/notifications" class="avatar">
                     <img
-                      class="avatar-img"
-                      alt="Img"
-                      src="@/assets/img/user/user2.jpg"
+                        class="avatar-img"
+                        alt="Img"
+                        src="@/assets/img/user/user2.jpg"
                     />
                   </router-link>
                 </div>
                 <div class="media-body">
                   <h6>
                     <router-link to="/pages/notifications"
-                      >Ray Arnold left 6 <span>comments on</span> Isla Nublar
+                    >Ray Arnold left 6 <span>comments on</span> Isla Nublar
                       SOC2 compliance report</router-link
                     >
                   </h6>
@@ -265,16 +185,16 @@
                 <div>
                   <router-link to="/pages/notifications" class="avatar">
                     <img
-                      class="avatar-img"
-                      alt="Img"
-                      src="@/assets/img/user/user3.jpg"
+                        class="avatar-img"
+                        alt="Img"
+                        src="@/assets/img/user/user3.jpg"
                     />
                   </router-link>
                 </div>
                 <div class="media-body">
                   <h6>
                     <router-link to="/pages/notifications"
-                      >Dennis Nedry <span>commented on</span> Isla Nublar SOC2
+                    >Dennis Nedry <span>commented on</span> Isla Nublar SOC2
                       compliance report</router-link
                     >
                   </h6>
@@ -292,16 +212,16 @@
                 <div>
                   <router-link to="/pages/notifications" class="avatar">
                     <img
-                      class="avatar-img"
-                      alt="Img"
-                      src="@/assets/img/user/user1.jpg"
+                        class="avatar-img"
+                        alt="Img"
+                        src="@/assets/img/user/user1.jpg"
                     />
                   </router-link>
                 </div>
                 <div class="media-body">
                   <h6>
                     <router-link to="/pages/notifications"
-                      >John Hammond <span>created</span> Isla Nublar SOC2
+                    >John Hammond <span>created</span> Isla Nublar SOC2
                       compliance report
                     </router-link>
                   </h6>
@@ -321,15 +241,15 @@
         </span>
       </a>
       <div
-        class="users dropdown-menu dropdown-menu-right"
-        data-popper-placement="bottom-end"
+          class="users dropdown-menu dropdown-menu-right"
+          data-popper-placement="bottom-end"
       >
         <div class="user-header">
           <div class="avatar avatar-sm">
             <img
-              src="@/assets/img/user/user11.jpg"
-              alt="User Image"
-              class="avatar-img rounded-circle"
+                src="@/assets/img/user/user11.jpg"
+                alt="User Image"
+                class="avatar-img rounded-circle"
             />
           </div>
           <div class="user-text">
@@ -338,12 +258,12 @@
           </div>
         </div>
         <router-link class="dropdown-item" to="/student/setting-edit-profile"
-          ><i class="feather-user me-1"></i> Profile</router-link
+        ><i class="feather-user me-1"></i> Profile</router-link
         >
         <router-link
-          class="dropdown-item"
-          to="/student/setting-student-subscription"
-          ><i class="feather-star me-1"></i> Subscription</router-link
+            class="dropdown-item"
+            to="/student/setting-student-subscription"
+        ><i class="feather-star me-1"></i> Subscription</router-link
         >
         <div class="dropdown-item night-mode">
           <span><i class="feather-moon me-1"></i> Night Mode </span>
@@ -352,20 +272,108 @@
           </div>
         </div>
         <router-link class="dropdown-item" to="/"
-          ><i class="feather-log-out me-1"></i> Logout</router-link
+        ><i class="feather-log-out me-1"></i> Logout</router-link
         >
       </div>
     </li>
   </ul>
 </template>
 <script>
-import { ref, onMounted } from "vue";
+import { router } from "@/router";
+import baseApi from "@/axios";
+import { useStore } from 'vuex';
+import { ref, onMounted, watch } from "vue";
+
 export default {
   setup() {
     const darkModeToggle = ref(null);
     const lightModeToggle = ref(null);
+    const store = useStore();
+    const user = ref(store.state.userInfo);
+    const wishlist = ref([]);
+    const cart = ref([]);
+    const userId = ref(null);
 
-    // Function to enable dark mode
+    watch(user, (newUser) => {
+      if (newUser && newUser.id) {
+        userId.value = newUser.id;
+        console.log("User ID updated:", userId.value);
+      }
+    }, { immediate: true });
+
+    console.log("user id111:" +userId.value);
+
+    const fetchWishlist = async () => {
+      try {
+        if (userId.value) {
+          const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId.value}`);
+          wishlist.value = await Promise.all(response.data.map(async (wishlistItem) => {
+            const courseId = wishlistItem.courseId;
+            const isPayment = await checkPaymentStatus(courseId);
+            return { ...wishlistItem, isPayment };
+          }));
+        } else {
+          console.error("User ID is not available");
+        }
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
+    const viewCourseDetails = (wishlistItemId) => {
+      // Tìm `wishlistItem` dựa trên `id` trong `wishlist`
+      const wishlistItem = wishlist.value.find(item => item.id === wishlistItemId);
+
+      if (wishlistItem && wishlistItem.courseId) {
+        router.push({
+          path: '/course/course-details',
+          query: { id: wishlistItem.courseId } // Lấy courseId từ wishlistItem
+        });
+      } else {
+        console.error("Course ID not found for the given wishlist item");
+      }
+    };
+
+    const checkPaymentStatus = async (courseId) => {
+      try {
+        const response = await baseApi.get(`/api/payment/isPayment/${courseId}/${userId.value}`);
+        return response.data;
+      } catch (error) {
+        console.error("Error checking payment status:", error);
+        return false;
+      }
+    };
+
+    const unWishlist = async(id) => {
+      try {
+        await baseApi.delete(`/api/v1/wishlist/${id}`);
+        wishlist.value = wishlist.value.filter((course) => course.id !== id);
+        cart.value = cart.value.filter((course) => course.id !== id);
+        window.onload;
+
+        let cartFromLocalStorage = JSON.parse(localStorage.getItem("cart")) || [];
+        cartFromLocalStorage = cartFromLocalStorage.filter((course) => course.id !== id);
+        localStorage.setItem("cart", JSON.stringify(cartFromLocalStorage));
+      } catch (error) {
+        console.error("Error removing", error);
+      }
+    };
+
+    const addToCart = (course) => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      if (!cart.some(item => item.id === course.id)) {
+        cart.push(course);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("Add to cart success!");
+      }
+      router.push("/pages/cart");
+    };
+
+    const removeFromCart = (id) => {
+      cart.value = cart.value.filter((course) => course.id !== id);
+    };
+
     function enableDarkMode() {
       document.documentElement.setAttribute("class", "light dark");
       darkModeToggle.value.classList.remove("activate");
@@ -373,7 +381,6 @@ export default {
       localStorage.setItem("darkMode", "enabled");
     }
 
-    // Function to disable dark mode
     function disableDarkMode() {
       document.documentElement.setAttribute("class", "light");
       lightModeToggle.value.classList.remove("activate");
@@ -381,7 +388,6 @@ export default {
       localStorage.removeItem("darkMode");
     }
 
-    // Check the current mode on page load
     onMounted(() => {
       const darkMode = localStorage.getItem("darkMode");
       if (darkMode === "enabled") {
@@ -389,6 +395,7 @@ export default {
       } else {
         disableDarkMode();
       }
+      fetchWishlist();
     });
 
     return {
@@ -396,7 +403,17 @@ export default {
       lightModeToggle,
       enableDarkMode,
       disableDarkMode,
+      wishlist,
+      cart,
+      fetchWishlist,
+      addToCart,
+      unWishlist,
+      removeFromCart,
+      viewCourseDetails,
     };
   },
 };
 </script>
+
+
+
