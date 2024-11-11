@@ -19,11 +19,11 @@
                 <label class="form-control-label">Username</label>
                 <div class="form-addons">
                   <Field
-                      name="username"
-                      type="text"
-                      v-model="form.username"
-                      class="form-control"
-                      :class="{ 'is-invalid': errors.username }"
+                    name="username"
+                    type="text"
+                    v-model="form.username"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.username }"
                   />
                   <div class="invalid-feedback">{{ errors.username }}</div>
                 </div>
@@ -32,16 +32,16 @@
                 <label class="form-control-label">Password</label>
                 <div class="pass-group">
                   <Field
-                      name="password"
-                      :type="showPassword ? 'text' : 'password'"
-                      v-model="form.password"
-                      class="form-control pass-input mt-2"
-                      :class="{ 'is-invalid': errors.password }"
+                    name="password"
+                    :type="showPassword ? 'text' : 'password'"
+                    v-model="form.password"
+                    class="form-control pass-input mt-2"
+                    :class="{ 'is-invalid': errors.password }"
                   />
                   <span
-                      @click="toggleShow"
-                      class="toggle-password"
-                      :class="{
+                    @click="toggleShow"
+                    class="toggle-password"
+                    :class="{
                       'feather-eye': showPassword,
                       'feather-eye-off': !showPassword,
                     }"
@@ -102,11 +102,14 @@ import {Form, Field} from "vee-validate";
 import * as Yup from "yup";
 import axios from "axios";
 import {OAuthConfig} from "@/config/OAuthConfig";
+import { useStore } from "vuex";
+import baseApi from "@/axios";
 
 export default {
   components: {Form, Field},
   setup() {
     const router = useRouter();
+    const store = useStore();
     const form = ref({
       username: "",
       password: "",
@@ -125,8 +128,8 @@ export default {
     const onSubmit = async () => {
       try {
         const response = await axios.post(
-            "http://localhost:8080/authentication/token",
-            form.value
+          "http://localhost:8080/authentication/token",
+          form.value
         );
         const token = response.data.result.token;
         localStorage.setItem("token", token);
@@ -149,7 +152,7 @@ export default {
       const googleClientId = OAuthConfig.clientId;
 
       const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
-          callbackUrl
+        callbackUrl
       )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
 
       window.location.href = targetUrl;
@@ -167,11 +170,16 @@ export default {
       if (token) {
         try {
           const response = await axios.post(
-              "http://localhost:8080/authentication/introspect",
-              {token}
+            "http://localhost:8080/authentication/introspect",
+            {token}
           );
           if (response.data.result.valid) {
+            const handleRedirect = await baseApi.get("/users/myInfo")
+            console.log(handleRedirect)
+            store.commit("setUserInfo", handleRedirect.data.result)
             router.push("/home");
+
+
           }
         } catch (error) {
           console.error("Token introspection failed:", error);
