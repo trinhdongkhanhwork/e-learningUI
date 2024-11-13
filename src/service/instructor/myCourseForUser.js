@@ -13,7 +13,7 @@ export function useCourses() {
   
     const fetchCourses = async () => {
       try {
-        const response = await baseApi.get("/api/v1/courses/getCourses");
+        const response = await baseApi.get("/api/v1/courses");
         console.log("Dữ liệu từ API:", response.data); 
         const userId = user.value.id; 
         if (Array.isArray(response.data.content)) {

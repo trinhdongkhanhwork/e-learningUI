@@ -162,7 +162,7 @@ export default {
   methods: {
     fetchCourses() {
       baseApi
-          .get("/api/v1/courses/getCourses")
+          .get("/api/v1/courses")
           .then((response) => {
             if (Array.isArray(response.data.content)) {
               const userId = this.user.id; // Giả sử bạn có user ID ở đây

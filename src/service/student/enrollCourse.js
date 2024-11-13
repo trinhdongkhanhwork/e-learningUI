@@ -10,7 +10,7 @@ export default function useCourses() {
 
   const fetchCourses = async () => {
     try {
-      const response = await baseApi.get("/api/v1/courses/getCourses");
+      const response = await baseApi.get("/api/v1/courses");
       if (Array.isArray(response.data.content)) {
         courses.value = response.data.content.map(course => ({
           ...course,

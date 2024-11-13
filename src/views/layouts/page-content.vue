@@ -77,7 +77,7 @@
                 <div class="d-flex media-wide">
                   <div class="avatar">
                     <router-link :to="`/pages/course-details/${wish.id}`">
-                      <img v-if="wish.coverImage" :src="require(`@/assets/img/course-list/${wish.coverImage}`)" alt="Img" class="img-fluid" />
+                      <img v-if="wish.coverImage" :src="`${wish.coverImage}`" alt="Img" class="img-fluid" />
                     </router-link>
                   </div>
                   <div class="media-body">

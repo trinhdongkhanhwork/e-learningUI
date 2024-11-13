@@ -10,7 +10,7 @@
         <div class="product">
           <div class="product-img">
             <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-              <img v-if="course.coverImage" :src="require(`@/assets/img/course-list/${course.coverImage}`)"
+              <img v-if="course.coverImage" :src="`${course.coverImage}`"
                    alt="Img" class="img-fluid" style="width: 300px;height: 270px;"/>
             </router-link>
             <div class="price">

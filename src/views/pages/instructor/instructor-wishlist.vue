@@ -23,7 +23,7 @@
                       <div class="product">
                         <div class="product-img">
                           <router-link :to="{ path: '/course/course-details', query: { id: wishlistItem.courseId } }">
-                            <img v-if="wishlistItem.coverImage" :src="require(`@/assets/img/course-list/${wishlistItem.coverImage}`)"
+                            <img v-if="wishlistItem.coverImage" :src="`${wishlistItem.coverImage}`"
                                  alt="Img" class="img-fluid" style="width: 300px;height: 270px;"/>
                           </router-link>
                           <div class="price">
@@ -46,7 +46,7 @@
                           <div class="course-info d-flex align-items-center">
                             <div class="rating-img d-flex align-items-center">
                               <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
-                              <p>12+ Lesson</p>
+                              <p>{{wishlistItem.level}}</p>
                             </div>
                             <div class="course-view d-flex align-items-center">
                               <img src="@/assets/img/icon/icon-02.svg" alt="Img" />

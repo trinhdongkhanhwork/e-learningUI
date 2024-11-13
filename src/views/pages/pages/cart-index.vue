@@ -20,7 +20,7 @@
                         <div class="product">
                           <div class="product-img">
                             <router-link :to="`/course/course-details/${item.id}`">
-                              <img class="img-fluid" :src="require(`@/assets/img/course-list/${item.coverImage}`)" />
+                              <img class="img-fluid" :src="`${item.coverImage}`" />
                             </router-link>
                             <div class="price">
                               <h3 class="free-color">{{ item.price }}</h3>
@@ -113,6 +113,13 @@ export default {
     const loadCart = () => {
       const storedCart = JSON.parse(localStorage.getItem("cart"));
       cartItems.value = storedCart || [];
+
+      // Kiểm tra lại và đảm bảo price là số
+      cartItems.value.forEach(item => {
+        if (typeof item.price !== 'number') {
+          item.price = parseFloat(item.price); // Chuyển price sang số nếu nó là chuỗi
+        }
+      });
     };
 
     // Hàm xóa khóa học khỏi giỏ hàng
@@ -150,8 +157,8 @@ export default {
 
     const totalPrice = computed(() => {
       return cartItems.value.reduce((total, item) => {
-        const price = typeof item.price === 'number' ? item.price : parseFloat(item.price.replace(/[^0-9.-]+/g, ''));
-        return total + (price || 0);
+        const price = item.price || 0;
+        return total + price;
       }, 0).toFixed(2);
     });
 

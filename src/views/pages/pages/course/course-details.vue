@@ -12,14 +12,14 @@
                 <div class="abt-instructor-img">
                   <router-link to="/instructor/instructor-profile"
                   ><img
-                      src="@/assets/img/user/user1.jpg"
+                      :src="`${course.instructor.avatarUrl}`"
                       alt="img"
                       class="img-fluid"
                   /></router-link>
                 </div>
                 <div class="instructor-detail me-3">
                   <h5><router-link to="/instructor/instructor-profile">{{ course.instructor.fullname }}</router-link></h5>
-                  <p>Instructor</p>
+                  <p>Phone: {{ course.instructor.phone }}</p>
                 </div>
                 <div class="rating mb-0">
                   <i class="fas fa-star filled me-1"></i>
@@ -36,7 +36,7 @@
             <div class="course-info d-flex align-items-center border-bottom-0 m-0 p-0">
               <div class="cou-info">
                 <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                <p>12+ Lesson</p>
+                <p>{{ course.level }}</p>
               </div>
               <div class="cou-info">
                 <img src="@/assets/img/icon/timer-icon.svg" alt="" />
@@ -44,7 +44,7 @@
               </div>
               <div class="cou-info">
                 <img src="@/assets/img/icon/people.svg" alt="" />
-                <p>32 students enrolled</p>
+                <p>{{ course.enrolledUserCount }} students enrolled</p>
               </div>
             </div>
           </div>
@@ -136,84 +136,6 @@
               </div>
             </div>
           </div>
-          <!-- /Course Content -->
-
-          <!-- Instructor -->
-          <!-- <div class="card instructor-sec">
-            <div class="card-body">
-              <h5 class="subs-title">About the instructor</h5>
-              <div class="instructor-wrap">
-                <div class="about-instructor">
-                  <div class="abt-instructor-img">
-                    <router-link to="/instructor/instructor-profile"
-                      ><img
-                        src="@/assets/img/user/user1.jpg"
-                        alt="img"
-                        class="img-fluid"
-                    /></router-link>
-                  </div>
-                  <div class="instructor-detail">
-                    <h5>
-                      <router-link to="/instructor/instructor-profile"
-                        >Nicole Brown</router-link
-                      >
-                    </h5>
-                    <p>UX/UI Designer</p>
-                  </div>
-                </div>
-                <div class="rating">
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star me-1"></i>
-                  <span class="d-inline-block average-rating"
-                    >4.5 Instructor Rating</span
-                  >
-                </div>
-              </div>
-              <div class="course-info d-flex align-items-center">
-                <div class="cou-info">
-                  <img src="@/assets/img/icon/play.svg" alt="" />
-                  <p>5 Courses</p>
-                </div>
-                <div class="cou-info">
-                  <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                  <p>12+ Lesson</p>
-                </div>
-                <div class="cou-info">
-                  <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                  <p>9hr 30min</p>
-                </div>
-                <div class="cou-info">
-                  <img src="@/assets/img/icon/people.svg" alt="" />
-                  <p>270,866 students enrolled</p>
-                </div>
-              </div>
-              <p>
-                UI/UX Designer, with 7+ Years Experience. Guarantee of High
-                Quality Work.
-              </p>
-              <p>
-                Skills: Web Design, UI Design, UX/UI Design, Mobile Design, User
-                Interface Design, Sketch, Photoshop, GUI, Html, Css, Grid
-                Systems, Typography, Minimal, Template, English, Bootstrap,
-                Responsive Web Design, Pixel Perfect, Graphic Design, Corporate,
-                Creative, Flat, Luxury and much more.
-              </p>
-
-              <p>Available for:</p>
-              <ul>
-                <li>1. Full Time Office Work</li>
-                <li>2. Remote Work</li>
-                <li>3. Freelance</li>
-                <li>4. Contract</li>
-                <li>5. Worldwide</li>
-              </ul>
-            </div>
-          </div> -->
-          <!-- /Instructor -->
-
           <!-- Reviews -->
           <div class="card review-sec" v-if="reviews.length != 0">
             <div class="card-body" style="padding-bottom: 0;">
@@ -322,17 +244,19 @@
                   </a>
                   <div class="video-details">
                     <div class="course-fee">
-                      <h2>FREE</h2>
-                      <p><span>$99.00</span> 50% off</p>
+                      <h2>{{ course.price }}$</h2>
+                      <p><img :src="require('@/assets/img/course-list/gif-dong2.gif')" alt="Price Icon" style="width: 100px;height: 70px;"></p>
                     </div>
                     <div class="row gx-2">
                       <div class="col-md-6">
-                        <router-link
-                            to="course-wishlist"
-                            class="btn btn-wish w-100"
-                        ><i class="feather-heart"></i> Add to
-                          Wishlist</router-link
+                        <button 
+                          class="btn btn-wish w-100"
+                          :class="{ 'btn-wish-active': course.isFavorite }"  
+                          @click="toggleWishlist(course)" 
                         >
+                          <i :class="course.isFavorite ? 'feather-heart' : 'feather-heart-off'"></i> 
+                          {{ course.isFavorite ? 'Remove Wishlist' : 'Add to Wishlist' }}
+                        </button>
                       </div>
                       <div class="col-md-6">
                         <a href="javascript:;" class="btn btn-wish w-100"
@@ -417,7 +341,7 @@
                         class="me-2"
                         alt=""
                     />
-                    Enrolled: <span>32 students</span>
+                    Enrolled: <span>{{ course.enrolledUserCount }} students</span>
                   </li>
                   <li>
                     <img
@@ -477,10 +401,11 @@ export default {
       idCourse: null,  // Khai báo idCourse ở đây
       user,
       isPayment: false,
+      wishlist: [],  // Đã thêm wishlist
       course: {},
       sections: [],
       viewSectionToggle: {},
-      reviews: []
+      reviews: [],
     }
   },
   created() {
@@ -499,8 +424,8 @@ export default {
       sections: []
     }
     this.getCourseById(this.idCourse);
-    this.getReviews(this.idCourse);
     this.isPayments(this.idCourse);
+    this.fetchWishlist();  // Lấy wishlist ngay khi bắt đầu
     const selectedCourseId = localStorage.getItem("selectedCourseId");
     if (selectedCourseId) {
       this.getCourseById(selectedCourseId);  // Gọi phương thức để lấy thông tin khóa học
@@ -516,16 +441,6 @@ export default {
           })
           .catch(error => {
             console.log("Tìm khóa học thất bại", error);
-          });
-    },
-    getReviews(idCourse) {
-      baseApi.get(`/api/comment/getCommentCourse/${idCourse}`)
-          .then(reviews => {
-            this.reviews = reviews.data;
-            console.log("Tìm review thành công");
-          })
-          .catch(error => {
-            console.log("Tìm review thất bại", error);
           });
     },
     isViewSectionToggle(sectionId) {
@@ -558,7 +473,6 @@ export default {
           enrolledUserCount: this.course.enrolledUserCount,
           category: this.course.category,
           instructor: this.course.instructor,
-          // Thêm các thuộc tính khác nếu cần
         };
 
         // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
@@ -574,8 +488,81 @@ export default {
       // Điều hướng tùy theo giá trị của isPayment
       const destination = this.isPayment ? "/course/course-lesson/" : "/pages/cart";
       this.$router.push({ path: destination, query: { id: this.idCourse } });
-    }
+    },
 
+    async toggleWishlist(course) {
+      if (course.isFavorite) {
+        await this.unWishlist(course.id);
+        course.isFavorite = false;  // Cập nhật trạng thái UI
+      } else {
+        await this.addToWishlist(course);
+        course.isFavorite = true;  // Cập nhật trạng thái UI
+      }
+    },
+
+    // Hàm thêm khóa học vào wishlist
+    async addToWishlist(course) {
+      const userId = this.user.id;
+      console.log(userId);
+      const wishlistData = {
+        userId: userId,
+        courseId: course.id
+      };
+
+      try {
+        const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
+        if (response && response.data && response.data.code === 9898) {
+          console.log("Khóa học đã được thêm vào wishlist:", response.data);
+          // Cập nhật lại wishlist sau khi thêm khóa học
+          this.fetchWishlist(); 
+        } else {
+          console.error("Định dạng phản hồi không như mong đợi:", response);
+        }
+      } catch (error) {
+        console.error("Lỗi khi thêm vào wishlist:", error);
+      }
+    },
+
+    // Hàm lấy danh sách wishlist
+    async fetchWishlist() {
+      const userId = this.user.id;
+      console.log("Fetching wishlist for user ID:", userId);
+      try {
+        const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);
+        this.wishlist = response.data || [];
+        console.log("Wishlist data:", this.wishlist); // Kiểm tra dữ liệu
+        this.updateFavoriteStatus(); // Cập nhật trạng thái yêu thích
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    },
+
+    async unWishlist(courseId) {
+  // Lấy wishlistId dựa trên courseId từ danh sách wishlist hiện tại
+  const wishlistItem = this.wishlist.find(wish => wish.courseId === courseId);
+  if (!wishlistItem) {
+    console.error("Wishlist item không tồn tại với courseId:", courseId);
+    return;
+  }
+
+  try {
+    const response = await baseApi.delete(`/api/v1/wishlist/${wishlistItem.id}`);
+    if (response.status === 200) {
+      console.log("Khóa học đã bị xóa khỏi wishlist");
+
+      // Cập nhật lại danh sách wishlist
+      this.wishlist = this.wishlist.filter(course => course.id !== wishlistItem.id);
+      this.updateFavoriteStatus();
+    }
+  } catch (error) {
+    console.error("Lỗi khi xóa khỏi wishlist:", error);
+  }
+},
+
+    updateFavoriteStatus() {
+      // Lọc các khóa học trong danh sách wishlist và cập nhật trạng thái yêu thích
+      this.course.isFavorite = this.wishlist.some(wish => wish.courseId === this.course.id);
+    },
   }
 }
 </script>
