@@ -1150,7 +1150,7 @@ button.bg-danger:hover {
   cursor: pointer;
 }
 .header-navbar-rht .dropdown-menu {
-  min-width: 200px;
+  min-width: 300px;
   padding: 0;
 }
 .header-navbar-rht .dropdown-menu .dropdown-item {
@@ -4650,7 +4650,7 @@ html.menu-opened body {
   cursor: pointer;
 }
 .header-navbar-rht .dropdown-menu {
-  min-width: 200px;
+  min-width: 300px;
   padding: 0;
 }
 .header-navbar-rht .dropdown-menu .dropdown-item {
@@ -9310,7 +9310,7 @@ textarea:focus {
 }
 
 /*-----------------
-	Achieve your Goals 
+	Achieve your Goals
 -----------------------*/
 
 .goals-section-five {
@@ -13640,7 +13640,6 @@ input[type="password"]::-ms-clear {
 -----------------------*/
 
 .page-banner.instructor-bg-blk {
-  padding: 32px 0;
   text-align: center;
   background: url(../img/instructor/instructor-bg-banner.png) #1565c0;
   background-repeat: no-repeat;
@@ -21172,7 +21171,7 @@ h6 {
 }
 .dark .selection .select2-selection {
   background: #131022;
- 
+
 }
 .dark .selection .select2-selection option {
   color: #B9B7C0;

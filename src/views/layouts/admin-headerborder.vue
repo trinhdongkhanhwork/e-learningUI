@@ -3,8 +3,8 @@
   <header class="header header-page">
     <div class="header-fixed">
       <nav
-        class="navbar navbar-expand-lg header-nav scroll-sticky"
-        :class="{ 'add-header-bg': isSticky }"
+          class="navbar navbar-expand-lg header-nav scroll-sticky"
+          :class="{ 'add-header-bg': isSticky }"
       >
         <div class="container-fluid">
           <div class="navbar-header">
@@ -25,34 +25,34 @@
                 <img src="@/assets/img/logo.svg" class="img-fluid" alt="Logo" />
               </router-link>
               <a
-                id="menu_close"
-                class="menu-close"
-                href="javascript:void(0);"
-                @click="closeSidebar"
+                  id="menu_close"
+                  class="menu-close"
+                  href="javascript:void(0);"
+                  @click="closeSidebar"
               >
                 <i class="fas fa-times"></i>
               </a>
             </div>
-<!--            <main-nav></main-nav>-->
+            <!--            <main-nav></main-nav>-->
           </div>
 
-          <header-instructor></header-instructor>
+          <header-page1></header-page1>
         </div>
       </nav>
       <div
-        class="sidebar-overlay"
-        :class="{ opened: isSidebarOpen }"
-        @click="closeSidebar"
+          class="sidebar-overlay"
+          :class="{ opened: isSidebarOpen }"
+          @click="closeSidebar"
       ></div>
     </div>
   </header>
   <!-- /Header -->
 </template>
 <script>
-import HeaderInstructor from "@/components/header-page1.vue";
+import HeaderPage1 from "@/components/header-page1.vue";
 
 export default {
-  components: {HeaderInstructor},
+  components: {HeaderPage1},
   data() {
     return {
       isSticky: false,

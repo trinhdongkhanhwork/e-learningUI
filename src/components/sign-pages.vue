@@ -46,23 +46,48 @@
                 <img :src="user?.avatarUrl" alt="User Image" class="avatar-img rounded-circle">
               </div>
               <div class="user-text">
-                <h6> {{ user?.fullname }} </h6>
-                <p class="text-muted mb-0"> {{ user?.roleEntity.roleName }} </p>
+                <h6> {{user?.fullname}} </h6>
+                <p class="text-muted mb-0"> {{user?.roleEntity.roleName}} </p>
               </div>
             </div>
-            <router-link class="dropdown-item" to="/instructor/instructor-dashboard"><i class="feather-home me-1"></i>
-              Dashboard
-            </router-link>
-            <router-link class="dropdown-item" to="/instructor/instructor-settings"><i class="feather-star me-1"></i>
-              Edit Profile
-            </router-link>
+            <router-link
+                v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
+                class="dropdown-item"
+                to="/instructor/instructor-dashboard"
+            ><i class="feather-home me-1"></i> Dashboard</router-link>
+            <router-link
+                v-if="user?.roleEntity.roleName === 'STUDENT'"
+                class="dropdown-item"
+                to="/student/student-dashboard"
+            ><i class="feather-home me-1"></i> Dashboard</router-link>
+            <router-link
+                v-if="user?.roleEntity.roleName === 'ADMIN'"
+                class="dropdown-item"
+                to="/admin/admin-dashboard"
+            ><i class="feather-home me-1"></i> Dashboard</router-link>
+
+            <router-link
+                v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
+                class="dropdown-item"
+                to="/instructor/instructor-settings"
+            ><i class="feather-star me-1"></i> Edit Profile</router-link>
+            <router-link
+                v-if="user?.roleEntity.roleName === 'STUDENT'"
+                class="dropdown-item"
+                to="/student/student-settings"
+            ><i class="feather-star me-1"></i> Edit Profile</router-link>
+            <router-link
+                v-if="user?.roleEntity.roleName === 'ADMIN'"
+                class="dropdown-item"
+                to="/admin/admin-settings"
+            ><i class="feather-star me-1"></i> Edit Profile</router-link>
             <div class="dropdown-item night-mode">
               <span><i class="feather-moon me-1"></i> Night Mode </span>
               <div class="form-check form-switch check-on m-0">
                 <input class="form-check-input" type="checkbox" id="night-mode">
               </div>
             </div>
-            <button @click="logout" class="nav-link">Logout</button>
+            <button class="dropdown-item" @click="logout"><i class="feather-log-out me-1"></i> Logout</button>
           </div>
         </li>
       </ul>
@@ -71,13 +96,20 @@
 </template>
 <script>
 import {ref, onMounted} from "vue";
-import axios from "axios";
+import baseApi from "@/axios";
+import {confirmLogout} from "@/utils/confirmDialogs";
+import {useStore} from "vuex";
 
 export default {
   setup() {
     const darkModeToggle = ref(null);
     const lightModeToggle = ref(null);
-    const user = ref(null);
+    const store = useStore();
+    const user = ref(store.state.userInfo);
+
+    function logout() {
+        confirmLogout(store)
+    }
 
     function enableDarkMode() {
       document.documentElement.setAttribute("class", "light dark");
@@ -93,26 +125,16 @@ export default {
       localStorage.removeItem("darkMode");
     }
 
-    async function fetchUserInfo() {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const response = await axios.get("http://localhost:8080/users/myInfo", {
-          headers: {Authorization: `Bearer ${token}`},
-        });
-        if (response.data.code === 1000) {
-          user.value = response.data.result;
-          console.log(user.value);
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy thông tin người dùng:", error);
-      }
-    }
-
-    function logout() {
-      user.value = null;
-      localStorage.removeItem("token");
+    function getUserInfo() {
+      baseApi
+          .get("/users/myInfo")
+          .then((response) => {
+            user.value = response.data.result;
+          })
+          .catch((error) => {
+            console.error("Error during introspection:", error);
+          });
+      return user;
     }
 
     onMounted(() => {
@@ -122,8 +144,7 @@ export default {
       } else {
         disableDarkMode();
       }
-
-      fetchUserInfo();
+      getUserInfo()
     });
 
     return {
@@ -137,3 +158,4 @@ export default {
   },
 };
 </script>
+
