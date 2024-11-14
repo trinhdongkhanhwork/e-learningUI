@@ -14,10 +14,12 @@
             <div class="profile-name text-center">
               <h4>
                 <router-link to="/instructor/instructor-profile"
+                >{{user?.fullname}}</router-link
                   >Eugene Andre</router-link
+
                 >
               </h4>
-              <p>Instructor</p>
+              <p>{{user?.roleEntity.roleName}}</p>
               <router-link
                 to="/course/add-course"
                 class="add-course btn-primary"

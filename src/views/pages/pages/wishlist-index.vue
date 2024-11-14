@@ -12,13 +12,13 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-              <div class="wishlist-item" v-for="wish in wishlist" :key=" wish.id">
+              <div class="wishlist-item" v-if="wishlist.length" v-for="wish in wishlist" :key=" wish.id">
                 <div class="row align-items-center">
                   <div class="col-md-9">
                     <div class="wishlist-detail" >
                       <div class="wishlist-img">
                         <router-link :to="`/course/${wish.id}`">
-                          <img v-if="wish.coverImage" :src="require(`@/assets/img/course-list/${wish.coverImage}`)" alt="Img" class="img-fluid" />
+                          <img v-if="wish.coverImage" :src="`${wish.coverImage}`" alt="Img" class="img-fluid" />
                         </router-link>
                         <div class="price-amt">
                           <h4>{{ wish.price }}</h4>

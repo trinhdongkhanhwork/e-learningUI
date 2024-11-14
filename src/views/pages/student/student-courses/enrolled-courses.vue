@@ -10,7 +10,7 @@
         <div class="product">
           <div class="product-img">
             <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-              <img v-if="course.coverImage" :src="require(`@/assets/img/course-list/${course.coverImage}`)"
+              <img v-if="course.coverImage" :src="`${course.coverImage}`"
                    alt="Img" class="img-fluid" style="width: 300px;height: 270px;"/>
             </router-link>
             <div class="price">
@@ -36,11 +36,6 @@
                   <p>{{ course.instructor.roleEntity.roleName }}</p>
                 </div>
               </div>
-              <!-- <div
-                class="course-share d-flex align-items-center justify-content-center"
-              >
-                <a href="#"><i class="fa-regular fa-heart"></i></a>
-              </div> -->
             </div>
             <h3 class="title instructor-text">
               <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">

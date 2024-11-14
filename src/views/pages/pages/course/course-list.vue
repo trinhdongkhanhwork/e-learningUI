@@ -6,14 +6,14 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-9">
-          <course-filter></course-filter>
+          <course-filter @filter-changed="handleFilterChange"></course-filter>
           <div class="row">
-            <div class="col-lg-12 col-md-12 d-flex" v-for="course in courses" :key="course.id">
+            <div class="col-lg-12 col-md-12 d-flex" v-for="course in filteredCourses" :key="course.id">
               <div class="course-box course-design list-course d-flex">
                 <div class="product">
                   <div class="product-img">
-                    <router-link :to="`/course/${course.id}`">
-                      <img v-if="course.coverImage" :src="require(`@/assets/img/course-list/${course.coverImage}`)" alt="Img" class="img-fluid" />
+                    <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
+                      <img v-if="course.coverImage" :src="`${course.coverImage}`" alt="Img" class="img-fluid" />
                     </router-link>
                     <div class="price">
                       <h3>${{course.price}}</h3>
@@ -22,7 +22,7 @@
                   <div class="product-content">
                     <div class="head-course-title">
                       <h3 class="title">
-                        <router-link :to="`/course/${course.id}`">{{ course.title }}</router-link>
+                        <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">{{ course.title }}</router-link>
                       </h3>
                       <div class="all-btn all-category d-flex align-items-center">
                         <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
@@ -49,13 +49,13 @@
                     <div class="course-group d-flex mb-0">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile">
-                          <img src="@/assets/img/user/user1.jpg" alt="Img" class="img-fluid" />
+                          <img :src="`${course.instructor.avatarUrl}`" alt="Img" class="img-fluid" />
                         </router-link>
                         <div class="course-name">
                           <h4>
-                            <router-link to="/instructor/instructor-profile">Rolands R</router-link>
+                            <router-link to="/instructor/instructor-profile">{{course.instructor.fullname}}</router-link>
                           </h4>
-                          <p>Instructor</p>
+                          <p>{{ course.instructor.roleEntity.roleName}}</p>
                         </div>
                       </div>
                       <div class="course-share d-flex align-items-center justify-content-center">
@@ -71,7 +71,7 @@
           </div>
           <pagination></pagination>
         </div>
-        <course-sidebar></course-sidebar>
+        <course-sidebar :onFilterChange="handleFilterChange"></course-sidebar>
       </div>
     </div>
   </section>
@@ -92,8 +92,12 @@ export default {
     console.log(user);
     return {
       courses: [],
-      wishlist: [], // Danh sách wishlist từ API
-      user
+      filteredCourses: [],
+      wishlist: [],
+      user,
+      selectedCategories: [],
+      selectedInstructors: [],
+      selectedPriceRange: { min: 0, max: 0 },
     };
   },
   async mounted() {
@@ -102,6 +106,7 @@ export default {
   },
   methods: {
     async fetchWishlist() {
+
       const userId = this.user.id;
       console.log("Fetching wishlist for user ID:", userId);
       try {
@@ -113,18 +118,17 @@ export default {
         console.error("Error fetching wishlist:", error);
       }
     },
-
     fetchCourses() {
       baseApi
-          .get("/api/v1/courses/getCourses")
+          .get("/api/v1/courses")
           .then((response) => {
             if (Array.isArray(response.data.content)) {
               this.courses = response.data.content.map(course => ({
                 ...course,
                 isFavorite: this.wishlist.some(wish => wish.id === course.id)
               }));
-
               this.updateFavoriteStatus();
+              this.applyFilters();
             } else {
               console.error("Dữ liệu không phải là mảng:", response.data);
             }
@@ -132,6 +136,46 @@ export default {
           .catch((error) => {
             console.error("Lỗi khi lấy danh sách khóa học:", error);
           });
+    },
+    handleFilterChange({ categories, instructors, priceRange,filters}) {
+      this.selectedCategories = categories || [];
+      this.selectedInstructors = instructors || [];
+      this.selectedPriceRange = priceRange || { min: 0, max: 0 };
+      // Kiểm tra sự tồn tại của filters trước khi sử dụng
+      if (filters) {
+        this.searchQuery = filters.searchQuery || '';
+        this.selectedCategory = filters.selectedCategory || null;
+      } else {
+        // Nếu filters không tồn tại, gán giá trị mặc định
+        this.searchQuery = '';
+        this.selectedCategory = null;
+      }
+      this.applyFilters();
+    },
+
+    applyFilters() {
+      const selectedCategories = this.selectedCategories.map(category => category.toString());
+      const selectedInstructors = this.selectedInstructors.map(instructor => instructor.toString());
+
+      this.filteredCourses = this.courses.filter(course => {
+        // Lọc theo danh mục
+        const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(course.categoryId.toString());
+        
+        // Lọc theo giảng viên
+        const instructorMatch = selectedInstructors.length === 0 || selectedInstructors.includes(course.instructor.fullname);
+        
+        // Lọc theo khoảng giá
+        const priceMatch =
+          (this.selectedPriceRange.min === 0 && this.selectedPriceRange.max === 0) ||
+          (course.price >= this.selectedPriceRange.min && course.price <= this.selectedPriceRange.max);
+        
+        // Lọc theo từ khóa tìm kiếm
+        const searchQueryMatch = !this.searchQuery || (course.title && course.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
+
+        return categoryMatch && instructorMatch && priceMatch && searchQueryMatch;
+      });
+
+      console.log("Filtered Courses:", this.filteredCourses);
     },
 
     toggleFavorites(course) {
@@ -179,8 +223,7 @@ export default {
               console.error("Lỗi khi thêm vào danh sách yêu thích:", error);
             });
       }
-    }
-    ,
+    },
     async addToWishlist(course) {
       const userId = this.user.id;
       console.log(userId);
@@ -212,7 +255,7 @@ export default {
       try {
         await baseApi.delete(`/api/v1/wishlist/${courseId}`);
         console.log("Khóa học đã bị xóa khỏi wishlist");
-        this.wishlist = this.wishlist.filter(course => course.id !== courseId); // Cập nhật danh sách wishlist
+        this.wishlist = this.wishlist.filter(course => course.id !== courseId); 
       } catch (error) {
         console.error("Error removing from wishlist:", error);
       }

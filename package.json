@@ -23,6 +23,7 @@
     "bootstrap-vue-3": "^0.5.1",
     "boxicons": "^2.1.4",
     "daterangepicker": "^3.1.0",
+    "DreamsLMS": "file:",
     "file-loader": "^6.2.0",
     "font-awesome": "^4.7.0",
     "material-icons": "^1.13.9",

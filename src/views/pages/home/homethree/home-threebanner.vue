@@ -17,15 +17,16 @@
               <form class="form" @submit.prevent="submitForm">
                 <div class="form-inner-three">
                   <div class="input-group">
-                    <input
+                    <h1 id="dynamic-text" style="margin-top:10px; font-size: 20px; margin-left: 120px; color: cadetblue;">Show all exciting courses.</h1>
+                    <!-- <input
                       type="email"
                       class="form-control"
                       placeholder="Search School, Online eductional centers, etc"
-                    />
-                    <span class="drop-detail-three">
+                    /> -->
+                    <!-- <span class="drop-detail-three">
                       <vue-select :options="Category" placeholder="Select Category" />
-                    </span>
-                    <button class="btn btn-three-primary sub-btn" type="submit">
+                    </span> -->
+                    <button class="btn btn-three-primary sub-btn" type="submit" style="margin-left: 130px;">
                       <i class="fas fa-arrow-right"></i>
                     </button>
                   </div>
@@ -49,7 +50,7 @@
     <div class="container">
       <div class="course-widget-three">
         <div class="row">
-          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up">
+          <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up">
             <div class="course-details-three">
               <div class="align-items-center">
                 <div class="course-count-three course-count ms-0">
@@ -68,10 +69,10 @@
                           ref="counter"
                           :startAmount="1"
                           :delay="3"
-                          :endAmount="10"
+                          :endAmount="totalCourseCount"
                           :duration="5"
                           :autoinit="true" /></span
-                      >K
+                      >+
                     </h4>
                     <p>Online Courses</p>
                   </div>
@@ -79,7 +80,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up">
+          <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up">
             <div class="course-details-three">
               <div class="align-items-center">
                 <div class="course-count-three course-count ms-0">
@@ -98,7 +99,7 @@
                           ref="counter"
                           :startAmount="10"
                           :delay="3"
-                          :endAmount="200"
+                          :endAmount="totalTutors"
                           :duration="5"
                           :autoinit="true" /></span
                       >+
@@ -109,37 +110,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up">
-            <div class="course-details-three">
-              <div class="align-items-center">
-                <div class="course-count-three course-count ms-0">
-                  <div class="course-img">
-                    <img
-                      class="img-fluid"
-                      src="@/assets/img/icon-three/course-03.svg"
-                      alt=""
-                    />
-                  </div>
-                  <div class="course-content-three">
-                    <h4 class="text-info">
-                      <span class="counterUp"
-                        ><vue3-autocounter
-                          class="counter"
-                          ref="counter"
-                          :startAmount="1"
-                          :delay="3"
-                          :endAmount="6"
-                          :duration="5"
-                          :autoinit="true" /></span
-                      >K+
-                    </h4>
-                    <p>Ceritified Courses</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up">
+          <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up">
             <div class="course-details-three mb-0">
               <div class="align-items-center">
                 <div class="course-count-three">
@@ -158,10 +129,10 @@
                           ref="counter"
                           :startAmount="1"
                           :delay="3"
-                          :endAmount="60"
+                          :endAmount="totalStudents"
                           :duration="5"
                           :autoinit="true" /></span
-                      >K +
+                      >+
                     </h4>
                     <p>Online Students</p>
                   </div>
@@ -239,22 +210,58 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import skillsthree from "@/assets/json/skillsthree.json";
+import baseApi from "@/axios";
+
 export default {
   data() {
     return {
+      courses: [],
+      totalCourseCount: 0,
+      totalTutors: 0,
+      totalStudents: 0,
       Category: ["Select category", "Angular", "Node Js", "React", "Python"],
       skillsthree: skillsthree,
     };
   },
   methods: {
+    async fetchCourses() {
+      try {
+        const response = await baseApi.get("/api/v1/courses");
+        if (Array.isArray(response.data.content)) {
+          this.courses = response.data.content.map(course => ({
+            ...course,
+          }));
+          this.calculateTotals();
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách khóa học:", error);
+      }
+    },
+    calculateTotals() {
+      this.totalCourseCount = this.courses.length;
+      this.totalTutors = new Set(this.courses.map(course => course.instructor.id)).size;
+      this.totalStudents = this.courses.reduce((sum, course) => sum + course.enrolledUserCount, 0);
+    },
     submitForm() {
-      this.$router.push("/course-list");
+      this.$router.push("/course/course-grid");
     },
   },
   mounted() {
+    this.fetchCourses();
     this.$nextTick(() => {
       AOS.init();
     });
+
+    const textElement = document.getElementById("dynamic-text");
+    let colors = ["cadetblue", "coral", "darkorange", "limegreen"];
+    let currentColor = 0;
+
+    setInterval(() => {
+      if (textElement) {
+        textElement.style.color = colors[currentColor];
+        currentColor = (currentColor + 1) % colors.length;
+      }
+    }, 1000);
   },
 };
 </script>
