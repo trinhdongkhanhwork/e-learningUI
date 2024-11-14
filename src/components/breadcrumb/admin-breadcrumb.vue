@@ -83,28 +83,28 @@ import {onMounted, ref} from "vue";
 import baseApi from "@/axios";
 
 export default {
-  data() {
-    const user = ref(null);
+    data() {
+      const user = ref(null);
 
-    function getUserInfo() {
-      baseApi
-          .get("/users/myInfo")
-          .then((response) => {
-            user.value = response.data.result;
-          })
-          .catch((error) => {
-            console.error("Error during introspection:", error);
-          });
-      return user;
-    }
+      function getUserInfo() {
+        baseApi
+            .get("/users/myInfo")
+            .then((response) => {
+              user.value = response.data.result;
+            })
+            .catch((error) => {
+              console.error("Error during introspection:", error);
+            });
+        return user;
+      }
 
-    onMounted(() => {
-      getUserInfo()
-    });
+      onMounted(() => {
+        getUserInfo()
+      });
 
-    return {
-      user
-    };
-  },
+      return {
+          user
+      };
+    },
 };
 </script>
