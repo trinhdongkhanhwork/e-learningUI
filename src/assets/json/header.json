@@ -1,0 +1,523 @@
+[
+    {
+      "tittle": "Home",
+      "active_link": "home",
+      "showAsTab": false,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Home",
+                "route": "/home/index",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "active_link": "/home/index",
+                "subMenus": []
+            },
+            {
+                "menuValue": "Home Two",
+                "route": "/home/index-two",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "active_link": "/home/index-two",
+                "subMenus": []
+            },
+            {
+                "menuValue": "Home Three",
+                "route": "/home/index-three",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "active_link": "/home/index-three",
+                "subMenus": []
+            },
+            {
+                "menuValue": "Home Four",
+                "route": "/home/index-four",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "active_link": "/home/index-four",
+                "subMenus": []
+            }
+        ]
+    },
+    {
+      "tittle": "Instructor",
+      "active_link": "instructor",
+      "showAsTab": false,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Instructor",
+                "active_link": "instructor",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "List",
+                        "route": "/instructor/instructor-list",
+                        "active_link": "/instructor/instructor-list",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "Grid",
+                        "route": "/instructor/instructor-grid",
+                        "active_link": "/instructor/instructor-grid",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    }
+                ]
+            },
+            {
+                "menuValue": "Dashboard",
+                "route": "/instructor/instructor-dashboard",
+                "active_link": "/instructor/instructor-dashboard",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "My Profile",
+                "route": "/instructor/instructor-profile",
+                "active_link": "/instructor/instructor-profile",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "My Course",
+                "route": "/instructor/instructor-course",
+                "active_link": "/instructor/instructor-course",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Wishlist",
+                "route": "/instructor/instructor-wishlist",
+                "active_link": "/instructor/instructor-wishlist",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Reviews",
+                "route": "/instructor/instructor-reviews",
+                "active_link": "/instructor/instructor-reviews",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "My Quiz Attempts",
+                "route": "/instructor/instructor-quiz",
+                "active_link": "/instructor/instructor-quiz",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Orders",
+                "route": "/instructor/instructor-orders",
+                "active_link": "/instructor/instructor-orders",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Question & Answer",
+                "route": "/instructor/instructor-qa",
+                "active_link": "/instructor/instructor-qa",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Referrals",
+                "route": "/instructor/instructor-referral",
+                "active_link": "/instructor/instructor-referral",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Messages",
+                "route": "/instructor/instructor-chat",
+                "active_link": "/instructor/instructor-chat",
+                "showSubRoute": false,
+                "hasSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Support Ticket",
+                "route": "/instructor/instructor-tickets",
+                "active_link": "/instructor/instructor-tickets",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Notifications",
+                "route": "/instructor/instructor-notifications",
+                "active_link": "/instructor/instructor-notifications",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Settings",
+                "route": "/instructor/instructor-settings",
+                "active_link": "/instructor/instructor-settings",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            }
+        ]
+    },
+    {
+      "tittle": "Student",
+      "active_link": "student",
+      "showAsTab": false,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Student",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "subMenus": [
+                    {
+                        "menuValue": "List",
+                        "route": "/student/students-list",
+                        "active_link": "/student/students-list",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "Grid",
+                        "route": "/student/students-grid",
+                        "active_link": "/student/students-grid",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    }
+                ]
+            },
+            {
+                "menuValue": "Student Dashboard",
+                "route": "/student/student-dashboard",
+                "active_link": "/student/student-dashboard",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "My Profile",
+                "route": "/student/student-profile",
+                "active_link": "/student/student-profile",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Enrolled Courses",
+                "route": "/student/student-courses",
+                "active_link": "/student/student-courses",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Wishlist",
+                "route": "/student/student-wishlist",
+                "active_link": "/student/student-wishlist",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Reviews",
+                "route": "/student/student-reviews",
+                "active_link": "/student/student-reviews",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "My Quiz Attempts",
+                "route": "/student/student-quiz",
+                "active_link": "/student/student-quiz",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Orders",
+                "route": "/student/student-order-history",
+                "active_link": "/student/student-order-history",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Question & Answer",
+                "route": "/student/student-qa",
+                "active_link": "/student/student-qa",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Referrals",
+                "route": "/student/student-referral",
+                "active_link": "/student/student-referral",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Messages",
+                "route": "/student/student-messages",
+                "active_link": "/student/student-messages",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Support Ticket",
+                "route": "/student/student-tickets",
+                "active_link": "/student/student-tickets",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Settings",
+                "route": "/student/student-settings",
+                "active_link": "/student/student-settings",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            }
+        ]
+    },
+    {
+      "tittle": "Pages",
+      "active_link": "pages",
+      "showAsTab": false,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Notifications",
+                "route": "/pages/notifications",
+                "active_link": "/pages/notifications",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+
+                "subMenus": []
+            },
+            {
+                "menuValue": "Pricing Plan",
+                "route": "/pages/pricing-plan",
+                "active_link": "/pages/pricing-plan",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Wishlist",
+                "route": "/pages/wishlist",
+                "active_link": "/pages/wishlist",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Course",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "active_link": "course",
+                "subMenus": [
+                    {
+                        "menuValue": "Add Course",
+                        "route": "/course/add-course",
+                        "active_link": "/course/add-course",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "Course List",
+                        "route": "/course/course-list",
+                        "active_link": "/course/course-list",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "Course Grid",
+                        "route": "/course/course-grid",
+                        "active_link": "/course/course-grid",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "Course Details",
+                        "route": "/course/course-details",
+                        "active_link": "/course/course-details",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    }
+                ]
+            },
+            {
+                "menuValue": "Error",
+                "hasSubRoute": true,
+                "showSubRoute": false,
+                "page": "error",
+                "subMenus": [
+                    {
+                        "menuValue": "Comeing Soon",
+                        "route": "/come-soon",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "404",
+                       " route": "/error-404",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "500",
+                        "route": "/error-500",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    },
+                    {
+                        "menuValue": "Under Construction",
+                        "route": "/under-construction",
+                        "hasSubRoute": false,
+                        "showSubRoute": false,
+                        "subMenus": []
+                    }
+                ]
+            },
+            {
+                "menuValue": "FAQ",
+                "route": "/pages/faq",
+                "active_link": "/pages/faq",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Support",
+                "route": "/pages/support",
+                "active_link": "/pages/support",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Category",
+                "route": "/pages/job-category",
+                "active_link": "/pages/job-category",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Cart",
+                "route": "/pages/cart",
+                "active_link": "/pages/cart",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Checkout",
+                "route": "/pages/checkout",
+                "active_link": "/pages/checkout",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Login",
+                "route": "/",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Register",
+                "route": "/register",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Forgot Password",
+                "route": "/forgot-password",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            }
+        ]
+    },
+    {
+      "tittle": "Blog",
+      "active_link": "blog",
+      "showAsTab": false,
+      "separateRoute": false,
+      "menu": [
+            {
+                "menuValue": "Blog List",
+                "route": "/blog/blog-list",
+                "active_link": "/blog/blog-list",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Blog Grid",
+                "route": "/blog/blog-grid",
+                "active_link": "/blog/blog-grid",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Blog Masonry",
+                "route": "/blog/blog-masonry",
+                "active_link": "/blog/blog-masonry",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Blog Modern",
+                "route": "/blog/blog-modern",
+                "active_link": "/blog/blog-modern",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            },
+            {
+                "menuValue": "Blog Details",
+                "route": "/blog/blog-details",
+                "active_link": "/blog/blog-details",
+                "hasSubRoute": false,
+                "showSubRoute": false,
+                "subMenus": []
+            }
+        ]
+    }
+]
