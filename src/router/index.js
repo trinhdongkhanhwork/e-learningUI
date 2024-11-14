@@ -32,8 +32,6 @@ import Help_Center from '@/views/pages/pages/help-center.vue'
 import Term_Condition from '@/views/pages/pages/term-condition.vue'
 import underconstruction from '@/views/pages/pages/error/under-construction.vue'
 import verificationcode from '@/views/pages/pages/verification-code.vue'
-import Authenticate from '@/views/pages/pages/authenticate.vue'
-
 
 import Homethree from '@/views/pages/home/homethree/homethree.vue'
 import Student_Dashboard from '@/views/pages/student/student-dashboard.vue';
@@ -92,13 +90,17 @@ import Registerstepone from '@/views/pages/pages/register-step-one.vue'
 import Registerstepthree from '@/views/pages/pages/register-step-three.vue'
 import Registersteptwo from '@/views/pages/pages/register-step-two.vue'
 import Register from '@/views/pages/pages/register-index.vue'
+import Admin_Index from '@/views/pages/admin/admin-index.vue'
+import Admin_Dashboard from '@/views/pages/admin/dashboard/admin-dashboard.vue'
+import Admin_Approval_Course from '@/views/pages/admin/admin-approval-course/approval-course.vue'
 import Home from '@/views/pages/home/home-index.vue'
-
+import { useStore } from "vuex";
 
 const routes = [
   {
     path: "/student",
     component: Student_Index,
+    meta: { roles: ["STUDENT", "ADMIN"] },
     children: [
       { path: "", redirect: "/student/student-dashboard" },
       { path: "student-dashboard", component: Student_Dashboard },
@@ -122,10 +124,22 @@ const routes = [
       { path: "students-list", component: Student_List },
       { path: "setting-student-subscription", component: Setting_Student_Subscription },
     ],
+
+  },
+  {
+    path: "/admin",
+    component: Admin_Index,
+    meta: { roles: ["ADMIN"] },
+    children: [
+      { path: "", redirect: "/admin/admin-dashboard" },
+      { path: "admin-dashboard", component: Admin_Dashboard },
+      { path: "approval-course", component: Admin_Approval_Course }
+    ]
   },
   {
     path: "/instructor",
     component: Instructor_Index,
+    meta: { roles: ["ADMIN", "INSTRUCTOR"] },
     children: [
       { path: "", redirect: "/instructor/instructor-dashboard" },
       { path: "instructor-dashboard", component: Instructor_Dashboard },
@@ -243,11 +257,6 @@ const routes = [
     component: Registerstepfive
   },
   {
-    path: '/authenticate',
-    name: 'authenticate',
-    component: Authenticate
-  },
-  {
     path: '/register-step-four',
     name: 'register-step-four',
     component: Registerstepfour
@@ -293,6 +302,20 @@ router.beforeEach((to, from, next) => {
   // Scroll to the top of the page
   window.scrollTo({ top: 0, behavior: "smooth" });
 
+  const store = useStore();
+  const userRole = store.state.userInfo?.roleEntity.roleName;
+
+  console.log(userRole);
+
+  if(to.meta.roles) {
+    if (to.meta.roles.includes(userRole)) {
+      next();
+    } else {
+      next({ name: 'error-404' });
+    }
+  }
   // Continue with the navigation
   next();
+
+  console.log(to, from);
 });
