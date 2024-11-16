@@ -88,7 +88,7 @@
                   <td>
                     <div class="table-course-detail">
                       <router-link :to="{ path: '/course/course-details', query: { id: course.id } }" class="course-table-img">
-                        <img v-if="course.coverImage" :src="require(`@/assets/img/course-list/${course.coverImage}`)"
+                        <img v-if="course.coverImage" :src="course.coverImage"
                              alt="Img" class="img-fluid" style="width: 100px;"/>
                         {{ course.title }}
                       </router-link>

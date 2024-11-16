@@ -8,7 +8,7 @@
         <div class="loginbox">
           <div class="w-100">
             <div class="img-logo">
-              <img src="@/assets/img/logo.svg" class="img-fluid" alt="Logo" />
+              <img src="@/assets/img/logo.svg" class="img-fluid" alt="Logo"/>
               <div class="back-home">
                 <router-link to="/home/">Back to Home</router-link>
               </div>
@@ -57,7 +57,7 @@
               <div class="remember-me">
                 <label class="custom_check mr-2 mb-0 d-inline-flex remember-me">
                   Remember me
-                  <input type="checkbox" name="radio" />
+                  <input type="checkbox" name="radio"/>
                   <span class="checkmark"></span>
                 </label>
               </div>
@@ -72,21 +72,21 @@
           <div class="sign-google">
             <ul>
               <li>
-                <a href="#">
-                  <img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo" />
+                <a @click.prevent="redirectToGoogleLogin"><img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo"/>
                   Sign In using Google
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <img src="@/assets/img/net-icon-02.png" class="img-fluid" alt="Logo" />
+                  <img src="@/assets/img/net-icon-02.png" class="img-fluid" alt="Logo"/>
                   Sign In using Facebook
                 </a>
               </li>
             </ul>
           </div>
           <p class="mb-0">
-            New User? <router-link to="register">Create an Account</router-link>
+            New User?
+            <router-link to="register">Create an Account</router-link>
           </p>
         </div>
       </div>
@@ -95,20 +95,20 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { Form, Field } from "vee-validate";
+import {ref, onMounted} from "vue";
+import {useRouter} from "vue-router";
+import {Form, Field} from "vee-validate";
 import * as Yup from "yup";
-import baseApi from "@/axios";
 import axios from "axios";
-import toast from "@/utils/Toast";
+import {OAuthConfig} from "@/config/OAuthConfig";
 import { useStore } from "vuex";
+import baseApi from "@/axios";
 
 export default {
-  components: { Form, Field },
+  components: {Form, Field},
   setup() {
-    const store = useStore();
     const router = useRouter();
+    const store = useStore();
     const form = ref({
       username: "",
       password: "",
@@ -137,6 +137,18 @@ export default {
           });
     };
 
+    const redirectToGoogleLogin = () => {
+      const callbackUrl = OAuthConfig.redirectUri;
+      const authUrl = OAuthConfig.authUri;
+      const googleClientId = OAuthConfig.clientId;
+
+      const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+          callbackUrl
+      )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+
+      window.location.href = targetUrl;
+    };
+
     const checkTokenValidity = async () => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -147,7 +159,12 @@ export default {
             const handleRedirect = await baseApi.get("/users/myInfo")
             console.log(handleRedirect)
             store.commit("setUserInfo", handleRedirect.data.result)
-            router.push("/home");
+            if (handleRedirect.data.result.roleEntity.roleName === "ROLE_ADMIN") {
+              router.push("/admin/admin-dashboard");
+            }else {
+              router.push("/home");
+            }
+
           }else {
             console.error("Token is invalid");
             localStorage.removeItem("token");
@@ -159,7 +176,9 @@ export default {
       }
     };
 
-    onMounted(checkTokenValidity);
+    onMounted(() => {
+      checkTokenValidity();
+    });
 
     return {
       form,
@@ -167,11 +186,12 @@ export default {
       showPassword,
       toggleShow,
       onSubmit,
+      redirectToGoogleLogin,
     };
   },
 };
 </script>
 
 <style scoped>
-/* Add your custom styles here */
+/* Style your login page here */
 </style>

@@ -245,16 +245,16 @@
                   <div class="video-details">
                     <div class="course-fee">
                       <h2>{{ course.price }}$</h2>
-                      <p><img :src="require('@/assets/img/course-list/gif-dong2.gif')" alt="Price Icon" style="width: 100px;height: 70px;"></p>
+                      <p><img :src="require('@/assets/img/course-list/anh-dong.gif')" alt="Example Image" style="width: 100px;height: 70px;"/></p>
                     </div>
                     <div class="row gx-2">
                       <div class="col-md-6">
-                        <button 
+                        <button
                           class="btn btn-wish w-100"
-                          :class="{ 'btn-wish-active': course.isFavorite }"  
-                          @click="toggleWishlist(course)" 
+                          :class="{ 'btn-wish-active': course.isFavorite }"
+                          @click="toggleWishlist(course)"
                         >
-                          <i :class="course.isFavorite ? 'feather-heart' : 'feather-heart-off'"></i> 
+                          <i :class="course.isFavorite ? 'feather-heart' : 'feather-heart-off'"></i>
                           {{ course.isFavorite ? 'Remove Wishlist' : 'Add to Wishlist' }}
                         </button>
                       </div>
@@ -391,6 +391,7 @@
 import baseApi from '@/axios';
 import { useStore } from 'vuex';
 import { ref } from "vue";
+import {router} from "@/router";
 
 export default {
   data() {
@@ -447,7 +448,7 @@ export default {
       this.viewSectionToggle[sectionId] = !this.viewSectionToggle[sectionId];
     },
     isPayments(idCourse) {
-      const userId = this.user.id;
+      const userId = this.user?.id;
       baseApi.get(`/api/payment/isPayment/${idCourse}/${userId}`)
           .then(value => {
             if (value.data) {
@@ -457,8 +458,13 @@ export default {
           });
     },
     handleEnroll() {
-      if (!this.isPayment) {  // Kiểm tra nếu chưa thanh toán
-        // Lấy danh sách giỏ hàng từ localStorage hoặc tạo mảng mới nếu chưa có
+      const userId = this.user?.id;
+      if (!userId) {
+        alert("Please log in to add a course to your cart.");
+        router.push("/");  
+        return;
+      }
+      if (!this.isPayment) {  
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         // Tạo đối tượng khóa học để thêm vào giỏ hàng
@@ -502,7 +508,12 @@ export default {
 
     // Hàm thêm khóa học vào wishlist
     async addToWishlist(course) {
-      const userId = this.user.id;
+      const userId = this.user?.id;
+      if (!userId) {
+        console.warn("User chưa đăng nhập. Chuyển hướng đến trang login.");
+        router.push("/");
+        return;
+      }
       console.log(userId);
       const wishlistData = {
         userId: userId,
@@ -514,7 +525,7 @@ export default {
         if (response && response.data && response.data.code === 9898) {
           console.log("Khóa học đã được thêm vào wishlist:", response.data);
           // Cập nhật lại wishlist sau khi thêm khóa học
-          this.fetchWishlist(); 
+          this.fetchWishlist();
         } else {
           console.error("Định dạng phản hồi không như mong đợi:", response);
         }
@@ -525,7 +536,7 @@ export default {
 
     // Hàm lấy danh sách wishlist
     async fetchWishlist() {
-      const userId = this.user.id;
+      const userId = this.user?.id;
       console.log("Fetching wishlist for user ID:", userId);
       try {
         const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);

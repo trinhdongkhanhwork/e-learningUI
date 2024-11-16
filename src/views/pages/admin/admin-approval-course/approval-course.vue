@@ -116,7 +116,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 0,
-        size: 10,
+        size: 20,
         title: undefined,
         type: undefined,
         sort: '+id'

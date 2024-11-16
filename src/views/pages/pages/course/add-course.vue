@@ -251,6 +251,9 @@
                                   <button @click="addQuestionToQuiz(lecture.quiz)" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 150px;">
                                     Add Question
                                   </button>
+                                  <button @click="triggerExcelUpload(lecture)" style="padding: 6px 12px; background-color: cadetblue; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 200px;margin-left: 10px;">
+                                    Add Question excel
+                                  </button>
                                   <button @click="lecture.showQuizInput = false" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 100px; margin-left: 10px;">
                                     Cancel
                                   </button>
@@ -333,6 +336,7 @@ import Swal from 'sweetalert2';
 import {router} from "@/router";
 import toast from "@/utils/Toast";
 import { confirmSave,confirmDelete } from "@/utils/confirmDialogs";
+import * as XLSX from 'xlsx';
 
 export default {
   components: {
@@ -469,11 +473,21 @@ export default {
       }
     },
     saveQuiz(lecture) {
+      // Kiểm tra nếu tiêu đề quiz rỗng thì không cho phép lưu
+      if (!lecture.quizTitle.trim()) {
+        Swal.fire({
+          title: 'Quiz title cannot be empty!',
+          icon: 'warning',
+        });
+        return;
+      }
+
       // Lưu lại tiêu đề quiz sau khi người dùng nhập
       lecture.quiz.title = lecture.quizTitle;
+
       // Xóa đoạn mã kiểm tra lessonId
       lecture.showQuizInput = false;
-      toast.success("Save quiz "+lecture.quiz.title+" successfully.");
+      toast.success("Save quiz " + lecture.quiz.title + " successfully.");
     },
     deleteQuiz(lecture) {
       // Xóa quiz trong đối tượng lecture
@@ -486,6 +500,14 @@ export default {
       });
     },
     addQuestionToQuiz(quiz) {
+      // Kiểm tra nếu số lượng câu hỏi đã đạt tối đa (20 câu hỏi)
+      if (quiz.questions.length >= 20) {
+        Swal.fire({
+          title: 'Maximum number of questions reached (20).',
+          icon: 'warning',
+        });
+        return;
+      }
       Swal.fire({
         title: "Enter question title:",
         input: "text",
@@ -619,7 +641,121 @@ export default {
         }
       });
     },
+  triggerExcelUpload(lecture) {
+      // Tạo thẻ input để chọn file
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.xlsx,.xls'; 
+      fileInput.style.display = 'none';
 
+      // Đưa thẻ input vào body và kích hoạt
+      document.body.appendChild(fileInput);
+      fileInput.click();
+
+      // Khi file được chọn, truyền vào hàm upload
+      fileInput.onchange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          this.uploadQuestionsFromExcel(file, lecture);  // Gọi hàm xử lý file và truyền lecture vào
+        }
+
+        // Xóa phần tử input sau khi hoàn tất
+        document.body.removeChild(fileInput);
+      };
+    },
+  async uploadQuestionsFromExcel(file, lecture) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const data = event.target.result;
+          const workbook = XLSX.read(data, { type: 'array' });
+
+          if (workbook.SheetNames.length === 0) {
+            throw new Error('No sheets found in the Excel file');
+          }
+
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+          // Kiểm tra nếu file Excel có quá 20 câu hỏi
+          if (jsonData.length > 20) {
+            Swal.fire({
+              title: 'Excel file contains more than 20 questions.',
+              text: 'Please upload a file with 20 or fewer questions.',
+              icon: 'warning',
+            });
+            return; // Dừng lại nếu có quá 20 câu hỏi
+          }
+
+          // Khởi tạo quiz
+          const quiz = {
+            title: "Quiz from Excel",
+            questions: []
+          };
+
+          jsonData.forEach((row) => {
+            if (row.Question && row.Options && row.Type) {
+              const question = {
+                title: row.Question,
+                type: row.Type,
+                options: []
+              };
+
+              const options = row.Options.split(',').map(option => option.trim());
+
+              if (typeof row.CorrectAnswer === 'string') {
+                const correctAnswers = row.CorrectAnswer.split(',').map(answer => answer.trim());
+
+                options.forEach((option, index) => {
+                  question.options.push({
+                    text: option,
+                    correct: correctAnswers.includes((index + 1).toString())
+                  });
+                });
+              } else {
+                console.warn(`CorrectAnswer không phải là chuỗi: ${row.CorrectAnswer}`);
+              }
+
+              quiz.questions.push(question);
+            }
+          });
+
+          // Kiểm tra lại số lượng câu hỏi sau khi đọc từ Excel và chỉ cho phép thêm tối đa 20 câu
+          const maxQuestions = 20 - (lecture.quiz ? lecture.quiz.questions.length : 0);
+          if (quiz.questions.length > maxQuestions) {
+            quiz.questions = quiz.questions.slice(0, maxQuestions); // Cắt bớt nếu có quá 20 câu hỏi
+          }
+
+          // Cập nhật quiz vào lecture.quiz (thêm câu hỏi vào quiz)
+          if (!lecture.quiz) {
+            lecture.quiz = quiz; // Nếu chưa có quiz, khởi tạo quiz mới
+          } else {
+            // Nếu đã có quiz, thêm các câu hỏi mới vào quiz hiện tại
+            lecture.quiz.questions.push(...quiz.questions);
+          }
+
+          console.log('Quiz với câu hỏi từ Excel:', lecture.quiz);
+          Swal.fire('Upload thành công!', '', 'success');
+        } catch (error) {
+          Swal.fire('Lỗi!', error.message || 'Không thể xử lý tệp Excel.', 'error');
+        }
+      };
+
+    reader.readAsArrayBuffer(file);
+  },
+
+displayQuestions() {
+  return this.quiz.questions.map(question => {
+    return {
+      title: question.title,
+      options: question.options.map(option => ({
+        text: option.text,
+        correct: option.correct ? 'Correct' : 'Incorrect'
+      }))
+    };
+  });
+},
     editQuestionTitle(question) {
       // Kiểm tra xem question có undefined không
       if (!question) {

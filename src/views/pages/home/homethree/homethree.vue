@@ -3,9 +3,9 @@
       <layouts-index></layouts-index>
       <home-threebanner></home-threebanner>
       <favourite-three></favourite-three>
-      <acheive-goals></acheive-goals>
-      <instructor-three></instructor-three>
-      <footer-three></footer-three>
+  <!--      <acheive-goals></acheive-goals>-->
+  <!--      <instructor-three></instructor-three>-->
+  <!--      <footer-three></footer-three>-->
   </div>
 </template>
 <script>

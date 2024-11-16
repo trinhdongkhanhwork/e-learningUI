@@ -112,7 +112,11 @@ export default {
     // Hàm lấy dữ liệu từ localStorage
     const loadCart = () => {
       const storedCart = JSON.parse(localStorage.getItem("cart"));
-      cartItems.value = storedCart || [];
+      if (storedCart) {
+    cartItems.value = storedCart;
+  } else {
+    cartItems.value = [];
+  }
 
       // Kiểm tra lại và đảm bảo price là số
       cartItems.value.forEach(item => {

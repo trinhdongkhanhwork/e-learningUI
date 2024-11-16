@@ -112,7 +112,7 @@ export default {
 
   methods: {
     async fetchWishlist() {
-      const userId = this.user.id;
+      const userId = this.user?.id;
       try {
         const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);
         // Check payment status for each item in the wishlist
@@ -164,6 +164,12 @@ export default {
     },
 
     addToCart(course) {
+      const userId = this.user?.id;
+      if (!userId) {
+        alert("Please log in to add a course to your cart.");
+        router.push("/");  
+        return;
+      }
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       if (!cart.some(item => item.id === course.id)) {
         cart.push(course);

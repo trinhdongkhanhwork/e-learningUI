@@ -19,7 +19,7 @@
                   data-bs-toggle="collapse"
                   aria-expanded="false"
                   @click="viewSectionToggle(section.id)">
-				  {{ section.title }} 
+				  {{ section.title }}
 				  <span>{{ section.lectures.length }} Lessons</span>
                 </a>
               </h6>
@@ -351,7 +351,7 @@
                   <!-- List reply -->
                   <ul style="margin: 15px 0 0 35px">
                     <li style="margin: 10px 0 0 0"
-                        v-for="(commentChild, index) in getReplyOfComment(commentParent.id)" :key="index" 
+                        v-for="(commentChild, index) in getReplyOfComment(commentParent.id)" :key="index"
                         v-show="index < (buttonNumberShowComment[commentParent.id] ? getReplyOfComment(commentParent.id).length : 2)">
                       <div class="instructor-wrap hoverReply"
                         style=" margin: 0; border: none; width: 100%;  display: flex; align-items: flex-start; justify-content: start; flex-wrap: nowrap;">
@@ -415,7 +415,7 @@
                                   <button class="submit-btn" type="button"
                                           style="height: 30px; padding: 0"
                                           @click="postReplyInVideo(replyText[commentChild.id],commentChild.id)"> Reply </button>
-                                  <button class="submit-btn" type="button" 
+                                  <button class="submit-btn" type="button"
 									                        style=" height: 30px; padding: 0; border: none; background-clip: border-box;"
                                           @click="viewPostReplyToggle(commentChild.id)">Cancel</button>
                                 </div>
@@ -464,7 +464,7 @@
     </div>
   </section>
   <!-- /Course Lesson -->
-  <div class="modal" 
+  <div class="modal"
       style="display: block; background-color: rgba(0, 0, 0, 0.6)"
       v-if="exitDialog">
 		<div class="modal-dialog">
@@ -477,10 +477,10 @@
 					If you leave now, you will have to do it again!
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="submit-btn" 
+					<button type="button" class="submit-btn"
                   style="min-width: 100px; height: 30px; padding: 0;"
                   @click="isNextPage(false)">Keep</button>
-					<button type="button" class="submit-btn" 
+					<button type="button" class="submit-btn"
                   style="min-width: 100px; height: 30px; padding: 0; border: none; background-clip: border-box;"
                   @click="isNextPage(true)">Exit</button>
 				</div>
@@ -500,9 +500,7 @@ export default {
     const store = useStore();
     const user = ref(store.state.userInfo);
     return {
-      user: {
-        id: "21375627-9cca-49ea-87cf-17a975631988",
-      },
+      user,
       stompClient: {},
       comment: {},
       comments: [],
@@ -524,7 +522,7 @@ export default {
     };
   },
   created() {
-    this.getCourses(31);
+    this.getCourses(this.$route.query.id);
     this.connectSocket();
   },
   methods: {
@@ -714,12 +712,12 @@ export default {
     handleBeforeUnload(event){
       // this.exitDialog = true
       // if(this.isNextPage()){
-        
+
       // } else {
       //   event.preventDefault();
       // }
       event.preventDefault();
-      event.returnValue = 'If you leave now, you will have to do it again!'; 
+      event.returnValue = 'If you leave now, you will have to do it again!';
     },
     connectSocket() {
       this.stompClient = new StompJs.Client({
