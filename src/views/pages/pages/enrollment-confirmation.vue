@@ -37,7 +37,7 @@ export default {
         if (!courseId || isNaN(courseId)) {
           return; // Ngừng thực hiện nếu courseId không hợp lệ
         }
-        const response = await axios.get(`http://localhost:8080/api/v1/courses/${courseId}`);
+        const response = await axios.get(`http://localhost:8080/api/v1/courses/getCourseById/${courseId}`);
         this.course = response.data;
       } catch (error) {
         console.error("Error fetching course details:", error); // Ghi lỗi nếu có

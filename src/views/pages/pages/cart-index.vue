@@ -23,7 +23,7 @@
                               <img class="img-fluid" :src="`${item.coverImage}`" />
                             </router-link>
                             <div class="price">
-                              <h3 class="free-color">{{ item.price }}</h3>
+                              <h3 class="free-color"> ${{ item.price }}</h3>
                             </div>
                           </div>
                           <div class="product-content">
@@ -164,7 +164,7 @@ export default {
 
     // Handle payment
     const pay = async () => {
-      const price = parseFloat(totalPrice.value) * 100;
+      const price = parseFloat(totalPrice.value);
       const userId = ref(null);
 
       watch(user, (newUser) => {

@@ -172,13 +172,14 @@
 <script>
 import axios from 'axios';
 import { Modal } from 'bootstrap';
+
 export default {
   data() {
     return {
       title: "Withdrawal",
       text: "Home",
       text1: "Withdrawal",
-      userId: `a0352f96-5c51-46c5-b311-c9f03de46ba2`,
+      userId: "",
       currentBalance: 0,
       withdrawals: [],
       withdrawAmount: 0,
@@ -192,6 +193,14 @@ export default {
     };
   },
   created() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+// Kiểm tra nếu userInfo tồn tại và lấy id
+if (userInfo && userInfo.id) {
+  this.userId = userInfo.id; // Gán userId từ userInfo
+} else {
+  console.log('Không tìm thấy thông tin người dùng trong localStorage');
+}
     this.fetchWithdrawalHistory();
     this.fetchCurrentBalance();
   },
@@ -266,38 +275,37 @@ export default {
       }
     },
     submitWithdrawal() {
-      if (this.withdrawAmount > this.currentBalance) {
-        this.notification = 'Withdrawal amount cannot exceed current balance.';
-        return;
+  if (this.withdrawAmount > this.currentBalance) {
+    this.notification = 'Withdrawal amount cannot exceed current balance.';
+    return;
+  }
+  if (this.withdrawAmount < 1) {
+    this.notification = 'Withdrawal amount must be greater than 1 USD.';
+    return;
+  }
+
+  const price = this.withdrawAmount;
+
+  // Sửa URL để truyền userId trong đường dẫn
+  const url = `http://localhost:8080/api/withdraw/request/${this.userId}?price=${price}`;
+
+  axios.post(url)
+    .then(response => {
+      if (response.data && response.data.id) {
+        this.withdrawId = response.data.id;
+        this.fetchWithdrawalHistory();
+        this.withdrawModal.hide();
+        this.otpModal.show();
+        this.startCountdown();
+        this.fetchWithdrawalHistory(); // Cập nhật lịch sử rút tiền
+        this.notification = 'Redirecting to enter OTP!';
       }
-      if (this.withdrawAmount < 1) {
-        this.notification = 'Withdrawal amount must be greater than 1 USD.';
-        return;
-      }
-
-      const requestData = {
-        userId: this.userId,
-        price: this.withdrawAmount,
-      };
-
-      axios.post('http://localhost:8080/api/withdraw/request', null, { params: requestData })
-          .then(response => {
-            if (response.data && response.data.id) {
-              this.withdrawId = response.data.id;
-              this.fetchWithdrawalHistory(); // Cập nhật lịch sử rút tiền
-              this.withdrawModal.hide(); // Ẩn modal rút tiền (withdrawModal)
-
-              this.otpModal.show(); // Hiển thị modal OTP (otpModal)
-              this.startCountdown();
-
-              this.notification = 'Redirecting to enter OTP!';
-            }
-          })
-          .catch(error => {
-            console.error('Error sending withdrawal request:', error);
-            this.notification = 'Error sending withdrawal request: ' + error.message;
-          });
-    },
+    })
+    .catch(error => {
+      console.error('Error sending withdrawal request:', error);
+      this.notification = 'Error sending withdrawal request: ' + error.message;
+    });
+},
     confirmWithdrawal() {
       axios.post('http://localhost:8080/api/withdraw/confirm', null, {
         params: {
@@ -357,6 +365,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 /* Retain old styles */
