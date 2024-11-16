@@ -10,7 +10,7 @@ Version      : 1.0
 1. General
 2. Bootstrap Classes
 3. Header
-4. Mobile Menu
+4. Mobile Menuposter
 5. Footer
 6. Home One Main
 7. Home Two Main
@@ -12950,7 +12950,6 @@ input[type="password"]::-ms-clear {
 }
 .inner-banner {
   padding: 45px 0;
-  background: url("../img/course-list/poster.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
