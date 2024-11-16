@@ -84,8 +84,6 @@ import Active_Courses from '@/views/pages/student/student-courses/active-courses
 import Complete_Courses from '@/views/pages/student/student-courses/complete-courses.vue'
 import Wishlist_Grid from '@/views/pages/student/student-wishlist/wishlist-grid.vue'
 import Today_History from '@/views/pages/student/student-order/today-history.vue'
-import Month_History from '@/views/pages/student/student-order/month-history.vue'
-import Year_History from '@/views/pages/student/student-order/year-history.vue'
 import Referral_Table from '@/views/pages/student/student-referral/referral-table.vue'
 import Chat_Footer from '@/views/pages/student/student-message/chat-footer.vue'
 import StudentChat_Header from '@/views/pages/student/student-message/chat-header.vue'
@@ -245,8 +243,6 @@ app.component('active-courses',Active_Courses)
 app.component('complete-courses',Complete_Courses)
 app.component('wishlist-grid',Wishlist_Grid)
 app.component('today-history',Today_History)
-app.component('year-history',Year_History)
-app.component('month-history',Month_History)
 app.component('referral-table',Referral_Table)
 app.component('top-online',Top_Online)
 app.component('recent-chat',Recent_Chat)
