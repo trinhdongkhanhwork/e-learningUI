@@ -245,16 +245,15 @@
                   <div class="video-details">
                     <div class="course-fee">
                       <h2>{{ course.price }}$</h2>
-                      <p><img :src="require('@/assets/img/course-list/gif-dong2.gif')" alt="Price Icon" style="width: 100px;height: 70px;"></p>
                     </div>
                     <div class="row gx-2">
                       <div class="col-md-6">
-                        <button 
+                        <button
                           class="btn btn-wish w-100"
-                          :class="{ 'btn-wish-active': course.isFavorite }"  
-                          @click="toggleWishlist(course)" 
+                          :class="{ 'btn-wish-active': course.isFavorite }"
+                          @click="toggleWishlist(course)"
                         >
-                          <i :class="course.isFavorite ? 'feather-heart' : 'feather-heart-off'"></i> 
+                          <i :class="course.isFavorite ? 'feather-heart' : 'feather-heart-off'"></i>
                           {{ course.isFavorite ? 'Remove Wishlist' : 'Add to Wishlist' }}
                         </button>
                       </div>
@@ -514,7 +513,7 @@ export default {
         if (response && response.data && response.data.code === 9898) {
           console.log("Khóa học đã được thêm vào wishlist:", response.data);
           // Cập nhật lại wishlist sau khi thêm khóa học
-          this.fetchWishlist(); 
+          this.fetchWishlist();
         } else {
           console.error("Định dạng phản hồi không như mong đợi:", response);
         }

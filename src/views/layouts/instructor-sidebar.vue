@@ -14,10 +14,7 @@
             <div class="profile-name text-center">
               <h4>
                 <router-link to="/instructor/instructor-profile"
-                >{{user?.fullname}}</router-link
-                  >Eugene Andre</router-link
-
-                >
+                >{{user?.fullname}}</router-link>
               </h4>
               <p>{{user?.roleEntity.roleName}}</p>
               <router-link
