@@ -47,6 +47,7 @@ export function confirmLogout(store) {
     }).then((result) => {
         if (result.isConfirmed) {
             localStorage.removeItem("token");
+            localStorage.removeItem("cart");
             store.commit("clearUserInfo");
             router.push("/");
             Swal.fire("Logged out!", "You have been logged out.", "success");

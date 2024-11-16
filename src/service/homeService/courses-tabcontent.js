@@ -3,6 +3,7 @@
 import baseApi from '@/axios';
 import { useStore } from 'vuex';
 import { ref} from "vue";
+import { router } from "@/router";
 
 export default function useCourseFunctions() {
   const store = useStore();
@@ -11,7 +12,7 @@ export default function useCourseFunctions() {
   const wishlist = ref([]);
 
   async function fetchWishlist() {
-    const userId = user.value.id
+    const userId = user.value?.id
     console.log("userId", userId);
     try {
       const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);
@@ -26,19 +27,28 @@ export default function useCourseFunctions() {
     try {
       const response = await baseApi.get("/api/v1/courses");
       if (Array.isArray(response.data.content)) {
-        courses.value = response.data.content.map(course => ({
-          ...course,
-          isFavorite: wishlist.value.some(wish => wish.courseId === course.id)
-        }));
+        // Lọc chỉ những khóa học có published = true
+        courses.value = response.data.content
+          .filter(course => course.published) // Lọc theo điều kiện published
+          .map(course => ({
+            ...course,
+            isFavorite: wishlist.value.some(wish => wish.courseId === course.id),
+          }));
         updateFavoriteStatus();
       }
     } catch (error) {
       console.error("Lỗi khi lấy danh sách khóa học:", error);
     }
   }
+  
 
   function toggleFavorites(course) {
-    const userId = user.value.id;
+    const userId = user.value?.id;
+    if (!userId) {
+      console.warn("User chưa đăng nhập. Chuyển hướng đến trang login.");
+      router.push("/");
+      return;
+    }
     const wishlistItem = wishlist.value.find(wish => wish.courseId === course.id);
     if (course.isFavorite && wishlistItem?.id) {
       baseApi.delete(`/api/v1/wishlist/${wishlistItem.id}`)
