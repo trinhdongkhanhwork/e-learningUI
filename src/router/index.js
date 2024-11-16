@@ -98,21 +98,24 @@ import { useStore } from "vuex";
 import Authenticate from "@/views/pages/pages/authenticate.vue";
 import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
 import EnrollmentConfirmation from '@/views/pages/pages/enrollment-confirmation.vue';
+import axios from "axios";
 const routes = [
   {
     path: '/enrollment-confirmation',
     name: 'EnrollmentConfirmation',
+    meta: {requiresAuth: true, roles: ["STUDENT", "ADMIN", "INSTRUCTOR"] },
     component: EnrollmentConfirmation,
   },
   {
     path: '/payment-success',
     name: 'PaymentSuccess',
+    meta: {requiresAuth: true, roles: ["STUDENT", "ADMIN", "INSTRUCTOR"] },
     component: PaymentSuccess,
   },
   {
     path: "/student",
     component: Student_Index,
-    meta: { roles: ["STUDENT", "ADMIN"] },
+    meta: {requiresAuth: true, roles: ["STUDENT", "ADMIN"] },
     children: [
       { path: "", redirect: "/student/student-dashboard" },
       { path: "student-dashboard", component: Student_Dashboard },
@@ -141,7 +144,7 @@ const routes = [
   {
     path: "/admin",
     component: Admin_Index,
-    meta: { roles: ["ADMIN"] },
+    meta: {requiresAuth: true, roles: ["ADMIN"] },
     children: [
       { path: "", redirect: "/admin/admin-dashboard" },
       { path: "admin-dashboard", component: Admin_Dashboard },
@@ -151,7 +154,7 @@ const routes = [
   {
     path: "/instructor",
     component: Instructor_Index,
-    meta: { roles: ["ADMIN", "INSTRUCTOR"] },
+    meta: {requiresAuth: true, roles: ["ADMIN", "INSTRUCTOR"] },
     children: [
       { path: "", redirect: "/instructor/instructor-dashboard" },
       { path: "instructor-dashboard", component: Instructor_Dashboard },
@@ -315,24 +318,48 @@ export const router = createRouter({
   linkActiveClass: "active",
   routes,
 });
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // Scroll to the top of the page
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   const store = useStore();
   const userRole = store.state.userInfo?.roleEntity.roleName;
+  console.log("User Role:", userRole);
 
-  console.log(userRole);
+  const token = localStorage.getItem("token");
 
-  if(to.meta.roles) {
-    if (to.meta.roles.includes(userRole)) {
-      next();
+  if (token) {
+    try {
+      // Gọi API introspect để kiểm tra token
+      const response = await axios.post("http://localhost:8080/authentication/introspect", { token });
+      const isValid = response.data.result.valid;
+      console.log("Token valid:", isValid);
+
+      if (isValid) {
+        // Kiểm tra role nếu route có yêu cầu
+        if (to.meta.roles && !to.meta.roles.includes(userRole)) {
+          next({ name: "error-404" }); // Điều hướng tới trang lỗi 404
+        } else {
+          next(); // Tiếp tục điều hướng
+        }
+      } else {
+        console.error("Token is invalid");
+        localStorage.removeItem("token"); // Xóa token không hợp lệ
+        store.commit("clearUserInfo"); // Xóa thông tin người dùng
+        next({ name: "login" }); // Chuyển hướng tới trang login
+      }
+    } catch (error) {
+      console.error("Token introspection failed:", error);
+      localStorage.removeItem("token"); // Xóa token nếu lỗi xảy ra
+      store.commit("clearUserInfo"); // Xóa thông tin người dùng
+      next({ name: "login" }); // Chuyển hướng tới trang login
+    }
+  } else {
+    // Nếu không có token và route yêu cầu xác thực
+    if (to.meta.requiresAuth) {
+      next({ name: "login" }); // Chuyển hướng tới trang login
     } else {
-      next({ name: 'error-404' });
+      next(); // Cho phép truy cập nếu không yêu cầu đăng nhập
     }
   }
-  // Continue with the navigation
-  next();
-
-  console.log(to, from);
 });
