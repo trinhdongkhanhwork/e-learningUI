@@ -1,5 +1,5 @@
 <template>
-  <admin-headerborder></admin-headerborder>
+  <layouts></layouts>
   <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
   <div class="page-content">
     <div class="container-fluid">
@@ -62,6 +62,7 @@ import AdminBreadcrumb from "@/components/breadcrumb/admin-breadcrumb.vue";
 import AdminSidebar from "@/views/layouts/admin-sidebar.vue";
 import LineChart from '@/views/pages/admin/component/LineChart.vue'
 import PanelGroup from "@/views/pages/admin/component/PanelGroup.vue";
+import Layouts from "@/views/layouts/layouts-header.vue";
 
 const lineChartData = {
   newVisitis: {
@@ -83,7 +84,7 @@ const lineChartData = {
 }
 
 export default {
-  components: {PanelGroup, LineChart, AdminHeaderborder, AdminBreadcrumb, AdminSidebar},
+  components: {Layouts, PanelGroup, LineChart, AdminHeaderborder, AdminBreadcrumb, AdminSidebar},
   data() {
     return {
       title: "Dashboard",

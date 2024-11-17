@@ -25,7 +25,12 @@ export default function useCourseFunctions() {
 
   async function fetchCourses() {
     try {
-      const response = await baseApi.get("/api/v1/courses");
+      const response = await baseApi.get("/api/v1/courses",{
+        params: {
+          page: 0,
+          size: 100,
+        },
+      });
       if (Array.isArray(response.data.content)) {
         // Lọc chỉ những khóa học có published = true
         courses.value = response.data.content
@@ -40,7 +45,7 @@ export default function useCourseFunctions() {
       console.error("Lỗi khi lấy danh sách khóa học:", error);
     }
   }
-  
+
 
   function toggleFavorites(course) {
     const userId = user.value?.id;

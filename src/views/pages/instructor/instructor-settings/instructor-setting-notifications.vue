@@ -1,6 +1,6 @@
 <template>
   <layouts></layouts>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
   <div class="page-content">
     <div class="container">
       <div class="row">

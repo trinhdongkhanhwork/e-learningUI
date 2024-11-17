@@ -140,23 +140,12 @@ import latestblog from '@/views/pages/home/latest-blog.vue'
 import dashboardindex from '@/views/pages/home/dashboard-index.vue'
 import featureinstructors from '@/views/pages/home/feature-instructors.vue'
 import leadingcompanies from '@/views/pages/home/leading-companies.vue'
-import homebannertwo from '@/views/pages/home/hometwo/homebanner-two.vue'
-import coursetwo from '@/views/pages/home/hometwo/course-two.vue'
-import testimonialtwo from '@/views/pages/home/hometwo/testimonial-two.vue'
-import featuretwo from '@/views/pages/home/hometwo/feature-two.vue'
 import homethreebanner from '@/views/pages/home/homethree/home-threebanner.vue'
 import favouritethree from '@/views/pages/home/homethree/favourite-three.vue'
 import coursestabcontent from '@/views/pages/home/homethree/courses-tabcontent.vue'
 import acheivegoals from '@/views/pages/home/homethree/acheive-goals.vue'
 import instructorthree from '@/views/pages/home/homethree/instructor-three.vue'
 import footerthree from '@/views/pages/home/homethree/footer-three.vue'
-import footertwo from '@/views/pages/home/hometwo/footer-two.vue'
-import homebannerfour from '@/views/pages/home/homefour/homebanner-four.vue'
-import counterfour from '@/views/pages/home/homefour/counter-four.vue'
-import tabcontantfour from '@/views/pages/home/homefour/tabcontant-four.vue'
-import experiencecourse from '@/views/pages/home/homefour/experience-course.vue'
-import testimonialsfour from '@/views/pages/home/homefour/testimonials-four.vue'
-import footerfour from '@/views/pages/home/homefour/footer-four.vue'
 
 
 /*********Modal**********/
@@ -304,23 +293,12 @@ app.component('latest-blog', latestblog);
 app.component('dashboard-index', dashboardindex);
 app.component('leading-companies', leadingcompanies);
 app.component('feature-instructors', featureinstructors);
-app.component('homebanner-two', homebannertwo);
-app.component('course-two', coursetwo);
-app.component('testimonial-two', testimonialtwo);
-app.component('feature-two', featuretwo);
 app.component('home-threebanner', homethreebanner);
 app.component('favourite-three', favouritethree);
 app.component('coursestab-content', coursestabcontent);
 app.component('acheive-goals', acheivegoals);
 app.component('instructor-three', instructorthree);
 app.component('footer-three', footerthree);
-app.component('footer-two', footertwo);
-app.component('homebanner-four', homebannerfour);
-app.component('counter-four', counterfour);
-app.component('tabcontant-four', tabcontantfour);
-app.component('experience-course', experiencecourse);
-app.component('testimonials-four', testimonialsfour);
-app.component('footer-four', footerfour);
 
 
 

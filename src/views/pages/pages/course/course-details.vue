@@ -1,9 +1,9 @@
 <template>
   <page-header></page-header>
   <coursedetails></coursedetails>
-  <!-- <inner-page></inner-page> -->
+<!--   <inner-page></inner-page>-->
   <div>
-    <div class="inner-banner">
+    <div class="inner-banner" :style="{ backgroundImage: `url(${course.coverImage})` }">
       <div class="container">
         <div class="row">
           <div class="col-lg-8">
@@ -232,16 +232,12 @@
             <div class="video-sec vid-bg">
               <div class="card">
                 <div class="card-body">
-                  <a
-                      href="https://www.youtube.com/embed/1trvO6dqQUI"
-                      class="video-thumbnail"
-                      data-fancybox=""
-                  >
-                    <div class="play-icon">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="" src="@/assets/img/video.jpg" alt="" />
-                  </a>
+                  <img
+                      :src="`${course.coverImage}`"
+                      alt="img"
+                      class="img-fluid"
+                      style="width: 450px; height: 250px; object-fit: cover;"
+                  />
                   <div class="video-details">
                     <div class="course-fee">
                       <h2>{{ course.price }}$</h2>
@@ -461,10 +457,10 @@ export default {
       const userId = this.user?.id;
       if (!userId) {
         alert("Please log in to add a course to your cart.");
-        router.push("/");  
+        router.push("/");
         return;
       }
-      if (!this.isPayment) {  
+      if (!this.isPayment) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         // Tạo đối tượng khóa học để thêm vào giỏ hàng

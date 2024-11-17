@@ -67,10 +67,10 @@
                         ><vue3-autocounter
                           class="counter"
                           ref="counter"
-                          :startAmount="1"
-                          :delay="3"
+                          :startAmount="0"
+                          :delay="1"
                           :endAmount="totalCourseCount"
-                          :duration="5"
+                          :duration="3"
                           :autoinit="true" /></span
                       >+
                     </h4>
@@ -97,14 +97,14 @@
                         ><vue3-autocounter
                           class="counter"
                           ref="counter"
-                          :startAmount="10"
-                          :delay="3"
+                          :startAmount="0"
+                          :delay="1"
                           :endAmount="totalTutors"
-                          :duration="5"
+                          :duration="3"
                           :autoinit="true" /></span
                       >+
                     </h4>
-                    <p>Expert Tutors</p>
+                    <p>Instructors</p>
                   </div>
                 </div>
               </div>
@@ -127,10 +127,10 @@
                         ><vue3-autocounter
                           class="counter"
                           ref="counter"
-                          :startAmount="1"
-                          :delay="3"
+                          :startAmount="0"
+                          :delay="1"
                           :endAmount="totalStudents"
-                          :duration="5"
+                          :duration="3"
                           :autoinit="true" /></span
                       >+
                     </h4>
@@ -179,22 +179,21 @@
           </div>
           <div class="skils-group">
             <div class="row">
-              <div
-                v-for="(item, index) in skillsthree"
-                :key="index"
-                class="col-lg-6 col-xs-12 col-sm-6"
-                :data-aos="item.animation"
-              >
-                <div class="skils-icon-item">
-                  <div class="skils-icon">
+              <div class="col-lg-6 col-md-6 col-12">
+                <div class="skills-box text-center" data-aos="fade-up">
+                  <div class="skills-icon">
                     <img
                       class="img-fluid"
-                      :src="require(`@/assets/img/icon-three/${item.iconSrc}`)"
-                      :alt="item.altText"
+                      src=""
+                      alt=""
                     />
                   </div>
-                  <div class="skils-content">
-                    <p class="mb-0">{{ item.content }}</p>
+                  <div class="skills-content">
+                    <h4>Learn the latest skills</h4>
+                    <p>
+                      Learn the latest skills like business analytics, graphic design, Python,
+                      and more.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -209,7 +208,6 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
-import skillsthree from "@/assets/json/skillsthree.json";
 import baseApi from "@/axios";
 
 export default {
@@ -220,7 +218,6 @@ export default {
       totalTutors: 0,
       totalStudents: 0,
       Category: ["Select category", "Angular", "Node Js", "React", "Python"],
-      skillsthree: skillsthree,
     };
   },
   methods: {
@@ -239,7 +236,7 @@ export default {
     },
     calculateTotals() {
       this.totalCourseCount = this.courses.length;
-      this.totalTutors = new Set(this.courses.map(course => course.instructor.id)).size;
+      this.totalTutors = this.courses.length;
       this.totalStudents = this.courses.reduce((sum, course) => sum + course.enrolledUserCount, 0);
     },
     submitForm() {

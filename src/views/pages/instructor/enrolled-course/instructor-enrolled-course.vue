@@ -1,7 +1,7 @@
 <template>
-    <layouts-instructorborder></layouts-instructorborder>
+  <layouts></layouts>
 
-    <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
 
     <!-- Page Content -->
     <div class="page-content">

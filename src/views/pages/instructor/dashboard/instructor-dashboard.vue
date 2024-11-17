@@ -1,5 +1,5 @@
 <template>
-  <layouts-instructorborder></layouts-instructorborder>
+  <layouts></layouts>
 
   <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
 
