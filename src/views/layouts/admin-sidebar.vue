@@ -47,7 +47,19 @@
                   to="/admin/approval-course"
                   class="nav-link"
               >
-                <i class="bx bxs-badge-dollar"></i>Approval Course
+                <i class="bx bxs-badge-dollar"></i>Approve Course
+              </router-link>
+            </li>
+
+            <li
+                class="nav-item"
+                :class="{ active: isActive('/admin/approval-instructors') }"
+            >
+              <router-link
+                  to="/admin/approval-instructors"
+                  class="nav-link"
+              >
+                <i class="bx bxs-badge-dollar"></i>Approve Instructor
               </router-link>
             </li>
           </ul>

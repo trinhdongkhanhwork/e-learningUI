@@ -103,6 +103,7 @@ import axios from "axios";
 import {OAuthConfig} from "@/config/OAuthConfig";
 import { useStore } from "vuex";
 import baseApi from "@/axios";
+import toast from "@/utils/Toast";
 
 export default {
   components: {Form, Field},
@@ -134,6 +135,7 @@ export default {
           })
           .catch((error) => {
             console.error("Error during authentication:", error);
+            toast.error("Invalid username or password");
           });
     };
 
@@ -159,11 +161,9 @@ export default {
             const handleRedirect = await baseApi.get("/users/myInfo")
             console.log(handleRedirect)
             store.commit("setUserInfo", handleRedirect.data.result)
-            if (handleRedirect.data.result.roleEntity.roleName === "ROLE_ADMIN") {
-              router.push("/admin/admin-dashboard");
-            }else {
-              router.push("/home");
-            }
+            router.push("/home").then(() => {
+              toast.success(`Welcome back, ${handleRedirect.data.result.fullname}`);
+            });
 
           }else {
             console.error("Token is invalid");

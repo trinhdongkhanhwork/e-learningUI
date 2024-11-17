@@ -43,33 +43,33 @@
             v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
             class="dropdown-item"
             to="/instructor/instructor-dashboard"
-        ><i class="feather-home me-1"></i> Dashboard</router-link>
+        ><i class="feather-home me-1"></i>Instructor Dashboard</router-link>
         <router-link
             v-if="user?.roleEntity.roleName === 'STUDENT'"
             class="dropdown-item"
             to="/student/student-dashboard"
-        ><i class="feather-home me-1"></i> Dashboard</router-link>
+        ><i class="feather-home me-1"></i>Student Dashboard</router-link>
         <router-link
             v-if="user?.roleEntity.roleName === 'ADMIN'"
             class="dropdown-item"
             to="/admin/admin-dashboard"
-        ><i class="feather-home me-1"></i> Dashboard</router-link>
+        ><i class="feather-home me-1"></i>Admin Dashboard</router-link>
 
         <router-link
             v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
             class="dropdown-item"
             to="/instructor/instructor-settings"
-        ><i class="feather-star me-1"></i> Edit Profile</router-link>
+        ><i class="feather-star me-1"></i> Edit Instructor Profile</router-link>
         <router-link
             v-if="user?.roleEntity.roleName === 'STUDENT'"
             class="dropdown-item"
             to="/student/student-settings"
-        ><i class="feather-star me-1"></i> Edit Profile</router-link>
+        ><i class="feather-star me-1"></i> Edit Student Profile</router-link>
         <router-link
             v-if="user?.roleEntity.roleName === 'ADMIN'"
             class="dropdown-item"
             to="/admin/admin-settings"
-        ><i class="feather-star me-1"></i> Edit Profile</router-link>
+        ><i class="feather-star me-1"></i> Edit Admin Profile</router-link>
         <div class="dropdown-item night-mode">
           <span><i class="feather-moon me-1"></i> Night Mode </span>
           <div class="form-check form-switch check-on m-0">

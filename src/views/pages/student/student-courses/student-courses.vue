@@ -1,5 +1,5 @@
 <template>
-  <student-header></student-header>
+  <layouts></layouts>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
@@ -92,7 +92,9 @@
 </template>
 <script>
 import useCourses from '@/service/student/enrollCourse';
+import Layouts from "@/views/layouts/layouts-header.vue";
 export default {
+  components: {Layouts},
   data() {
     return {
       title: "Enrolled Courses",

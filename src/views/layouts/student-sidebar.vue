@@ -1,6 +1,6 @@
 <template>
   <!-- sidebar -->
-  <div class="col-xl-2 col-lg-2 theiaStickySidebar">
+  <div class="col-xl-3 col-lg-3 theiaStickySidebar">
     <div class="stickysidebar">
       <div class="settings-widget dash-profile">
         <div class="settings-menu">

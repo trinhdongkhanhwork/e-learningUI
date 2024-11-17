@@ -16,21 +16,6 @@
           :settings="settings"
           :breakpoints="breakpoints"
         >
-          <Slide
-            v-for="item in landingcompany"
-            :key="item.id"
-            class="lead-group-slider owl-carousel owl-theme"
-          >
-            <div class="carousel__item item">
-              <div class="lead-img">
-                <img
-                  class="img-fluid"
-                  alt=""
-                  :src="require(`@/assets/img/${item.img}`)"
-                />
-              </div>
-            </div>
-          </Slide>
         </Carousel>
       </div>
     </div>
@@ -40,7 +25,6 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
-import landingcompany from "@/assets/json/landingcompany.json";
 import { Carousel, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 export default {
@@ -50,7 +34,6 @@ export default {
   },
   data() {
     return {
-      landingcompany: landingcompany,
     };
   },
   setup() {

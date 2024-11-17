@@ -1,7 +1,7 @@
 <template>
-  <layouts-instructorborder></layouts-instructorborder>
+  <layouts></layouts>
 
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
 
   <!-- Page Content -->
   <div class="page-content">
@@ -91,7 +91,9 @@
 <script>
 import { useStore } from 'vuex';
 import { ref, onMounted } from "vue";
+import Layouts from "@/views/layouts/layouts-header.vue";
 export default {
+  components: {Layouts},
   data() {
     const store = useStore();
     const user = ref(store.state.userInfo);

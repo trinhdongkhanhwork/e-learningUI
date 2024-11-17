@@ -6794,7 +6794,7 @@ textarea:focus {
   padding: 10px;
 }
 .footer-three {
-  padding: 60px 0 60px;
+  padding: 60px 0 0px;
   background: #071136;
   background-image: url(../img/bg/bg-footer.jpg);
   background-repeat: no-repeat;

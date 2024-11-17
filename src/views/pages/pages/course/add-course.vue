@@ -81,7 +81,11 @@
                         </div>
                         <div class="form-group">
                           <label class="add-course-label">Courses Category</label>
-                          <vue-select ref="categorySelect" :options="Category" placeholder="Category 01" v-model="courseInfo.category" />
+                          <select class="form-control" v-model="courseInfo.categoryId">
+                            <option v-for="category in Category" :key="category.id" :value="category.id">
+                              {{ category.categoryName }}
+                            </option>
+                          </select>
                         </div>
                         <div class="form-group">
                           <label class="add-course-label">Courses Level</label>
@@ -349,7 +353,7 @@ export default {
 
     return {
       userInfo,
-      Category: ["Category 01", "Category 02", "Category 03", "Category 04"],
+      Category: [],
       Level: ["Level 01", "Level 02", "Level 03", "Level 04"],
       currentStep: 1,
       totalSteps: 5,
@@ -360,7 +364,7 @@ export default {
       currentLecture: null,
       courseInfo: {
         title: "",
-        category: "",
+        categoryId: null,
         level: "",
         description: "",
         coverImage: null,
@@ -645,7 +649,7 @@ export default {
       // Tạo thẻ input để chọn file
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
-      fileInput.accept = '.xlsx,.xls'; 
+      fileInput.accept = '.xlsx,.xls';
       fileInput.style.display = 'none';
 
       // Đưa thẻ input vào body và kích hoạt
@@ -1014,7 +1018,7 @@ displayQuestions() {
             toast.error("Course title is required.");
             return false;
           }
-          if (!this.courseInfo.category) {
+          if (!this.courseInfo.categoryId) {
             toast.error("Course category is required.");
             return false;
           }
@@ -1057,6 +1061,27 @@ displayQuestions() {
       }
       return true;
     },
+    initData() {
+      baseApi.get("/api/category/getCategorys")
+          .then(response => {
+            this.Category = response.data.map(
+                category => ({
+                  id: category.id,
+                  categoryName: category.categoryName
+                })
+            );
+            if (this.Category.length > 0) {
+              this.courseInfo.categoryId = this.Category[0].id;
+            }
+            console.log("Categories fetched:", this.Category);
+          })
+          .catch(error => {
+            console.error("Error occurred while fetching categories:", error);
+          });
+    },
   },
+  mounted() {
+    this.initData();
+  }
 };
 </script>

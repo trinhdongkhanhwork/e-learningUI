@@ -36,7 +36,7 @@
             <main-nav></main-nav>
           </div>
 
-          <header-page></header-page>
+          <header-page1></header-page1>
         </div>
       </nav>
       <div

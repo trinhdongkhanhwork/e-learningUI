@@ -1,5 +1,5 @@
 <template>
-  <admin-headerborder></admin-headerborder>
+  <layouts></layouts>
   <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
   <div class="page-content">
     <div class="container-fluid">
@@ -19,7 +19,7 @@
                     <th scope="col" class="text-start">Course Name</th>
                     <th scope="col" class="text-start">Instructor</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Category</th>
+                    <th scope="col" class="text-start">Category</th>
                     <th scope="col">Status</th>
                     <th scope="col" style="width: 125px;">Action</th>
                   </tr>
@@ -36,18 +36,18 @@
                       <span class="link-type" @click="showInfoInstructor(course.instructor)">{{course.instructor.fullname}}</span>
                     </td>
                     <td>
-                      <p class="text-muted">{{course.price}}</p>
+                      <span class="text-muted">{{course.price}}</span>
                     </td>
-                    <td>
-                      <p class="text-muted">{{course.category}}</p>
+                    <td class="text-start">
+                      <span class="text-muted">{{course.category.categoryName}}</span>
                     </td>
                     <td>
                       <span :class="['badge', course.published ? 'badge-soft-success' : 'badge-soft-warning', 'text-sm']">{{course.published ? 'Published' : 'Draft'}}</span>
                     </td>
                     <td>
-                      <div class="d-flex gap-3 mb-3">
-                        <button type="button" class="btn btn-success btn-sm me-auto p-2" v-if="!course.published" @click="openStatusDialog(course, true)">Approve</button>
-                        <button type="button" class="btn btn-warning btn-sm me-auto p-2" v-else @click="openStatusDialog(course, false)">Draft</button>
+                      <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-success btn-sm" v-if="!course.published" @click="openStatusDialog(course, true)">Approve</button>
+                        <button type="button" class="btn btn-warning btn-sm" v-else @click="openStatusDialog(course, false)">Draft</button>
                         <button type="button" class="btn btn-danger btn-sm" @click="handleDelete(course, index)">Reject</button>
                       </div>
                     </td>
@@ -60,23 +60,21 @@
           <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
-                <p>Page 1 of 2</p>
+                <p>Page {{ listQuery.page + 1 }} of {{ Math.ceil(total / listQuery.size) }}</p>
               </div>
               <div class="col-6">
                 <ul class="pagination">
-                  <li class="active">
-                    <a href="#">1</a>
+                  <li :class="{ disabled: listQuery.page === 0 }">
+                    <button @click="changePage(listQuery.page - 1)">Previous</button>
                   </li>
-                  <li>
-                    <a href="#">2</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="feather-arrow-right"></i></a>
+                  <li :class="{ disabled : listQuery.page === totalPages - 1 }">
+                    <button @click="changePage(listQuery.page + 1)">Next</button>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -101,9 +99,10 @@ import MessageDialog from "@/views/pages/admin/component/MessageDialog.vue";
 import {ref} from "vue";
 import toast from "@/utils/Toast";
 import { confirmDelete, confirmSave } from "@/utils/confirmDialogs";
+import Layouts from "@/views/layouts/layouts-header.vue";
 
 export default {
-  components: { AdminHeaderborder, AdminBreadcrumb, AdminSidebar, CourseDialog, InstructorDialog, MessageDialog },
+  components: {Layouts, AdminHeaderborder, AdminBreadcrumb, AdminSidebar, CourseDialog, InstructorDialog, MessageDialog },
   data() {
     return {
       title: "Dashboard",
@@ -114,9 +113,10 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      totalPages: 0,
       listQuery: {
         page: 0,
-        size: 20,
+        size: 5,
         title: undefined,
         type: undefined,
         sort: '+id'
@@ -127,14 +127,7 @@ export default {
       showReviewer: false,
       temp: ref(
           {
-            // id: undefined,
-            // importance: 1,
-            // remark: '',
-            // timestamp: new Date(),
-            // title: '',
-            // type: '',
-            // status: 'published',
-            // sections: []
+
           }
       ),
       instructor: ref(
@@ -169,28 +162,36 @@ export default {
   methods: {
     async getAllCourses() {
       this.listLoading = true;
-      await baseApi.get('/api/v1/courses',
-          {
+      await baseApi
+          .get('/api/v1/courses', {
             params: {
               page: this.listQuery.page,
-              size: this.listQuery.size
-            }
+              size: this.listQuery.size,
+            },
           })
-          .then(response => {
+          .then((response) => {
             this.list = response.data.content;
-            this.total = response.data.content.length;
-            console.log(this.list);
-            console.log(this.total);
-
-            setTimeout(() => {
-              this.listLoading = false
-            },1.5 * 1000);
+            this.total = response.data.totalElements; // Tổng số phần tử
+            this.totalPages = response.data.totalPages; // Tổng số trang
+            console.log(response);
+            this.listLoading = false;
           })
-          .catch(error => {
-            console.error('Error fetching users:', error)
-            toast.error('Error fetching users')
-          })
+          .catch((error) => {
+            console.error('Error fetching courses:', error);
+            toast.error('Error fetching courses');
+            this.listLoading = false;
+          });
     },
+    changePage(page) {
+      if (page < 0 || page >= this.totalPages) {
+        // Không cho phép chuyển trang ngoài giới hạn
+        return;
+      }
+      this.listQuery.page = page;
+      this.getAllCourses();
+      console.log('Page:', page);
+    },
+
 
     async handleModifyStatus(message) {
       this.statusLoading = true;
@@ -272,4 +273,48 @@ export default {
     cursor: pointer;
     min-width: 80px;
   }
+  .badge{
+    min-width: 80px;
+    min-height: 20px;
+    border-radius: 0%;
+  }
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  .pagination li {
+    margin: 0 5px;
+  }
+  .pagination li button {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .pagination li.active button {
+    font-weight: bold;
+    color: #495057;
+  }
+  .pagination li.disabled button {
+    color: #ccc;
+    pointer-events: none;
+    cursor: default;
+  }
+  .pagination li button {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+
+  .pagination li button:hover {
+    background-color: #f1f1f1;
+  }
+
+  .pagination li.active button {
+    background-color: #007bff;
+    color: #fff;
+  }
+
 </style>

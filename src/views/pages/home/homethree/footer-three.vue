@@ -40,10 +40,9 @@
               <!-- /Footer Widget -->
             </div>
 
-            <div class="col-lg-3 col-md-3 col-12">
+            <div class="col-lg-3 col-md-3 col-12" v-if="userRole === 'INSTRUCTOR' || userRole === 'ADMIN'">
               <!-- Footer Widget -->
               <div class="footer-widget-three footer-menu-three footer-three-right">
-                <h6 class="footer-three-title">For Instructor</h6>
                 <ul>
                   <li><router-link to="/instructor/instructor-profile">Profile</router-link></li>
                   <li><router-link to="/">Login</router-link></li>
@@ -59,7 +58,7 @@
               <!-- /Footer Widget -->
             </div>
 
-            <div class="col-lg-3 col-md-3 col-12">
+            <div class="col-lg-3 col-md-3 col-12" v-if="userRole === 'STUDENT'">
               <!-- Footer Widget -->
               <div class="footer-widget-three footer-menu-three">
                 <h6 class="footer-three-title">For Student</h6>
@@ -80,60 +79,20 @@
       </div>
     </div>
     <!-- /Footer Top -->
-
-    <!-- Footer Bottom -->
-    <div class="footer-three-bottom" data-aos="fade-up">
-      <div class="container">
-        <!-- Copyright -->
-        <div class="copyright-three">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="social-icon-three">
-                <h6>Connect Socially</h6>
-                <ul>
-                  <li>
-                    <a href="javascript:;" target="_blank" class="feather-facebook-icon">
-                      <i class="feather-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="javascript:;" target="_blank" class="feather-twitter-icon">
-                      <i class="feather-twitter"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="javascript:;" target="_blank" class="feather-linkedin-icon">
-                      <i class="feather-linkedin"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="javascript:;" target="_blank" class="feather-youtube-icon">
-                      <i class="feather-youtube"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="privacy-policy-three">
-                <ul>
-                  <li>
-                    <router-link to="/pages/term-condition">Terms & Condition</router-link>
-                  </li>
-                  <li><router-link to="/pages/privacy-policy">Privacy Policy</router-link></li>
-                  <li><router-link to="/pages/support">Contact Us</router-link></li>
-                </ul>
-              </div>
-              <div class="copyright-text-three">
-                <p class="mb-0">
-                  &copy; {{ new Date().getFullYear() }} DreamsLMS. All rights reserved.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Copyright -->
-      </div>
-    </div>
-    <!-- /Footer Bottom -->
   </footer>
   <!-- /Footer -->
 </template>
+
+<script>
+import { useStore } from "vuex";
+
+export default {
+  setup() {
+    const store = useStore();
+    const userRole = store.state.userInfo?.roleEntity.roleName;
+    return {
+      userRole
+    };
+  }
+};
+</script>
