@@ -300,10 +300,12 @@
         </div>
       </div>
     </div>
-    <div class="chats">
+    <div class="chats"
+          v-for="(message, index) in messages" :key="index"
+          :class="{'chats-right': message.idUserTo == user.id }">
       <div class="chat-avatar">
         <img
-          src="@/assets/img/user/user12.jpg"
+          :src="message.avatarUserTo"
           class="rounded-circle dreams_chat"
           alt="image"
         />
@@ -311,8 +313,7 @@
       <div class="chat-content">
         <div class="chat-profile-name">
           <h6>
-            Mark Villiams<span>8:16 PM</span
-            ><span class="check-star msg-star d-none"><i class="bx bxs-star"></i></span>
+            {{ message.nameUserTo }}<span>18:00</span><span class="check-star msg-star d-none"><i class="bx bxs-star"></i></span>
           </h6>
           <div class="chat-action-btns ms-2">
             <div class="chat-action-col">
@@ -346,8 +347,42 @@
             </div>
           </div>
         </div>
-        <div class="message-content reply-getcontent">Thank you for your support</div>
+        <div class="message-content reply-getcontent">{{ message.message }}</div>
       </div>
     </div>
   </div>
 </template>
+<script>
+import * as StompJs from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import baseApi from "@/axios";
+import { useStore } from "vuex";
+import { ref } from "vue";
+export default {
+  data(){
+    const store = useStore();
+    const user = ref(store.state.userInfo);
+    return {
+      user,
+      userFrom: "",
+      messages:[],
+    }
+  },
+  created() {
+    this.getMessage()
+    
+  },
+  methods: {
+    getMessage(){
+      baseApi.get(`/messages/${this.user.id}/${"80575eb8-8edf-4f6b-a2f6-bd09a0187b42"}`)
+      .then(message => {
+        this.messages = message.data
+        console.log("Tải dữ liệu tin nhắn thành công: ", this.messages)
+      })
+      .catch(error => {
+        console.log("Truy xuất tin nhắn thất bại: ", error)
+      })
+    }
+  }
+}
+</script>

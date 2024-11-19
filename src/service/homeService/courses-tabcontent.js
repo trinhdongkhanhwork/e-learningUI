@@ -34,6 +34,7 @@ export default function useCourseFunctions() {
       if (Array.isArray(response.data.content)) {
         // Lọc chỉ những khóa học có published = true
         courses.value = response.data.content
+        console.log("value: ", courses.value)
           .filter(course => course.published) // Lọc theo điều kiện published
           .map(course => ({
             ...course,
