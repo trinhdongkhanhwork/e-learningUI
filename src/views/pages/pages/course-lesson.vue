@@ -753,7 +753,7 @@ export default {
               console.error("Nội dung nhận được:", message.body);
             }
           });
-          this.stompClient.subscribe("/topic/idComment", (idComment) => {
+          this.stompClient.subscribe("/topic/delete", (idComment) => {
             try {
               const id = JSON.parse(idComment.body);
               console.log("Xóa bình luận có id: ", id);
