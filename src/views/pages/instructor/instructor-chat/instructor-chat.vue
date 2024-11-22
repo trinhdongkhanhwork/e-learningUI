@@ -232,7 +232,14 @@
                                           </div>
                                         </div>
                                       </div>
-                                      <div class="message-content reply-getcontent">{{ message.message }}</div>
+                                      <div class="message-content reply-getcontent" style="display: flex; justify-content: start; flex-direction: column;">
+                                        {{ message.message }}
+                                        <img :src="message.urlImage" alt="" style="width: 100%; margin-top: 10px;" v-if="message.urlImage != null">
+                                        <a :href="message.urlFile" v-if="message.urlFile != null">   
+                                          Click here to download
+                                          <img src="@/assets/img/foderDowload.jpg" width="100%">
+                                        </a>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -241,7 +248,7 @@
                           </div>
                           <!-- Chat footer -->
                           <div class="chat-footer">
-                            <form>
+                            <form v-if="courseChat != null">
                               <div class="smile-foot">
                                 <div class="chat-action-btns">
                                   <div class="chat-action-col">
@@ -250,28 +257,19 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                       <a href="javascript:void(0);" class="dropdown-item"
-                                        ><span><i class="bx bx-file"></i></span>Document</a
-                                      >
+                                        @click="() => {viewInputToggle = 'file'}">
+                                        <span><i class="bx bx-file"></i></span>File</a>
                                       <a href="javascript:void(0);" class="dropdown-item"
-                                        ><span><i class="bx bx-camera"></i></span>Camera</a
-                                      >
+                                        @click="() => {viewInputToggle = 'image'}">
+                                        <span><i class="bx bx-image"></i></span>Photo</a>
                                       <a href="javascript:void(0);" class="dropdown-item"
-                                        ><span><i class="bx bx-image"></i></span>Gallery</a
-                                      >
-                                      <a href="javascript:void(0);" class="dropdown-item"
-                                        ><span><i class="bx bx-volume-full"></i></span>Audio</a
-                                      >
-                                      <a href="javascript:void(0);" class="dropdown-item"
-                                        ><span><i class="bx bx-map"></i></span>Location</a
-                                      >
-                                      <a href="javascript:void(0);" class="dropdown-item"
-                                        ><span><i class="bx bx-user-pin"></i></span>Contact</a
-                                      >
+                                        @click="() => {viewInputToggle = 'text'}">
+                                        <span><i class="bx bx-text"></i></span>Text</a>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="smile-foot emoj-action-foot">
+                              <!-- <div class="smile-foot emoj-action-foot">
                                 <a href="javascript:void(0);" class="action-circle"
                                   ><i class="bx bx-smile"></i
                                 ></a>
@@ -280,7 +278,7 @@
                                 <a href="javascript:void(0);" class="action-circle"
                                   ><i class="bx bx-microphone-off"></i
                                 ></a>
-                              </div>
+                              </div> -->
 
                               <div class="replay-forms">
                                 <!-- <div class="chats forward-chat-msg reply-div d-none">
@@ -333,11 +331,15 @@
                                     <div class="message-content reply-content"></div>
                                   </div>
                                 </div> -->
-                                <input v-model="messageInput"
-                                  type="text"
+                                <input v-model="messageInput" v-if="viewInputToggle == 'text'" type="text"
                                   class="form-control chat_form"
-                                  placeholder="Type your message here..."
-                                />
+                                  placeholder="Type your message here..."/>
+                                <input type="file" v-if="viewInputToggle == 'image'"
+                                  class="form-control chat_form"
+                                  @change="hanleUploadImage"/>
+                                <input type="file" v-if="viewInputToggle == 'file'"
+                                  class="form-control chat_form"
+                                  @change="hanleUploadFile"/>
                               </div>
 
                               <div class="form-buttons">
@@ -396,6 +398,9 @@ export default {
       messageInput: "",
       courseChats: [],
       courseChat: null,
+      image: {},
+      file: {},
+      viewInputToggle: "text",
     };
   },
   created() {
@@ -434,25 +439,33 @@ export default {
         console.log("Tìm nhóm chat thất bại: ", error)
       })
     },
-    sendMessage(){
-      if(this.messageInput != "") {
+    async sendMessage(){
+      const urlImage = await this.upLoadImage()
+      const urlFile = await this.upLoadFile()
+      if(this.messageInput != "" || urlImage != null || urlFile != null) {
         if(this.stompClient && this.stompClient.connected){
-          this.stompClient.publish({
-            destination: "/app/messages/send",
-            body: JSON.stringify({
+          const mesage = {
               id: null,
               message: this.messageInput,
               idUserTo: null,
               idUserFrom: this.user.id,
               idCourse: this.courseChat.id,
+              urlImage: urlImage,
+              urlFile: urlFile,
               createdAt: null,
               type: "text"
-            }),
+            }
+          this.stompClient.publish({
+            destination: "/app/messages/send",
+            body: JSON.stringify(mesage),
           });
-          console.log("Đã gửi bình luận qua WebSocket");
+          console.log("Đã gửi bình luận qua WebSocket", mesage);
           this.messageInput = ""
+          this.image = null
+          this.file = null
+          this.viewInputToggle = 'text'
         }
-      } 
+      }  
     },
     deleteMessage(idMessage){
       this.stompClient.publish({
@@ -522,6 +535,55 @@ export default {
         },
       });
       this.stompClient.activate();
+    },
+    hanleUploadFile(event){
+      this.file = event.target.files[0]
+
+    },
+    hanleUploadImage(event){
+      this.image = event.target.files[0]
+    },
+    async upLoadImage(){
+      if(!this.image){
+        return null
+      }
+      const formData = new FormData();
+      formData.append("img", this.image )
+
+      try{
+        const response = await baseApi.post("/api/s3/upload/image", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log("Upload thành công: ", response.data.result.urlImg)
+        return response.data.result.urlImg
+      } catch (error) {
+        console.log("Tải hình lên không thành công: ", error)
+        return null;
+      }
+
+    },
+    async upLoadFile(){
+      if(!this.file){
+        return null
+      }
+      const formData = new FormData();
+      formData.append("img", this.file )
+
+      try{
+        const response = await baseApi.post("/api/s3/upload/image", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        })
+        console.log("Upload file thành công: ", response.data.result.urlImg)
+        return response.data.result.urlImg
+      } catch (error) {
+        console.log("Tải file lên không thành công: ", error)
+        return null;
+      }
+
     },
     scrollHanle() {},
   },
