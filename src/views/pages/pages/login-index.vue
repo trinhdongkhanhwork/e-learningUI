@@ -100,7 +100,7 @@ import {useRouter} from "vue-router";
 import {Form, Field} from "vee-validate";
 import * as Yup from "yup";
 import axios from "axios";
-import {OAuthConfig} from "@/config/OAuthConfig";
+import {OAuthConfig} from "@/router/config/OAuthConfig";
 import { useStore } from "vuex";
 import baseApi from "@/axios";
 import toast from "@/utils/Toast";

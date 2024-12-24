@@ -57,7 +57,7 @@ import RegisterBanner from '@/components/register-banner.vue'
 import LoginBanner from '@/components/loginbanner.vue'
 
 
-
+import MessageLayout from '@/views/layouts/message.vue'
 import SupportBreadcrumb from '@/components/breadcrumb/support-breadcrumb.vue'
 import TermconditionBreadcrumb from '@/components/breadcrumb/term-condition.vue'
 import JobcategoryBreadcrumb from '@/components/breadcrumb/job-category.vue'
@@ -193,10 +193,10 @@ app.component('page-content',Page_Content)
 app.component('layouts1', Footer);
 app.component('footertop', FooterTop);
 app.component('footer-bottom', FooterBottom);
-
-/*********Footer component**********/
 app.component('student-breadcrumb',Student_Breadcrumb)
 
+/*********Layout component**********/
+app.component('message-layout', MessageLayout)
 
 /*********Pages**********/
 app.component('cart-breadcrumb', CartBreadcrumb);

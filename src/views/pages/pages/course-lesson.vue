@@ -710,21 +710,15 @@ export default {
       return isNextPage
     },
     handleBeforeUnload(event){
-      // this.exitDialog = true
-      // if(this.isNextPage()){
-
-      // } else {
-      //   event.preventDefault();
-      // }
       event.preventDefault();
       event.returnValue = 'If you leave now, you will have to do it again!';
     },
     connectSocket() {
       this.stompClient = new StompJs.Client({
         webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
-        debug: (str) => {
-          console.log("Thông tin gỡ lỗi", str);
-        },
+        // debug: (str) => {
+        //   console.log("Thông tin gỡ lỗi", str);
+        // },
         onConnect: (frame) => {
           console.log("Kết nối socket thành công!", frame);
           this.stompClient.subscribe("/topic/comments", (message) => {
