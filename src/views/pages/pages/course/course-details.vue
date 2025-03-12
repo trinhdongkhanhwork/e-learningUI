@@ -495,11 +495,12 @@ export default {
     async toggleWishlist(course) {
       if (course.isFavorite) {
         await this.unWishlist(course.id);
-        course.isFavorite = false;  // Cập nhật trạng thái UI
+        course.isFavorite = false; 
       } else {
         await this.addToWishlist(course);
-        course.isFavorite = true;  // Cập nhật trạng thái UI
+        course.isFavorite = true; 
       }
+      await this.fetchWishlist();
     },
 
     // Hàm thêm khóa học vào wishlist

@@ -193,7 +193,7 @@ export default {
               userId: userId.value,
             },
           });
-
+1
           if (response.data && response.data.paymentUrl) {
             paymentUrl = response.data.paymentUrl;
             window.location.href = paymentUrl;
