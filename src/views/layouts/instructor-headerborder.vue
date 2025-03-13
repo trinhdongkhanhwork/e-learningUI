@@ -6,7 +6,7 @@
         class="navbar navbar-expand-lg header-nav scroll-sticky"
         :class="{ 'add-header-bg': isSticky }"
       >
-        <div class="container">
+        <div class="container-fluid">
           <div class="navbar-header">
             <a id="mobile_btn" href="javascript:void(0);" @click="toggleSidebar">
               <span class="bar-icon">
@@ -33,10 +33,10 @@
                 <i class="fas fa-times"></i>
               </a>
             </div>
-            <main-nav></main-nav>
+<!--            <main-nav></main-nav>-->
           </div>
 
-          <header-page1></header-page1>
+          <header-instructor></header-instructor>
         </div>
       </nav>
       <div
@@ -49,7 +49,10 @@
   <!-- /Header -->
 </template>
 <script>
+import HeaderInstructor from "@/components/header-page1.vue";
+
 export default {
+  components: {HeaderInstructor},
   data() {
     return {
       isSticky: false,

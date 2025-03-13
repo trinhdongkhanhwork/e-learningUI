@@ -1,5 +1,5 @@
 <template>
-    <layouts-instructorborder></layouts-instructorborder>
+  <layouts></layouts>
     <instructorgrid2></instructorgrid2>
     <!-- Page Wrapper -->
     <div class="page-content">
@@ -514,3 +514,5 @@
 
     <layouts1></layouts1>
 </template>
+<script setup lang="ts">
+</script>

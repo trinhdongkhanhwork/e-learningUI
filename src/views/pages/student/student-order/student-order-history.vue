@@ -1,5 +1,5 @@
 <template>
-  <student-header></student-header>
+  <layouts></layouts>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
@@ -25,10 +25,10 @@
                         class="active"
                         data-bs-toggle="tab"
                         data-bs-target="#today"
-                        >Today</a
+                        >History</a
                       >
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                       <a
                         href="javascript:void(0);"
                         data-bs-toggle="tab"
@@ -43,7 +43,7 @@
                         data-bs-target="#year"
                         >Yearly</a
                       >
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
                 <!-- /Order Tabs -->

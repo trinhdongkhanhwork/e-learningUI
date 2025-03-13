@@ -5,22 +5,20 @@
       <div class="row align-items-center">
         <div class="col-lg-6 col-md-12">
           <div class="instructor-profile d-flex align-items-center">
-            <div class="instructor-profile-pic">
-              <router-link to="/instructor/instructor-profile">
-                <img
-                  src="@/assets/img/instructor/profile-avatar.jpg"
-                  alt=""
-                  class="img-fluid"
-                />
-              </router-link>
+            <div class="profile-bg" style="margin-right: 20px">
+              <div class="profile-img">
+                <router-link to="/instructor/instructor-profile"
+                ><img :src="user?.avatarUrl" alt="Img" class="object-fit-cover"
+                /></router-link>
+              </div>
             </div>
             <div class="instructor-profile-content">
               <h4>
                 <router-link to="/instructor/instructor-profile"
-                  >Jenny Wilson <span>Beginner</span></router-link
+                >{{user?.fullname}} <span>{{user?.roleEntity.roleName}}</span></router-link
                 >
               </h4>
-              <p>Instructor</p>
+              <p>{{user?.roleEntity.roleName}}</p>
             </div>
           </div>
         </div>
@@ -80,3 +78,33 @@
   </div>
   <!-- /Breadcrumb -->
 </template>
+<script>
+import {onMounted, ref} from "vue";
+import baseApi from "@/axios";
+
+export default {
+  data() {
+    const user = ref(null);
+
+    function getUserInfo() {
+      baseApi
+          .get("/users/myInfo")
+          .then((response) => {
+            user.value = response.data.result;
+          })
+          .catch((error) => {
+            console.error("Error during introspection:", error);
+          });
+      return user;
+    }
+
+    onMounted(() => {
+      getUserInfo()
+    });
+
+    return {
+      user
+    };
+  },
+};
+</script>

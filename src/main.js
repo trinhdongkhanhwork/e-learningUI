@@ -10,6 +10,8 @@ import VueApexCharts from "vue3-apexcharts";
 import DatePicker from 'vue3-datepicker'
 import Vue3Autocounter from 'vue3-autocounter';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import { createStore } from "vuex";
+import VueLazyload from 'vue-lazyload';
 
 /*********Header component**********/
 import Header from '@/views/layouts/layouts-header.vue'
@@ -82,8 +84,6 @@ import Active_Courses from '@/views/pages/student/student-courses/active-courses
 import Complete_Courses from '@/views/pages/student/student-courses/complete-courses.vue'
 import Wishlist_Grid from '@/views/pages/student/student-wishlist/wishlist-grid.vue'
 import Today_History from '@/views/pages/student/student-order/today-history.vue'
-import Month_History from '@/views/pages/student/student-order/month-history.vue'
-import Year_History from '@/views/pages/student/student-order/year-history.vue'
 import Referral_Table from '@/views/pages/student/student-referral/referral-table.vue'
 import Chat_Footer from '@/views/pages/student/student-message/chat-footer.vue'
 import StudentChat_Header from '@/views/pages/student/student-message/chat-header.vue'
@@ -140,28 +140,18 @@ import latestblog from '@/views/pages/home/latest-blog.vue'
 import dashboardindex from '@/views/pages/home/dashboard-index.vue'
 import featureinstructors from '@/views/pages/home/feature-instructors.vue'
 import leadingcompanies from '@/views/pages/home/leading-companies.vue'
-import homebannertwo from '@/views/pages/home/hometwo/homebanner-two.vue'
-import coursetwo from '@/views/pages/home/hometwo/course-two.vue'
-import testimonialtwo from '@/views/pages/home/hometwo/testimonial-two.vue'
-import featuretwo from '@/views/pages/home/hometwo/feature-two.vue'
 import homethreebanner from '@/views/pages/home/homethree/home-threebanner.vue'
 import favouritethree from '@/views/pages/home/homethree/favourite-three.vue'
 import coursestabcontent from '@/views/pages/home/homethree/courses-tabcontent.vue'
 import acheivegoals from '@/views/pages/home/homethree/acheive-goals.vue'
 import instructorthree from '@/views/pages/home/homethree/instructor-three.vue'
 import footerthree from '@/views/pages/home/homethree/footer-three.vue'
-import footertwo from '@/views/pages/home/hometwo/footer-two.vue'
-import homebannerfour from '@/views/pages/home/homefour/homebanner-four.vue'
-import counterfour from '@/views/pages/home/homefour/counter-four.vue'
-import tabcontantfour from '@/views/pages/home/homefour/tabcontant-four.vue'
-import experiencecourse from '@/views/pages/home/homefour/experience-course.vue'
-import testimonialsfour from '@/views/pages/home/homefour/testimonials-four.vue'
-import footerfour from '@/views/pages/home/homefour/footer-four.vue'
 
 
 /*********Modal**********/
 import Support_Tickets_Modal from '@/components/support-tickets-modal.vue'
 import Instructor_Withdraw_Modal from '@/components/instructor-withdraw-modal.vue'
+import Edit_Course from '@/components/edit-course.vue'
 
 
 
@@ -171,11 +161,12 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@/assets/css/feather.css';
-import "boxicons/css/boxicons.min.css";
+
 import '@/assets/css/style.css';
 import '@/assets/css/vue.css';
+import '@/assets/css/khanh-style.css';
 
-  
+
 
 const app = createApp(App)
 
@@ -242,8 +233,6 @@ app.component('active-courses',Active_Courses)
 app.component('complete-courses',Complete_Courses)
 app.component('wishlist-grid',Wishlist_Grid)
 app.component('today-history',Today_History)
-app.component('year-history',Year_History)
-app.component('month-history',Month_History)
 app.component('referral-table',Referral_Table)
 app.component('top-online',Top_Online)
 app.component('recent-chat',Recent_Chat)
@@ -305,40 +294,54 @@ app.component('latest-blog', latestblog);
 app.component('dashboard-index', dashboardindex);
 app.component('leading-companies', leadingcompanies);
 app.component('feature-instructors', featureinstructors);
-app.component('homebanner-two', homebannertwo);
-app.component('course-two', coursetwo);
-app.component('testimonial-two', testimonialtwo);
-app.component('feature-two', featuretwo);
 app.component('home-threebanner', homethreebanner);
 app.component('favourite-three', favouritethree);
 app.component('coursestab-content', coursestabcontent);
 app.component('acheive-goals', acheivegoals);
 app.component('instructor-three', instructorthree);
 app.component('footer-three', footerthree);
-app.component('footer-two', footertwo);
-app.component('homebanner-four', homebannerfour);
-app.component('counter-four', counterfour);
-app.component('tabcontant-four', tabcontantfour);
-app.component('experience-course', experiencecourse);
-app.component('testimonials-four', testimonialsfour);
-app.component('footer-four', footerfour);
 
 
 
 /*********Modal**********/
 app.component('support-tickets-modal',Support_Tickets_Modal)
 app.component('instructor-withdraw-modal',Instructor_Withdraw_Modal)
-
-
-
 app.component('date-picker', DatePicker);
 app.component('vue-select', VueSelect)
 app.component(VueFeather.name, VueFeather)
 app.component('vue3-autocounter', Vue3Autocounter)
+app.component('edit-course', Edit_Course)
+
+
+const store = createStore({
+    state: {
+        userInfo: JSON.parse(localStorage.getItem('userInfo')) || null
+    },
+    mutations: {
+        setUserInfo(state, userInfo) {
+            state.userInfo = userInfo;
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        },
+        clearUserInfo(state) {
+            state.userInfo = null;
+            localStorage.removeItem('userInfo');
+        }
+    },
+    actions: {
+        setUserInfo({ commit }, userInfo) {
+            commit('setUserInfo', userInfo);
+        },
+        clearUserInfo({ commit }) {
+            commit('clearUserInfo');
+        }
+    }
+});
+
 app.use(VueApexCharts)
 app.use(CKEditor)
-
-.use(BootstrapVue3)
-.use(BToastPlugin)
-.use(Antd)
+app.use(VueLazyload)
+    .use(store)
+    .use(BootstrapVue3)
+    .use(BToastPlugin)
+    .use(Antd)
 app.use(router).mount('#app');

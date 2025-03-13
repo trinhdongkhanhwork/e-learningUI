@@ -1,5 +1,5 @@
 <template>
-  <student-header></student-header>
+  <layouts></layouts>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
@@ -16,7 +16,7 @@
               <div class="card dash-info flex-fill">
                 <div class="card-body">
                   <h5>Enrolled Courses</h5>
-                  <h2>12</h2>
+                  <h2>{{ totalCourses }}</h2>
                 </div>
               </div>
             </div>
@@ -50,9 +50,9 @@
                   <div class="product-img">
                     <router-link to="/course/course-details">
                       <img
-                        class="img-fluid"
-                        alt="Img"
-                        src="@/assets/img/course/course-02.jpg"
+                          class="img-fluid"
+                          alt="Img"
+                          src="@/assets/img/course/course-02.jpg"
                       />
                     </router-link>
                     <div class="price">
@@ -63,7 +63,7 @@
                     <div class="course-group d-flex">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile"
-                          ><img
+                        ><img
                             src="@/assets/img/user/user2.jpg"
                             alt="Img"
                             class="img-fluid"
@@ -74,14 +74,14 @@
                         </div>
                       </div>
                       <div
-                        class="course-share d-flex align-items-center justify-content-center"
+                          class="course-share d-flex align-items-center justify-content-center"
                       >
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                     <h3 class="title instructor-text">
                       <router-link to="/course/course-details"
-                        >Wordpress for Beginners - Master Wordpress Quickly</router-link
+                      >Wordpress for Beginners - Master Wordpress Quickly</router-link
                       >
                     </h3>
                     <div class="course-info d-flex align-items-center">
@@ -101,7 +101,7 @@
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star filled me-1"></i>
                       <span class="d-inline-block average-rating"
-                        ><span>5.0</span> (20)</span
+                      ><span>5.0</span> (20)</span
                       >
                     </div>
                   </div>
@@ -117,9 +117,9 @@
                   <div class="product-img">
                     <router-link to="/course/course-details">
                       <img
-                        class="img-fluid"
-                        alt="Img"
-                        src="@/assets/img/course/course-03.jpg"
+                          class="img-fluid"
+                          alt="Img"
+                          src="@/assets/img/course/course-03.jpg"
                       />
                     </router-link>
                     <div class="price combo">
@@ -130,7 +130,7 @@
                     <div class="course-group d-flex">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile"
-                          ><img
+                        ><img
                             src="@/assets/img/user/user5.jpg"
                             alt="Img"
                             class="img-fluid"
@@ -141,14 +141,14 @@
                         </div>
                       </div>
                       <div
-                        class="course-share d-flex align-items-center justify-content-center"
+                          class="course-share d-flex align-items-center justify-content-center"
                       >
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                     <h3 class="title instructor-text">
                       <router-link to="/course/course-details"
-                        >Sketch from A to Z (2022): Become an app designer</router-link
+                      >Sketch from A to Z (2022): Become an app designer</router-link
                       >
                     </h3>
                     <div class="course-info d-flex align-items-center">
@@ -168,7 +168,7 @@
                       <i class="fas fa-star me-1"></i>
                       <i class="fas fa-star me-1"></i>
                       <span class="d-inline-block average-rating"
-                        ><span>3.0</span> (18)</span
+                      ><span>3.0</span> (18)</span
                       >
                     </div>
                   </div>
@@ -184,9 +184,9 @@
                   <div class="product-img">
                     <router-link to="/course/course-details">
                       <img
-                        class="img-fluid"
-                        alt="Img"
-                        src="@/assets/img/course/course-04.jpg"
+                          class="img-fluid"
+                          alt="Img"
+                          src="@/assets/img/course/course-04.jpg"
                       />
                     </router-link>
                     <div class="price">
@@ -197,7 +197,7 @@
                     <div class="course-group d-flex">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile"
-                          ><img
+                        ><img
                             src="@/assets/img/user/user4.jpg"
                             alt="Img"
                             class="img-fluid"
@@ -208,14 +208,14 @@
                         </div>
                       </div>
                       <div
-                        class="course-share d-flex align-items-center justify-content-center"
+                          class="course-share d-flex align-items-center justify-content-center"
                       >
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                     <h3 class="title instructor-text">
                       <router-link to="/course/course-details"
-                        >Learn Angular Fundamentals From beginning to advance lavel</router-link
+                      >Learn Angular Fundamentals From beginning to advance lavel</router-link
                       >
                     </h3>
                     <div class="course-info d-flex align-items-center">
@@ -235,7 +235,7 @@
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star me-1"></i>
                       <span class="d-inline-block average-rating"
-                        ><span>4.0</span> (10)</span
+                      ><span>4.0</span> (10)</span
                       >
                     </div>
                   </div>
@@ -251,9 +251,9 @@
                   <div class="product-img">
                     <router-link to="/course/course-details">
                       <img
-                        class="img-fluid"
-                        alt="Img"
-                        src="@/assets/img/course/course-05.jpg"
+                          class="img-fluid"
+                          alt="Img"
+                          src="@/assets/img/course/course-05.jpg"
                       />
                     </router-link>
                     <div class="price combo">
@@ -264,7 +264,7 @@
                     <div class="course-group d-flex">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile"
-                          ><img
+                        ><img
                             src="@/assets/img/user/user3.jpg"
                             alt="Img"
                             class="img-fluid"
@@ -275,14 +275,14 @@
                         </div>
                       </div>
                       <div
-                        class="course-share d-flex align-items-center justify-content-center"
+                          class="course-share d-flex align-items-center justify-content-center"
                       >
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                     <h3 class="title instructor-text">
                       <router-link to="/course/course-details"
-                        >Build Responsive Real World Websites with Crash Course</router-link
+                      >Build Responsive Real World Websites with Crash Course</router-link
                       >
                     </h3>
                     <div class="course-info d-flex align-items-center">
@@ -302,7 +302,7 @@
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star me-1"></i>
                       <span class="d-inline-block average-rating"
-                        ><span>4.0</span> (15)</span
+                      ><span>4.0</span> (15)</span
                       >
                     </div>
                   </div>
@@ -318,9 +318,9 @@
                   <div class="product-img">
                     <router-link to="/course/course-details">
                       <img
-                        class="img-fluid"
-                        alt="Img"
-                        src="@/assets/img/course/course-07.jpg"
+                          class="img-fluid"
+                          alt="Img"
+                          src="@/assets/img/course/course-07.jpg"
                       />
                     </router-link>
                     <div class="price">
@@ -331,7 +331,7 @@
                     <div class="course-group d-flex">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile"
-                          ><img
+                        ><img
                             src="@/assets/img/user/user6.jpg"
                             alt="Img"
                             class="img-fluid"
@@ -342,14 +342,14 @@
                         </div>
                       </div>
                       <div
-                        class="course-share d-flex align-items-center justify-content-center"
+                          class="course-share d-flex align-items-center justify-content-center"
                       >
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                     <h3 class="title instructor-text">
                       <router-link to="/course/course-details"
-                        >Learn JavaScript and Express to become a Expert</router-link
+                      >Learn JavaScript and Express to become a Expert</router-link
                       >
                     </h3>
                     <div class="course-info d-flex align-items-center">
@@ -369,7 +369,7 @@
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star me-1"></i>
                       <span class="d-inline-block average-rating"
-                        ><span>4.6</span> (15)</span
+                      ><span>4.6</span> (15)</span
                       >
                     </div>
                   </div>
@@ -385,9 +385,9 @@
                   <div class="product-img">
                     <router-link to="/course/course-details">
                       <img
-                        class="img-fluid"
-                        alt="Img"
-                        src="@/assets/img/course/course-08.jpg"
+                          class="img-fluid"
+                          alt="Img"
+                          src="@/assets/img/course/course-08.jpg"
                       />
                     </router-link>
                     <div class="price combo">
@@ -398,7 +398,7 @@
                     <div class="course-group d-flex">
                       <div class="course-group-img d-flex">
                         <router-link to="/instructor/instructor-profile"
-                          ><img
+                        ><img
                             src="@/assets/img/user/user1.jpg"
                             alt="Img"
                             class="img-fluid"
@@ -409,14 +409,14 @@
                         </div>
                       </div>
                       <div
-                        class="course-share d-flex align-items-center justify-content-center"
+                          class="course-share d-flex align-items-center justify-content-center"
                       >
                         <a href="#"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                     <h3 class="title instructor-text">
                       <router-link to="/course/course-details"
-                        >Introduction to Programming- Python & Java</router-link
+                      >Introduction to Programming- Python & Java</router-link
                       >
                     </h3>
                     <div class="course-info d-flex align-items-center">
@@ -436,7 +436,7 @@
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star filled me-1"></i>
                       <span class="d-inline-block average-rating"
-                        ><span>5.0</span> (13)</span
+                      ><span>5.0</span> (13)</span
                       >
                     </div>
                   </div>
@@ -473,13 +473,21 @@
   <layouts1></layouts1>
 </template>
 <script>
+import useCourses from '@/service/student/enrollCourse';
+
 export default {
   data() {
     return {
       title: "Dashboard",
       text: "Home",
       text1: "Dashboard",
+      totalCourses: 0, // Khởi tạo biến tổng số khóa học
     };
+  },
+  async mounted() {
+    const { totalCourses, fetchCourses } = useCourses(); // Gọi useCourses ở đây
+    await fetchCourses(); // Gọi fetchCourses để lấy danh sách khóa học
+    this.totalCourses = totalCourses.value; // Cập nhật tổng số khóa học vào data
   },
 };
 </script>
