@@ -30,7 +30,7 @@
               </div>
             </div>
             <div class="course-edit-btn d-flex align-items-center justify-content-between">
-              <a href="#"><i class="bx bx-edit me-2"></i>Edit</a>
+              <a :href="`/instructor/instructor-qa?id=${course.id}`"><i class="bx bx-edit me-2"></i>Edit</a>
               <a href="#"><i class="bx bx-trash me-2"></i>Delete</a>
             </div>
           </div>
@@ -39,21 +39,38 @@
     </div>
     <!-- /Course Grid -->
   </div>
+  <!-- Modal -->
+  <edit-course :sections="sections"></edit-course>
 </template>
 
 <script>
 import { useCourses } from '@/service/instructor/myCourseForUser'; // Import hàm useCourses
-
+import baseApi from '@/axios';
 export default {
   setup() {
     const { courses, totalCourses, fetchCourses } = useCourses();
-
     fetchCourses(); // Gọi hàm fetchCourses khi component được khởi tạo
-
     return {
       courses,
       totalCourses
     };
   },
+  data() {
+    return {
+      sections: [],
+    }
+  },
+  methods: {
+    getCourse(idCourse){
+      baseApi.get(`/api/v1/courses/getCourseById/2`)
+      .then((c) => {
+        this.sections = c.data.sections;
+        console.log("Tải dữ liệu hóa học lên thành công",this.sections);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tìm khóa học: ", error);
+      })
+    },
+  }
 };
 </script>
