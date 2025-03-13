@@ -97,15 +97,10 @@ import Home from '@/views/pages/home/home-index.vue'
 import { useStore } from "vuex";
 import Authenticate from "@/views/pages/pages/authenticate.vue";
 import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
-import EnrollmentConfirmation from '@/views/pages/pages/enrollment-confirmation.vue';
-// import ApprovalInstructors from "@/views/pages/admin/admin-approval-instructors/approval-instructors.vue";
-import axios from "axios";
 const routes = [
   {
     path: '/enrollment-confirmation',
     name: 'EnrollmentConfirmation',
-    meta: {requiresAuth: true, roles: ["STUDENT", "ADMIN", "INSTRUCTOR"] },
-    component: EnrollmentConfirmation,
   },
   {
     path: '/payment-success',
