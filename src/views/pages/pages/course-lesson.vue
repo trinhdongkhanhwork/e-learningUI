@@ -202,14 +202,7 @@
               <div class="lesson-widget-group">
                 <h4 class="tittle">Introduction</h4>
                 <div class="introduct-video">
-                  <a href="https://www.youtube.com/embed/1trvO6dqQUI"
-                    class="video-thumbnail"
-                    data-fancybox="">
-                    <div class="play-icon">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="" src="@/assets/img/video-img-01.jpg" alt="" />
-                  </a>
+                  <video controls width="100%" :src="urlVideo"></video>
                 </div>
               </div>
             </div>
@@ -508,6 +501,7 @@ export default {
       questions: [],
       courses: {},
       lecture: {},
+      urlVideo:"",
       viewPostReply: {},
       viewEditComment: {},
       viewSection: {},
@@ -542,9 +536,9 @@ export default {
         .get(`/lectures/${lectureId}`)
         .then((lecture) => {
           this.lecture = lecture.data;
-          this.comments =
-          this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.listComment : [];
+          this.comments = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.listComment : [];
           this.questions = this.lecture.quiz != null ? this.lecture.quiz.questions : [];
+          this.urlVideo = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.videoUrl : "";
           console.log("Lecture tải lên: ", this.lecture);
         })
         .catch((error) => {
