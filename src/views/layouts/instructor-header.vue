@@ -6,7 +6,7 @@
         class="navbar navbar-expand-lg header-nav scroll-sticky"
         :class="{ 'add-header-bg': isSticky }"
       >
-        <div class="container">
+        <div class="container-fluid">
           <div class="navbar-header">
             <a id="mobile_btn" href="javascript:void(0);" @click="toggleSidebar">
               <span class="bar-icon">

@@ -1,13 +1,13 @@
 <template>
-    <student-header></student-header>
-    <student-breadcrumb :title="title" :text="text" :text1="text1" />
-    <!-- Course Content -->
-    <div class="page-content">
-      <div class="container">
-        <div class="row">
-          <!-- sidebar -->
-          <student-sidebar></student-sidebar>
-          <!-- /Sidebar -->
+  <layouts></layouts>
+  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <!-- Course Content -->
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+        <!-- sidebar -->
+        <student-sidebar></student-sidebar>
+        <!-- /Sidebar -->
 
         <!-- Student Profile -->
         <div class="col-xl-9 col-lg-9">
@@ -20,32 +20,32 @@
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="contact-info">
-                      <h6>First Name</h6>
-                      <p>Ronald</p>
+                      <h6>Full Name</h6>
+                      <p>{{ this.user.fullname }}</p>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="contact-info">
-                      <h6>Last Name</h6>
-                      <p>Richard</p>
+                      <h6>Role</h6>
+                      <p>{{ this.user.roleEntity.roleName }}</p>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="contact-info">
                       <h6>User Name</h6>
-                      <p>studentdemo</p>
+                      <p>{{ this.user.username }}</p>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="contact-info">
                       <h6>Email</h6>
-                      <p>studentdemo@example.com</p>
+                      <p>{{ this.user.email }}</p>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="contact-info">
                       <h6>Phone Number</h6>
-                      <p>90154-91036</p>
+                      <p>{{ this.user.phone }}</p>
                     </div>
                   </div>
                   <div class="col-sm-12">
@@ -68,17 +68,22 @@
       </div>
     </div>
     <!-- /Pricing Plan -->
-    </div>
+  </div>
 
-    <layouts1></layouts1>
+  <layouts1></layouts1>
 </template>
 <script>
+import { useStore } from 'vuex';
+import { ref, onMounted } from "vue";
 export default {
   data() {
+    const store = useStore();
+    const user = ref(store.state.userInfo);
     return {
       title: "My Profile",
       text: "Home",
       text1: "My Profile",
+      user
     };
   },
 };
