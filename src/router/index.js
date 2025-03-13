@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+import axios from 'axios';
 import Blog_Index from '@/views/pages/blog/blog-index.vue'
 import Blog_Details from '@/views/pages/blog/blog-details'
 import Blog_Grid from '@/views/pages/blog/blog-grid'
