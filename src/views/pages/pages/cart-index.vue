@@ -217,7 +217,6 @@ export default {
       try {
         let endpoint = paymentMethod.value === 'paypal' ? '/api/payments/paypal/pay' : '/api/payments/vnpay/pay';
         const response = await baseApi.post(endpoint, paymentData);
-
         if (response.data && response.data.paymentUrl) {
           window.location.href = response.data.paymentUrl;
         } else {

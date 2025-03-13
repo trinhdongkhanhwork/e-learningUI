@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-item">
                   <label>Category:</label>
-                  <span>{{ temp.value.category.categoryName }}</span>
+                  <span>{{ temp.value.category }}</span>
                 </div>
                 <div class="form-item">
                   <label>Created Date: </label>
@@ -75,7 +75,7 @@
                             <video :src="video.videoUrl" controls style="width: 85%; aspect-ratio: 16 / 9;" />
                           </div>
                         </div>
-                        <div v-if="lecture.type === 'quiz'" style="max-height: 400px; overflow-y: auto;">
+                        <div v-if="lecture.type === 'quiz'">
                           <table class="quiz-table">
                             <thead>
                             <tr>
@@ -87,9 +87,9 @@
                             <tr v-for="question in lecture.quiz.questions" :key="question.title">
                               <td>{{ question.title }}</td>
                               <td>
-          <span v-for="(option, index) in question.options" :key="index" class="tag option-tag">
-            {{ option.text }}
-          </span>
+                                <span v-for="(option, index) in question.options" :key="index" class="tag option-tag">
+                                  {{ option.text }}
+                                </span>
                               </td>
                             </tr>
                             </tbody>

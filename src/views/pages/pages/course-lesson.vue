@@ -25,8 +25,7 @@
               </h6>
               <div class="card-collapse" v-if="viewSection[section.id]">
                 <ul>
-                  <li v-for="(lecture, index) in section.lectures"
-                    :key="index"
+                  <li v-for="(lecture, index) in section.lectures" :key="index"
                     @click="viewLectureUser(lecture.id)">
                     <p class="play-intro">{{ lecture.title }}</p>
                     <div>
@@ -203,14 +202,7 @@
               <div class="lesson-widget-group">
                 <h4 class="tittle">Introduction</h4>
                 <div class="introduct-video">
-                  <a href="https://www.youtube.com/embed/1trvO6dqQUI"
-                    class="video-thumbnail"
-                    data-fancybox="">
-                    <div class="play-icon">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                    <img class="" src="@/assets/img/video-img-01.jpg" alt="" />
-                  </a>
+                  <video controls width="100%" :src="urlVideo"></video>
                 </div>
               </div>
             </div>
@@ -253,8 +245,7 @@
               <!-- List comment -->
               <ul style="max-width: 100%; display: flex; flex-direction: column-reverse">
                 <li style="margin: 10px 0; width: 100%"
-                  v-for="(commentParent, index) in comments"
-                  :key="index"
+                  v-for="(commentParent, index) in comments" :key="index"
                   v-show="commentParent.parentId == null">
                   <div class="instructor-wrap hoverComment"
                     style=" border: none; margin: 0 0 10px 0;width: 100%; display: flex; align-items: flex-start; justify-content: start; flex-wrap: nowrap;">
@@ -510,6 +501,7 @@ export default {
       questions: [],
       courses: {},
       lecture: {},
+      urlVideo:"",
       viewPostReply: {},
       viewEditComment: {},
       viewSection: {},
@@ -544,9 +536,9 @@ export default {
         .get(`/lectures/${lectureId}`)
         .then((lecture) => {
           this.lecture = lecture.data;
-          this.comments =
-          this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.listComment : [];
+          this.comments = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.listComment : [];
           this.questions = this.lecture.quiz != null ? this.lecture.quiz.questions : [];
+          this.urlVideo = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.videoUrl : "";
           console.log("Lecture tải lên: ", this.lecture);
         })
         .catch((error) => {
