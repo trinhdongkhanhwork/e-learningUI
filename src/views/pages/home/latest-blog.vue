@@ -15,6 +15,33 @@
         </div>
       </div>
       <Carousel :settings="settings" :breakpoints="breakpoints">
+        <Slide
+          v-for="item in latest"
+          :key="item.id"
+          class="owl-carousel blogs-slide owl-theme"
+        >
+          <div class="instructors-widget blog-widget">
+            <div class="instructors-img">
+              <router-link to="/blog/blog-list">
+                <img
+                  class="img-fluid"
+                  alt=""
+                  :src="require(`@/assets/img/blog/${item.img}`)"
+                />
+              </router-link>
+            </div>
+            <div class="instructors-content text-center">
+              <h5>
+                <router-link to="/blog/blog-list">{{ item.head }}</router-link>
+              </h5>
+              <p>{{ item.place }}</p>
+              <div class="student-count d-flex justify-content-center">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>{{ item.date }}</span>
+              </div>
+            </div>
+          </div>
+        </Slide>
         <template #addons>
           <Pagination />
         </template>
@@ -205,15 +232,18 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
+import latest from "@/assets/json/latest.json";
 import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 export default {
   components: {
     Carousel,
+    Slide,
     Pagination,
   },
   data() {
     return {
+      latest: latest,
     };
   },
   setup() {

@@ -1,6 +1,6 @@
 <template>
   <layouts></layouts>
-  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
+  <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -103,7 +103,7 @@
                         <td>
                           <div class="announcement-table-data">
                             <h6>Essay Assignment Due Date Approaching</h6>
-                            <p class="mb-0">
+                            <p class="mb-0"> 
                               Course: Sketch from A to Z (2024): Become an app
                               designer
                             </p>

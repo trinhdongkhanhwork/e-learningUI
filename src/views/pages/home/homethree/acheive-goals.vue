@@ -1,4 +1,95 @@
 <template>
+  <!-- Acheive you Goals  -->
+  <section class="home-three-goals">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Col -->
+        <div class="col-xl-3 col-lg-12 col-md-12" data-aos="fade-down">
+          <div class="acheive-goals-main">
+            <h2>Acheive you Goals with DreamsLMS</h2>
+          </div>
+        </div>
+        <!-- /Col -->
+
+        <!-- Col -->
+        <div class="col-xl-3 col-lg-4 col-md-4 col-12" data-aos="fade-down">
+          <div class="acheive-goals">
+            <div class="acheive-elips-one">
+              <img src="@/assets/img/icon-three/ellipse-1.svg" alt="" />
+            </div>
+            <div class="acheive-goals-content text-center course-count ms-0">
+              <h4>
+                <span class="counterUp"
+                  ><vue3-autocounter
+                    class="counter"
+                    ref="counter"
+                    :startAmount="2000"
+                    :delay="3"
+                    :endAmount="253085"
+                    :duration="5"
+                    :autoinit="true"
+                /></span>
+              </h4>
+              <p>Students Enrolled all over World</p>
+            </div>
+          </div>
+        </div>
+        <!-- /Col -->
+
+        <!-- Col -->
+        <div class="col-xl-3 col-lg-4 col-md-4 col-12" data-aos="fade-down">
+          <div class="acheive-goals">
+            <div class="acheive-elips-two">
+              <img src="@/assets/img/icon-three/ellipse-2.svg" alt="" />
+            </div>
+            <div class="acheive-goals-content text-center course-count ms-0">
+              <h4>
+                <span class="counterUp"
+                  ><vue3-autocounter
+                    class="counter"
+                    ref="counter"
+                    :startAmount="100"
+                    :delay="3"
+                    :endAmount="1205"
+                    :duration="5"
+                    :autoinit="true"
+                /></span>
+              </h4>
+              <p>Total Courses on our Platform</p>
+            </div>
+          </div>
+        </div>
+        <!-- /Col -->
+
+        <!-- Col -->
+        <div class="col-xl-3 col-lg-4 col-md-4 col-12" data-aos="fade-down">
+          <div class="acheive-goals">
+            <div class="acheive-elips-three">
+              <img src="@/assets/img/icon-three/ellipse-3.svg" alt="" />
+            </div>
+            <div class="acheive-goals-content text-center course-count ms-0">
+              <h4>
+                <span class="counterUp"
+                  ><vue3-autocounter
+                    class="counter"
+                    ref="counter"
+                    :startAmount="10"
+                    :delay="3"
+                    :endAmount="56"
+                    :duration="5"
+                    :autoinit="true"
+                /></span>
+              </h4>
+              <p>Countries of Students</p>
+            </div>
+          </div>
+        </div>
+        <!-- /Col -->
+      </div>
+    </div>
+  </section>
+  <!-- /Acheive you Goals  -->
+
   <!-- Accelerate cloud -->
   <section class="accelerate-cloud-three">
     <div class="container">
@@ -232,6 +323,80 @@
   </section>
   <!-- Accelerate cloud -->
 
+  <!-- Trending Courses  Three -->
+  <section class="home-three-trending">
+    <div class="container">
+      <div class="row">
+        <div class="home-three-head section-header-title" data-aos="fade-up">
+          <div class="row align-items-center d-flex justify-content-between">
+            <div class="col-lg-12">
+              <h2>Most Trending Courses</h2>
+            </div>
+          </div>
+        </div>
+        <Carousel
+          class="home-three-trending-course"
+          :settings="settings"
+          :breakpoints="breakpoints"
+        >
+          <Slide v-for="item in acheivegoal" :key="item.courseTitle">
+            <div class="trending-three-item">
+              <div class="trending-content-top text-start" :class="item.bgClass">
+                <div class="course-title-one">
+                  <router-link to="/course/course-details">{{ item.courseTitle }}</router-link>
+                </div>
+                <div class="trending-three-text">
+                  <router-link to="/course/course-details">
+                    <h3 class="title instructor-text">{{ item.courseName }}</h3>
+                    <p>{{ item.courseDescription }}</p>
+                  </router-link>
+                </div>
+                <div
+                  class="trending-counts-info d-flex align-items-center justify-content-between"
+                >
+                  <div class="trending-three-counts d-flex align-items-center">
+                    <img
+                      :src="require(`@/assets/img/icon-three/${item.studentIcon}`)"
+                      alt="student-icon"
+                    />
+                    <p>{{ item.studentCount }} Students</p>
+                  </div>
+                  <div class="price-three-time d-inline-flex align-items-center">
+                    <i class="fa-regular fa-clock me-2"></i>
+                    <span>{{ item.duration }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="trending-content-footer">
+                <div
+                  class="trending-price-group d-flex align-items-center justify-content-between"
+                >
+                  <div class="trending-group-view">
+                    <div class="trending-price-three">
+                      <h3>{{ item.originalPrice }}</h3>
+                      <span>{{ item.discountPrice }}</span>
+                    </div>
+                  </div>
+                  <div class="trending-footer-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        :src="require(`@/assets/img/profiles/${item.instructorImage}`)"
+                        alt="img"
+                      />
+                    </router-link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Slide>
+          <template #addons>
+            <Pagination />
+          </template>
+        </Carousel>
+      </div>
+      <!-- /Favourite Course -->
+    </div>
+  </section>
   <!-- Feature Course -->
 
   <section class="gallery-three">
@@ -239,7 +404,7 @@
       <div class="home-three-head section-header-title" data-aos="fade-up">
         <div class="row align-items-center d-flex justify-content-between">
           <div class="col-lg-6 col-sm-12">
-            <h2>Instructors</h2>
+            <h2>Courses taught by real instructor</h2>
           </div>
           <div class="col-lg-6 col-sm-12">
             <div class="see-all">
@@ -453,11 +618,18 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
+import acheivegoal from "@/assets/json/acheivegoal.json";
+import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 export default {
-
+  components: {
+    Carousel,
+    Slide,
+    Pagination,
+  },
   data() {
     return {
+      acheivegoal: acheivegoal,
       settings: {
         itemsToShow: 1,
         snapAlign: "center",

@@ -6,7 +6,7 @@
           <div class="profile-bg">
             <div class="profile-img">
               <router-link to="/instructor/instructor-profile"
-                ><img :src="user?.avatarUrl" alt="Img" class="object-fit-cover"
+                ><img src="@/assets/img/user/user-17.jpg" alt="Img"
               /></router-link>
             </div>
           </div>
@@ -14,9 +14,10 @@
             <div class="profile-name text-center">
               <h4>
                 <router-link to="/instructor/instructor-profile"
-                >{{user?.fullname}}</router-link>
+                  >Eugene Andre</router-link
+                >
               </h4>
-              <p>{{user?.roleEntity.roleName}}</p>
+              <p>Instructor</p>
               <router-link
                 to="/course/add-course"
                 class="add-course btn-primary"
@@ -83,10 +84,26 @@
             </li>
             <li
               class="nav-item"
+              :class="{ active: isActive('/instructor/instructor-quiz') }"
+            >
+              <router-link to="/instructor/instructor-quiz" class="nav-link">
+                <i class="bx bxs-shapes"></i>My Quiz Attempts
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
               :class="{ active: isActive('/instructor/instructor-orders') }"
             >
               <router-link to="/instructor/instructor-orders" class="nav-link">
                 <i class="bx bxs-cart"></i>Order History
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
+              :class="{ active: isActive('/instructor/instructor-qa') }"
+            >
+              <router-link to="/instructor/instructor-qa" class="nav-link">
+                <i class="bx bxs-bookmark-alt"></i>Question & Answer
               </router-link>
             </li>
             <li
@@ -108,6 +125,27 @@
                 <i class="bx bxs-chat"></i>Messages
               </router-link>
             </li>
+            <li
+              class="nav-item"
+              :class="{
+                active: isActive('/instructor/instructor-notifications'),
+              }"
+            >
+              <router-link
+                to="/instructor/instructor-notifications"
+                class="nav-link"
+              >
+                <i class="bx bxs-bell"></i>Notifications
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
+              :class="{ active: isActive('/instructor/instructor-tickets') }"
+            >
+              <router-link to="/instructor/instructor-tickets" class="nav-link">
+                <i class="bx bxs-coupon"></i>Support Tickets
+              </router-link>
+            </li>
           </ul>
           <h3>Instructor</h3>
           <ul>
@@ -121,13 +159,50 @@
             </li>
             <li
               class="nav-item"
+              :class="{
+                active: isActive('/instructor/instructor-announcements'),
+              }"
+            >
+              <router-link
+                to="/instructor/instructor-announcements"
+                class="nav-link"
+              >
+                <i class="bx bxs-volume-full"></i>Announcements
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
               :class="{ active: isActive('/instructor/instructor-withdraw') }"
             >
               <router-link
                 to="/instructor/instructor-withdraw"
                 class="nav-link"
               >
-                <i class="bx bxs-wallet"></i>Withdraws
+                <i class="bx bxs-wallet"></i>Withdrawls
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
+              :class="{
+                active: isActive('/instructor/instructor-quiz-attempts'),
+              }"
+            >
+              <router-link
+                to="/instructor/instructor-quiz-attempts"
+                class="nav-link"
+              >
+                <i class="bx bxs-shapes"></i>Quiz Attempts
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
+              :class="{ active: isActive('/instructor/instructor-assignment') }"
+            >
+              <router-link
+                to="/instructor/instructor-assignment"
+                class="nav-link"
+              >
+                <i class="bx bxs-file"></i>Assignments
               </router-link>
             </li>
             <li
@@ -167,32 +242,11 @@
   </div>
 </template>
 <script>
-import { ref, onMounted } from "vue";
-import baseApi from "@/axios";
 export default {
   data() {
-    const user = ref(null);
-
-    function getUserInfo() {
-      baseApi
-          .get("/users/myInfo")
-          .then((response) => {
-            user.value = response.data.result;
-          })
-          .catch((error) => {
-            console.error("Error during introspection:", error);
-          });
-      return user;
-    }
-
-    onMounted(() => {
-      getUserInfo()
-    });
-
     return {
       activeClass: "active",
       Available: ["I am Available Now", "Not Available"],
-      user
     };
   },
   methods: {

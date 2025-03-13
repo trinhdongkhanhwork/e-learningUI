@@ -6,44 +6,46 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-9">
-          <course-filter @filter-changed="handleFilterChange"></course-filter>
+          <course-filter></course-filter>
           <div class="row">
-            <div class="col-lg-12 col-md-12 d-flex" v-for="course in filteredCourses" :key="course.id">
+            <div class="col-lg-12 col-md-12 d-flex">
               <div class="course-box course-design list-course d-flex">
                 <div class="product">
                   <div class="product-img">
-                    <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-                      <img v-if="course.coverImage" :src="`${course.coverImage}`" alt="Img" class="img-fluid" />
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-10.jpg"
+                      />
                     </router-link>
                     <div class="price">
-                      <h3>${{course.price}}</h3>
+                      <h3>$300 <span>$99.00</span></h3>
                     </div>
                   </div>
                   <div class="product-content">
                     <div class="head-course-title">
                       <h3 class="title">
-                        <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">{{ course.title }}</router-link>
+                        <router-link to="/course/course-details"
+                          >Information About UI/UX Design Degree</router-link
+                        >
                       </h3>
-                      <div class="all-btn all-category d-flex align-items-center">
-                      <router-link 
-                        v-if="!course.isPayment" 
-                        to="#" 
-                        class="btn btn-primary" 
-                        @click.prevent="handleEnroll(course)">
-                        BUY NOW
-                      </router-link>
-                      <router-link 
-                        v-else 
-                        :to="{ path: '/course/course-details', query: { id: course.id } }" 
-                        class="btn btn-primary">
-                        VIEW DETAIL
-                      </router-link>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
                     </div>
-                    </div>
-                    <div class="course-info border-bottom-0 pb-0 d-flex align-items-center">
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
                       <div class="rating-img d-flex align-items-center">
                         <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
-                        <p>{{ course.level }}</p>
+                        <p>12+ Lesson</p>
                       </div>
                       <div class="course-view d-flex align-items-center">
                         <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
@@ -56,24 +58,687 @@
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star filled"></i>
                       <i class="fas fa-star"></i>
-                      <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
                     </div>
                     <div class="course-group d-flex mb-0">
                       <div class="course-group-img d-flex">
-                        <router-link to="/instructor/instructor-profile">
-                          <img :src="`${course.instructor.avatarUrl}`" alt="Img" class="img-fluid" />
-                        </router-link>
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user1.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
                         <div class="course-name">
                           <h4>
-                            <router-link to="/instructor/instructor-profile">{{course.instructor.fullname}}</router-link>
+                            <router-link to="/instructor/instructor-profile"
+                              >Rolands R</router-link
+                            >
                           </h4>
-                          <p>{{ course.instructor.roleEntity.roleName}}</p>
+                          <p>Instructor</p>
                         </div>
                       </div>
-                      <div class="course-share d-flex align-items-center justify-content-center">
-                        <a @click.prevent="toggleFavorites(course)">
-                          <i :class="course.isFavorite ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'"></i>
-                        </a>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-11.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >Sketch from A to Z (2023): Become an app
+                          designer</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user2.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >Jesse Stevens</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-12.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >Learn Angular Fundamentals From beginning to advance
+                          lavel</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user3.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >Jesse Stevens</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-13.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >Build Responsive Real World Websites with HTML5 and
+                          CSS3</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user3.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >John Smith</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-14.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >C# Developers Double Your Coding Speed with Visual
+                          Studio</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user4.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >Stella Johnson</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-15.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >Learn JavaScript and Express to become a professional
+                          JavaScript</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user5.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >John Michael</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-16.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >Learn and Understand AngularJS to become a
+                          professional developer</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user6.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >Nicole Brown</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-13.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >Responsive Web Design Essentials HTML5 CSS3 and
+                          Bootstrap</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user4.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >Monroe Parker</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 d-flex">
+              <div class="course-box course-design list-course d-flex">
+                <div class="product">
+                  <div class="product-img">
+                    <router-link to="/course/course-details">
+                      <img
+                        class="img-fluid"
+                        alt="Img"
+                        src="@/assets/img/course/course-17.jpg"
+                      />
+                    </router-link>
+                    <div class="price">
+                      <h3>$300 <span>$99.00</span></h3>
+                    </div>
+                  </div>
+                  <div class="product-content">
+                    <div class="head-course-title">
+                      <h3 class="title">
+                        <router-link to="/course/course-details"
+                          >The Complete App Design Course - UX, UI and Design
+                          Thinking</router-link
+                        >
+                      </h3>
+                      <div
+                        class="all-btn all-category d-flex align-items-center"
+                      >
+                        <router-link
+                          to="/pages/checkout"
+                          class="btn btn-primary"
+                          >BUY NOW</router-link
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="course-info border-bottom-0 pb-0 d-flex align-items-center"
+                    >
+                      <div class="rating-img d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
+                        <p>12+ Lesson</p>
+                      </div>
+                      <div class="course-view d-flex align-items-center">
+                        <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
+                        <p>9hr 30min</p>
+                      </div>
+                    </div>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        ><span>4.0</span> (15)</span
+                      >
+                    </div>
+                    <div class="course-group d-flex mb-0">
+                      <div class="course-group-img d-flex">
+                        <router-link to="/instructor/instructor-profile"
+                          ><img
+                            src="@/assets/img/user/user6.jpg"
+                            alt="Img"
+                            class="img-fluid"
+                        /></router-link>
+                        <div class="course-name">
+                          <h4>
+                            <router-link to="/instructor/instructor-profile"
+                              >Lavern M.</router-link
+                            >
+                          </h4>
+                          <p>Instructor</p>
+                        </div>
+                      </div>
+                      <div
+                        class="course-share d-flex align-items-center justify-content-center"
+                      >
+                        <a href="#rate"><i class="fa-regular fa-heart"></i></a>
                       </div>
                     </div>
                   </div>
@@ -83,7 +748,7 @@
           </div>
           <pagination></pagination>
         </div>
-        <course-sidebar :onFilterChange="handleFilterChange"></course-sidebar>
+        <course-sidebar></course-sidebar>
       </div>
     </div>
   </section>
@@ -91,251 +756,3 @@
 
   <layouts1></layouts1>
 </template>
-
-<script>
-import baseApi from '@/axios';
-import { useStore } from 'vuex';
-import { ref, onMounted } from "vue";
-import {router} from "@/router";
-
-export default {
-  data() {
-    const store = useStore();
-    const user = ref(store.state.userInfo);
-    console.log(user);
-    return {
-      courses: [],
-      filteredCourses: [],
-      wishlist: [],
-      user,
-      selectedCategories: [],
-      selectedInstructors: [],
-      selectedPriceRange: { min: 0, max: 0 },
-    };
-  },
-  async mounted() {
-    this.fetchWishlist(); // Lấy dữ liệu wishlist trước khi lấy danh sách khóa học
-    this.fetchCourses();
-  },
-  methods: {
-    async fetchWishlist() {
-
-      const userId = this.user?.id;
-      console.log("Fetching wishlist for user ID:", userId);
-      try {
-        const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);
-        this.wishlist = response.data || [];
-        console.log("Wishlist data:", this.wishlist); // Kiểm tra dữ liệu
-        this.updateFavoriteStatus();
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
-    },
-    fetchCourses() {
-  baseApi
-    .get("/api/v1/courses")
-    .then((response) => {
-      if (Array.isArray(response.data.content)) {
-        // Lọc chỉ những khóa học có published = true
-        this.courses = response.data.content
-          .filter(course => course.published) // Lọc theo điều kiện published
-          .map(course => ({
-            ...course,
-            isFavorite: this.wishlist.some(wish => wish.id === course.id),
-            isPayment: false,
-          }));
-
-        // Kiểm tra trạng thái thanh toán cho từng khóa học
-        this.courses.forEach(course => {
-          this.isPayments(course.id);
-        });
-
-        this.updateFavoriteStatus();
-        this.applyFilters();
-      } else {
-        console.error("Dữ liệu không phải là mảng:", response.data);
-      }
-    })
-    .catch((error) => {
-      console.error("Lỗi khi lấy danh sách khóa học:", error);
-    });
-},
-
-    isPayments(courseId) {
-      const userId = this.user?.id;
-      baseApi.get(`/api/payment/isPayment/${courseId}/${userId}`)
-        .then(value => {
-          const course = this.courses.find(course => course.id === courseId);  // Tìm khóa học tương ứng
-          if (course) {
-            course.isPayment = value.data;  // Cập nhật giá trị isPayment cho khóa học
-            console.log("Payment status for course ID " + courseId + ": " + course.isPayment);
-          }
-        });
-    },
-    handleEnroll(course) {
-      const userId = this.user?.id;
-      if (!userId) {
-        alert("Please log in to add a course to your cart.");
-        router.push("/");  
-        return;
-      }
-      if (!this.isPayment) {  // Kiểm tra nếu chưa thanh toán
-        // Lấy danh sách giỏ hàng từ localStorage hoặc tạo mảng mới nếu chưa có
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        // Tạo đối tượng khóa học để thêm vào giỏ hàng
-        const courseToAdd = {
-          id: course.id,
-          courseId: course.id, // Thêm courseId ở đây
-          title: course.title,
-          price: course.price,
-          coverImage: course.coverImage,
-          description: course.description,
-          level: course.level,
-          enrolledUserCount: course.enrolledUserCount,
-          category: course.category,
-          instructor: course.instructor,
-        };
-
-        // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
-        if (!cart.some(item => item.id === courseToAdd.id)) {
-          cart.push(courseToAdd);  // Thêm khóa học vào giỏ hàng
-          localStorage.setItem("cart", JSON.stringify(cart));  // Cập nhật localStorage
-          alert("Added to cart successfully!");
-        } else {
-          alert("Course is already in the cart!");
-        }
-      }
-
-      // Điều hướng tùy theo giá trị của isPayment
-      const destination = this.isPayment ? "/course/course-lesson/" : "/pages/cart";
-      this.$router.push({ path: destination, query: { id: course.id } });
-    },
-    
-    handleFilterChange({ categories, instructors, priceRange,filters}) {
-      this.selectedCategories = categories || [];
-      this.selectedInstructors = instructors || [];
-      this.selectedPriceRange = priceRange || { min: 0, max: 0 };
-      // Kiểm tra sự tồn tại của filters trước khi sử dụng
-      if (filters) {
-        this.searchQuery = filters.searchQuery || '';
-        this.selectedCategory = filters.selectedCategory || null;
-      } else {
-        // Nếu filters không tồn tại, gán giá trị mặc định
-        this.searchQuery = '';
-        this.selectedCategory = null;
-      }
-      this.applyFilters();
-    },
-
-    applyFilters() {
-      const selectedCategories = this.selectedCategories.map(category => category.toString());
-      const selectedInstructors = this.selectedInstructors.map(instructor => instructor.toString());
-
-      this.filteredCourses = this.courses.filter(course => {
-        // Lọc theo danh mục
-        const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(course.categoryId.toString());
-        
-        // Lọc theo giảng viên
-        const instructorMatch = selectedInstructors.length === 0 || selectedInstructors.includes(course.instructor.fullname);
-        
-        // Lọc theo khoảng giá
-        const priceMatch =
-          (this.selectedPriceRange.min === 0 && this.selectedPriceRange.max === 0) ||
-          (course.price >= this.selectedPriceRange.min && course.price <= this.selectedPriceRange.max);
-        
-        // Lọc theo từ khóa tìm kiếm
-        const searchQueryMatch = !this.searchQuery || (course.title && course.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
-
-        return categoryMatch && instructorMatch && priceMatch && searchQueryMatch;
-      });
-
-      console.log("Filtered Courses:", this.filteredCourses);
-    },
-
-    toggleFavorites(course) {
-      const userId = this.user?.id;
-      if (!userId) {
-        console.error("User ID is not available");
-        return;
-      }
-
-      // Tìm `wishlistItem` từ `wishlist` dựa vào `course.id`
-      const wishlistItem = this.wishlist.find(wish => wish.courseId === course.id);
-
-      if (course.isFavorite) {
-        // Kiểm tra `wishlistItem` tồn tại trước khi xóa
-        if (wishlistItem && wishlistItem.id) {
-          baseApi
-              .delete(`/api/v1/wishlist/${wishlistItem.id}`)
-              .then(() => {
-                // Cập nhật trạng thái yêu thích và xóa khỏi `wishlist`
-                course.isFavorite = false;
-                this.wishlist = this.wishlist.filter(wish => wish.courseId !== course.id);
-                console.log(`Đã xóa khóa học ${course.id} khỏi wishlist`);
-              })
-              .catch((error) => {
-                console.error("Lỗi khi xóa khỏi danh sách yêu thích:", error);
-              });
-        } else {
-          console.error("Wishlist item không tồn tại hoặc không có ID.");
-        }
-      } else {
-        // Thêm vào wishlist nếu chưa có
-        const wishlistData = { userId, courseId: course.id };
-        baseApi
-            .post("/api/v1/wishlist/addWishlist", wishlistData)
-            .then((response) => {
-              if (response && response.data) {
-                course.isFavorite = true;
-                this.wishlist.push(response.data); // Thêm vào `wishlist` mới
-                console.log("Đã thêm vào danh sách yêu thích:", response.data);
-              } else {
-                console.error("Định dạng phản hồi không như mong đợi:", response);
-              }
-            })
-            .catch((error) => {
-              console.error("Lỗi khi thêm vào danh sách yêu thích:", error);
-            });
-      }
-    },
-    async addToWishlist(course) {
-      const userId = this.user?.id;
-      console.log(userId);
-      const wishlistData = {
-        userId: userId,
-        courseId: course.id
-      };
-
-      try {
-        const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
-        if (response && response.data && response.data.code === 9898) {
-          console.log("Khóa học đã được thêm vào wishlist:", response.data);
-        } else {
-          console.error("Định dạng phản hồi không như mong đợi:", response);
-        }
-      } catch (error) {
-        console.error("Lỗi khi thêm vào wishlist:", error);
-      }
-    },
-
-    updateFavoriteStatus() {
-      // Duyệt qua từng khóa học và đánh dấu `isFavorite` nếu có trong `wishlist`
-      this.courses.forEach(course => {
-        course.isFavorite = this.wishlist.some(wish => wish.courseId === course.id);
-      });
-    },
-
-    async unWishlist(courseId) {
-      try {
-        await baseApi.delete(`/api/v1/wishlist/${courseId}`);
-        console.log("Khóa học đã bị xóa khỏi wishlist");
-        this.wishlist = this.wishlist.filter(course => course.id !== courseId); // Cập nhật danh sách wishlist
-      } catch (error) {
-        console.error("Error removing from wishlist:", error);
-      }
-    },
-  },
-};
-
-</script>

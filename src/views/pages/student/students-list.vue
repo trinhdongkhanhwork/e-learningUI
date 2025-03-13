@@ -1,5 +1,5 @@
 <template>
-  <layouts></layouts>
+  <student-header></student-header>
 
   <div class="breadcrumb-bar">
     <div class="container">
@@ -749,5 +749,3 @@
   <!-- /Page Wrapper -->
   <layouts1></layouts1>
 </template>
-<script setup lang="ts">
-</script>

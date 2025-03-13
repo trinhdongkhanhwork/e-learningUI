@@ -1,0 +1,51 @@
+[
+    {
+        "id": 1,
+        "img": "user7.jpg",
+        "name": "David Lee",
+        "Developer": "Developer",
+        "Class": "fa-solid fa-user-group",
+        "Students": "50 Students"
+    },
+    {
+        "id": 2,
+        "img": "user8.jpg",
+        "name": "Daziy Millar",
+        "Developer": "PHP Expert",
+        "Class": "fa-solid fa-user-group yellow",
+        "Students": "50 Students"
+     
+    },
+    {
+        "id": 3,
+        "img": "user9.jpg",
+        "name": "Patricia Mendoza",
+        "Developer": "Web Developer",
+        "Class": "fa-solid fa-user-group violet",
+        "Students": "50 Students"
+    },
+    {
+        "id": 4,
+        "img": "user10.jpg",
+        "name": "Skyler Whites",
+        "Developer": "UI Designer",
+        "Class": "fa-solid fa-user-group orange",
+        "Students": "50 Students"
+    },
+    {
+        "id": 5,
+        "img": "user7.jpg",
+        "name": "Patricia Mendoza",
+        "Developer": "Java Developer",
+        "Class": "fa-solid fa-user-group",
+        "Students": "40 Students"
+    },
+    {
+        "id": 6,
+        "img": "user8.jpg",
+        "name": "David Lee",
+        "Developer": "Developer",
+        "Class": "fa-solid fa-user-group",
+        "Students": "50 Students"
+    }
+]

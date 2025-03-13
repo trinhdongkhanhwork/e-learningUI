@@ -1,5 +1,5 @@
 <template>
-  <layouts></layouts>
+ <student-header></student-header>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">

@@ -1,98 +1,56 @@
 <template>
-    <div>
-        <div class="header-menu">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="navbar navbar-expand-lg">
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul
-                                    v-if="userRole === 'INSTRUCTOR'"
-                                    class="navbar-nav ml-auto gap-3">
-                                    <li class="nav-item">
-                                        <router-link to="/" class="nav-link">Home</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                        <router-link to="/about" class="nav-link">About</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                        <router-link to="/services" class="nav-link">Services</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                        <router-link to="/contact" class="nav-link">Contact</router-link>
-                                    </li>
-                                </ul>
-
-                                <ul
-                                    v-else-if="userRole === 'STUDENT'"
-                                    class="navbar-nav ml-auto gap-3">
-                                    <li class="nav-item">
-                                        <router-link to="/" class="nav-link">Home</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                        <router-link to="/course/course-list" class="nav-link">Courses</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                        <router-link to="/instructor/instructor-list" class="nav-link">Instructors</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                        <router-link to="/contact" class="nav-link">Teach on CFD-LMS</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                      <router-link to="/student/student-dashboard" class="nav-link">Dashboard</router-link>
-                                    </li>
-                                </ul>
-
-                                <ul
-                                    v-else-if="userRole === 'ADMIN'"
-                                    class="navbar-nav ml-auto gap-3">
-                                  <li class="nav-item">
-                                    <router-link to="/" class="nav-link">Home</router-link>
-                                  </li>
-                                  <li class="nav-item">
-                                    <router-link to="/admin/approval-course" class="nav-link">Approval Courses</router-link>
-                                  </li>
-                                  <li class="nav-item">
-                                    <router-link to="/admin/approval-instructors" class="nav-link">Approval Instructors</router-link>
-                                  </li>
-                                  <li class="nav-item">
-                                    <router-link to="/admin" class="nav-link">Dashboard</router-link>
-                                  </li>
-                                </ul>
-
-                                <ul
-                                    v-else
-                                    class="navbar-nav ml-auto gap-3">
-                                  <li class="nav-item">
-                                    <router-link to="/" class="nav-link">Home</router-link>
-                                  </li>
-                                  <li class="nav-item">
-                                    <router-link to="/course/course-list" class="nav-link">Courses</router-link>
-                                  </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <template v-for="item in HeaderData" :key="item.tittle">
+        <li v-if="item.separateRoute" :class="{ active: route_array[1] === item.active_link }">
+            <router-link :to="{ 'path': item.route }">{{ item.tittle }}</router-link>
+        </li>
+        <li v-else class="has-submenu"
+            :class="{ active: route_array[1] === (item.active_link ? item.active_link : '') }">
+            <a href="javascript:void(0);" @click="toggleTab(item)">
+                {{ item.tittle }} <i class="fas fa-chevron-down"></i>
+            </a>
+            <ul class="submenu" :class="{ 'd-block': item.showAsTab }">
+                <template v-for="menuItem in item.menu" :key="menuItem.menuValue">
+                    <li v-if="!menuItem.hasSubRoute"
+                        :class="{ active: currentPath === (menuItem.active_link ? menuItem.active_link : '') }">
+                        <router-link :to="{ 'path': menuItem.route }">{{ menuItem.menuValue }}</router-link>
+                    </li>
+                    <li v-else class="has-submenu"
+                        :class="{ active: route_array[2] === (menuItem.active_link ? menuItem.active_link : '') }">
+                        <a href="javascript:void(0);">{{ menuItem.menuValue }}</a>
+                        <ul class="submenu" :class="{ 'd-block': menuItem.showSubRoute }">
+                            <template v-for="subMenu in menuItem.subMenus" :key="subMenu.menuValue">
+                                <li
+                                    :class="{ 'active': currentPath === (subMenu.active_link ? subMenu.active_link : '') }">
+                                    <router-link :to="{ 'path': subMenu.route }">{{ subMenu.menuValue }}</router-link>
+                                </li>
+                            </template>
+                        </ul>
+                    </li>
+                </template>
+            </ul>
+        </li>
+    </template>
 </template>
 
 <script>
-import { useStore } from "vuex";
-
+import HeaderData from '@/assets/json/header.json'
 export default {
     data() {
-        const store = useStore();
-        const userRole = store.state.userInfo?.roleEntity.roleName;
         return {
-            userRole,
+            HeaderData: HeaderData,
+            route_array: [],
         }
+    },
+    methods: {
+        toggleTab(item) {
+            item.showAsTab = !item.showAsTab;
+        }
+    },
+    computed: {
+        currentPath() {
+            this.route_array = this.$route.path.split("/");
+            return this.$route.path;
+        },
     },
 }
 </script>

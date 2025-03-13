@@ -13,6 +13,33 @@
       </div>
     </div>
     <Carousel :settings="settings" :breakpoints="breakpoints">
+      <Slide
+        v-for="item in feature"
+        :key="item.id"
+        class="owl-carousel instructors-course owl-theme"
+      >
+        <div class="instructors-widget">
+          <div class="instructors-img">
+            <router-link to="/instructor/instructor-list">
+              <img
+                class="img-fluid"
+                alt=""
+                :src="require(`@/assets/img/user/${item.img}`)"
+              />
+            </router-link>
+          </div>
+          <div class="instructors-content text-center">
+            <h5>
+              <router-link to="/instructor/instructor-profile">{{ item.name }}</router-link>
+            </h5>
+            <p>{{ item.Developer }}</p>
+            <div class="student-count d-flex justify-content-center">
+              <i :class="item.Class"></i>
+              <span>{{ item.Students }}</span>
+            </div>
+          </div>
+        </div>
+      </Slide>
       <template #addons>
         <Pagination />
       </template>
@@ -23,16 +50,19 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
+import feature from "@/assets/json/feature.json";
 
 import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 export default {
   components: {
     Carousel,
+    Slide,
     Pagination,
   },
   data() {
     return {
+      feature: feature,
     };
   },
   setup() {

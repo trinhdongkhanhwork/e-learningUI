@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import axios from 'axios';
+
 import Blog_Index from '@/views/pages/blog/blog-index.vue'
 import Blog_Details from '@/views/pages/blog/blog-details'
 import Blog_Grid from '@/views/pages/blog/blog-grid'
@@ -11,6 +11,7 @@ import courselesson from '@/views/pages/pages/course-lesson.vue'
 import error404 from '@/views/pages/pages/error/error-404.vue'
 import error500 from '@/views/pages/pages/error/error-500.vue'
 import forgotpassword from '@/views/pages/pages/forgot-password.vue'
+import Index from '@/views/pages/home/dashboard-index.vue'
 import login from '@/views/pages/pages/login-index.vue'
 import newpassword from '@/views/pages/pages/new-password.vue'
 import Pages_Index from '@/views/pages/pages/pages-index.vue'
@@ -33,7 +34,9 @@ import Term_Condition from '@/views/pages/pages/term-condition.vue'
 import underconstruction from '@/views/pages/pages/error/under-construction.vue'
 import verificationcode from '@/views/pages/pages/verification-code.vue'
 
+import Hometwo from '@/views/pages/home/hometwo/hometwo.vue'
 import Homethree from '@/views/pages/home/homethree/homethree.vue'
+import Homefour from '@/views/pages/home/homefour/home-four.vue'
 import Student_Dashboard from '@/views/pages/student/student-dashboard.vue';
 import Student_Index from '@/views/pages/student/student-index.vue'
 import Student_Profile from '@/views/pages/student/student-profile.vue'
@@ -90,28 +93,13 @@ import Registerstepone from '@/views/pages/pages/register-step-one.vue'
 import Registerstepthree from '@/views/pages/pages/register-step-three.vue'
 import Registersteptwo from '@/views/pages/pages/register-step-two.vue'
 import Register from '@/views/pages/pages/register-index.vue'
-import Admin_Index from '@/views/pages/admin/admin-index.vue'
-import Admin_Dashboard from '@/views/pages/admin/dashboard/admin-dashboard.vue'
-import Admin_Approval_Course from '@/views/pages/admin/admin-approval-course/approval-course.vue'
 import Home from '@/views/pages/home/home-index.vue'
-import { useStore } from "vuex";
-import Authenticate from "@/views/pages/pages/authenticate.vue";
-import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
+
+
 const routes = [
-  {
-    path: '/enrollment-confirmation',
-    name: 'EnrollmentConfirmation',
-  },
-  {
-    path: '/payment-success',
-    name: 'PaymentSuccess',
-    meta: {requiresAuth: true, roles: ["STUDENT", "ADMIN", "INSTRUCTOR"] },
-    component: PaymentSuccess,
-  },
   {
     path: "/student",
     component: Student_Index,
-    meta: {requiresAuth: true, roles: ["STUDENT", "ADMIN"] },
     children: [
       { path: "", redirect: "/student/student-dashboard" },
       { path: "student-dashboard", component: Student_Dashboard },
@@ -135,23 +123,10 @@ const routes = [
       { path: "students-list", component: Student_List },
       { path: "setting-student-subscription", component: Setting_Student_Subscription },
     ],
-
-  },
-  {
-    path: "/admin",
-    component: Admin_Index,
-    meta: {requiresAuth: true, roles: ["ADMIN"] },
-    children: [
-      { path: "", redirect: "/admin/admin-dashboard" },
-      { path: "admin-dashboard", component: Admin_Dashboard },
-      { path: "approval-course", component: Admin_Approval_Course },
-      // { path: "approval-instructors", component: ApprovalInstructors }
-    ]
   },
   {
     path: "/instructor",
     component: Instructor_Index,
-    meta: {requiresAuth: true, roles: ["ADMIN", "INSTRUCTOR"] },
     children: [
       { path: "", redirect: "/instructor/instructor-dashboard" },
       { path: "instructor-dashboard", component: Instructor_Dashboard },
@@ -230,7 +205,10 @@ const routes = [
     component: Home,
     children: [
       { path: '', redirect: '/home/index' },
-      { path: 'index', component: Homethree, meta: { headerClass: 'header-three', NavbarClass: 'header-nav-three' } }
+      { path: 'index', component: Index, meta: { headerClass: 'header', NavbarClass: 'header-nav' } },
+      { path: 'index-two', component: Hometwo, meta: { headerClass: 'header header-two', NavbarClass: 'header-nav' } },
+      { path: 'index-three', component: Homethree, meta: { headerClass: 'header-three', NavbarClass: 'header-nav-three' } },
+      { path: 'index-four', component: Homefour, meta: { headerClass: 'header-five', NavbarClass: 'header-nav' } }
     ]
   },
   {
@@ -303,11 +281,6 @@ const routes = [
     name: "verification-code",
     component: verificationcode,
   },
-  {
-    path: "/authenticate",
-    name: "authenticate",
-    component: Authenticate,
-  }
 ];
 
 export const router = createRouter({
@@ -315,48 +288,10 @@ export const router = createRouter({
   linkActiveClass: "active",
   routes,
 });
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   // Scroll to the top of the page
   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const store = useStore();
-  const userRole = store.state.userInfo?.roleEntity.roleName;
-  console.log("User Role:", userRole);
-
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    try {
-      // Gọi API introspect để kiểm tra token
-      const response = await axios.post("http://localhost:8080/authentication/introspect", { token });
-      const isValid = response.data.result.valid;
-      console.log("Token valid:", isValid);
-
-      if (isValid) {
-        // Kiểm tra role nếu route có yêu cầu
-        if (to.meta.roles && !to.meta.roles.includes(userRole)) {
-          next({ name: "error-404" }); // Điều hướng tới trang lỗi 404
-        } else {
-          next(); // Tiếp tục điều hướng
-        }
-      } else {
-        console.error("Token is invalid");
-        localStorage.removeItem("token"); // Xóa token không hợp lệ
-        store.commit("clearUserInfo"); // Xóa thông tin người dùng
-        next({ name: "login" }); // Chuyển hướng tới trang login
-      }
-    } catch (error) {
-      console.error("Token introspection failed:", error);
-      localStorage.removeItem("token"); // Xóa token nếu lỗi xảy ra
-      store.commit("clearUserInfo"); // Xóa thông tin người dùng
-      next({ name: "login" }); // Chuyển hướng tới trang login
-    }
-  } else {
-    // Nếu không có token và route yêu cầu xác thực
-    if (to.meta.requiresAuth) {
-      next({ name: "login" }); // Chuyển hướng tới trang login
-    } else {
-      next(); // Cho phép truy cập nếu không yêu cầu đăng nhập
-    }
-  }
+  // Continue with the navigation
+  next();
 });

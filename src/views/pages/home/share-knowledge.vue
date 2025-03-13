@@ -58,6 +58,39 @@
             :settings="settings"
             :breakpoints="breakpoints"
           >
+            <Slide
+              class="d-flex justify-content-center"
+              v-for="testimonial in testimonialsindex"
+              :key="testimonial.id"
+            >
+              <div class="testimonial-all d-flex justify-content-center">
+                <div class="testimonial-two-head text-center align-items-center d-flex">
+                  <div class="testimonial-four-saying">
+                    <div class="testi-right">
+                      <img src="@/assets/img/qute-01.png" alt="" />
+                    </div>
+                    <p>{{ testimonial.content }}</p>
+                    <div class="four-testimonial-founder">
+                      <div class="fount-about-img">
+                        <router-link to="/instructor/instructor-profile">
+                          <img
+                            :src="require(`@/assets/img/user/${testimonial.image}`)"
+                            alt=""
+                            class="img-fluid"
+                          />
+                        </router-link>
+                      </div>
+                      <h3>
+                        <router-link to="/instructor/instructor-profile">{{
+                          testimonial.name
+                        }}</router-link>
+                      </h3>
+                      <span>{{ testimonial.role }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Slide>
             <template #addons>
               <Navigation />
             </template>
@@ -114,6 +147,7 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
+import testimonialsindex from "@/assets/json/testimonialsindex.json";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 export default {
@@ -124,6 +158,7 @@ export default {
   },
   data() {
     return {
+      testimonialsindex: testimonialsindex,
       settings: {
         itemsToShow: 1,
         snapAlign: "center",

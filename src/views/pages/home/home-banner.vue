@@ -210,6 +210,25 @@
         </p>
       </div>
       <Carousel :settings="settings" :breakpoints="breakpoints">
+        <Slide
+          v-for="item in dashboard"
+          :key="item.id"
+          class="owl-carousel mentoring-course owl-theme"
+        >
+          <div class="carousel__item feature-box text-center">
+            <div class="feature-bg">
+              <div class="feature-header">
+                <div class="feature-icon">
+                  <img :src="require(`@/assets/img/${item.img}`)" alt="" />
+                </div>
+                <div class="feature-cont">
+                  <div class="feature-text">{{ item.Development }}</div>
+                </div>
+              </div>
+              <p>{{ item.Instructors }}</p>
+            </div>
+          </div>
+        </Slide>
         <template #addons>
           <Pagination />
         </template>
@@ -220,6 +239,7 @@
 </template>
 <script>
 import { Carousel, Pagination, Slide } from "vue3-carousel";
+import dashboard from "@/assets/json/dashboard.json";
 import "vue3-carousel/dist/carousel.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -232,6 +252,7 @@ export default {
   data() {
     return {
       Category: ["Category", "Angular", "Node Js", "React", "Python"],
+      dashboard: dashboard,
     };
   },
   setup() {

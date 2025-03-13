@@ -6,7 +6,7 @@
         class="navbar navbar-expand-lg header-nav scroll-sticky"
         :class="{ 'add-header-bg': isSticky }"
       >
-        <div class="container-fluid">
+        <div class="container">
           <div class="navbar-header">
             <a
               id="mobile_btn"
@@ -37,7 +37,7 @@
                 <i class="fas fa-times"></i>
               </a>
             </div>
-<!--            <main-nav></main-nav>-->
+            <main-nav></main-nav>
           </div>
 
           <ul class="nav header-navbar-rht">

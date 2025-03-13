@@ -1,6 +1,6 @@
 <template>
   <layouts></layouts>
-  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
+  <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -17,48 +17,48 @@
                 <p>Manage your courses and its updates</p>
               </div>
               <div class="checkout-form pb-0">
-                <!-- <div class="wishlist-tab">
+                <div class="wishlist-tab">
                   <ul class="nav">
                     <li class="nav-item">
                       <a
-                          href="javascript:void(0);"
-                          class="active"
-                          data-bs-toggle="tab"
-                          data-bs-target="#enroll-courses"
-                      >Publish ({{ totalCourses }})</a
+                        href="javascript:void(0);"
+                        class="active"
+                        data-bs-toggle="tab"
+                        data-bs-target="#enroll-courses"
+                        >Publish (6)</a
                       >
                     </li>
                     <li class="nav-item">
                       <a
-                          href="javascript:void(0);"
-                          data-bs-toggle="tab"
-                          data-bs-target="#active-courses"
-                      >Pending (2)</a
+                        href="javascript:void(0);"
+                        data-bs-toggle="tab"
+                        data-bs-target="#active-courses"
+                        >Pending (2)</a
                       >
                     </li>
                     <li class="nav-item">
                       <a
-                          href="javascript:void(0);"
-                          data-bs-toggle="tab"
-                          data-bs-target="#complete-courses"
-                      >Draft (1)</a
+                        href="javascript:void(0);"
+                        data-bs-toggle="tab"
+                        data-bs-target="#complete-courses"
+                        >Draft (1)</a
                       >
                     </li>
                   </ul>
-                </div> -->
+                </div>
 
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="enroll-courses">
                     <instructor-enroll-course></instructor-enroll-course>
                   </div>
 
-                  <!-- <div class="tab-pane fade" id="active-courses">
+                  <div class="tab-pane fade" id="active-courses">
                     <instructor-active-course></instructor-active-course>
                   </div>
 
                   <div class="tab-pane fade" id="complete-courses">
                     <instructor-complete-course></instructor-complete-course>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -93,21 +93,13 @@
   <layouts1></layouts1>
 </template>
 <script>
-import {useCourses} from '@/service/instructor/myCourseForUser';
-
 export default {
   data() {
     return {
       title: "My Courses",
       text: "Home",
       text1: "My Courses",
-      totalCourses: 0
     };
-  },
-  async mounted() {
-    const {totalCourses, fetchCourses} = useCourses(); // Gọi useCourses ở đây
-    await fetchCourses(); // Gọi fetchCourses để lấy danh sách khóa học
-    this.totalCourses = totalCourses.value; // Cập nhật tổng số khóa học vào data
   },
 };
 </script>

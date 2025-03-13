@@ -10,7 +10,7 @@ Version      : 1.0
 1. General
 2. Bootstrap Classes
 3. Header
-4. Mobile Menuposter
+4. Mobile Menu
 5. Footer
 6. Home One Main
 7. Home Two Main
@@ -491,7 +491,9 @@ button.bg-danger:hover {
   background-color: #e9ab2e;
   border: 1px solid #e9ab2e;
 }
-
+.btn:hover {
+  background: #392c7d;
+}
 .btn-warning.active.focus,
 .btn-warning.active:focus,
 .btn-warning.active:hover,
@@ -1148,7 +1150,7 @@ button.bg-danger:hover {
   cursor: pointer;
 }
 .header-navbar-rht .dropdown-menu {
-  min-width: 300px;
+  min-width: 200px;
   padding: 0;
 }
 .header-navbar-rht .dropdown-menu .dropdown-item {
@@ -4648,7 +4650,7 @@ html.menu-opened body {
   cursor: pointer;
 }
 .header-navbar-rht .dropdown-menu {
-  min-width: 300px;
+  min-width: 200px;
   padding: 0;
 }
 .header-navbar-rht .dropdown-menu .dropdown-item {
@@ -6792,7 +6794,7 @@ textarea:focus {
   padding: 10px;
 }
 .footer-three {
-  padding: 60px 0 0px;
+  padding: 60px 0 60px;
   background: #071136;
   background-image: url(../img/bg/bg-footer.jpg);
   background-repeat: no-repeat;
@@ -9308,7 +9310,7 @@ textarea:focus {
 }
 
 /*-----------------
-	Achieve your Goals
+	Achieve your Goals 
 -----------------------*/
 
 .goals-section-five {
@@ -12948,6 +12950,7 @@ input[type="password"]::-ms-clear {
 }
 .inner-banner {
   padding: 45px 0;
+  background: url("../img/inner-banner.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
@@ -13637,6 +13640,7 @@ input[type="password"]::-ms-clear {
 -----------------------*/
 
 .page-banner.instructor-bg-blk {
+  padding: 32px 0;
   text-align: center;
   background: url(../img/instructor/instructor-bg-banner.png) #1565c0;
   background-repeat: no-repeat;
@@ -20510,7 +20514,7 @@ input[type="password"]::-ms-clear {
   justify-content: space-between;
 }
 .modal .modal-body {
-  padding: 20px;
+  padding: 24px;
 }
 .modal .modal-header button {
   border: 0;
@@ -21168,7 +21172,7 @@ h6 {
 }
 .dark .selection .select2-selection {
   background: #131022;
-
+ 
 }
 .dark .selection .select2-selection option {
   color: #B9B7C0;

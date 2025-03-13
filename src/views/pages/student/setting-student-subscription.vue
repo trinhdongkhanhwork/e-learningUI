@@ -1,5 +1,5 @@
 <template>
-  <layouts></layouts>
+  <student-header></student-header>
   <div class="page-content">
     <div class="container">
       <div class="row">

@@ -9,7 +9,7 @@
           </div>
         </div>
 
-        <!-- Search Filter category -->
+        <!-- Search Filter -->
         <div class="card search-filter">
           <div class="card-body">
             <div class="filter-widget mb-0">
@@ -17,10 +17,52 @@
                 <h4>Course categories</h4>
                 <i class="fas fa-angle-down"></i>
               </div>
-              <div  v-for="category in categories" :key="category.id">
-                <label class="custom_check" >
-                  <input type="checkbox" name="select_specialist" :value="category.id" v-model="selectedCategories" />
-                  <span class="checkmark"></span> {{ category.categoryName }}
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Backend (3)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> CSS (2)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Frontend (2)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" checked />
+                  <span class="checkmark"></span> General (2)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" checked />
+                  <span class="checkmark"></span> IT & Software (2)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Photography (2)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Programming Language (3)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check mb-0">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Technology (2)
                 </label>
               </div>
             </div>
@@ -28,7 +70,7 @@
         </div>
         <!-- /Search Filter -->
 
-        <!-- Search Filter instructor -->
+        <!-- Search Filter -->
         <div class="card search-filter">
           <div class="card-body">
             <div class="filter-widget mb-0">
@@ -36,10 +78,28 @@
                 <h4>Instructors</h4>
                 <i class="fas fa-angle-down"></i>
               </div>
-              <div v-for="instructor in uniqueInstructors" :key="instructor.id">
+              <div>
                 <label class="custom_check">
-                  <input type="checkbox" :value="instructor" v-model="selectedInstructors" />
-                  <span class="checkmark"></span> {{ instructor }}
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Keny White (10)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> Hinata Hyuga (5)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check">
+                  <input type="checkbox" name="select_specialist" />
+                  <span class="checkmark"></span> John Doe (3)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check mb-0">
+                  <input type="checkbox" name="select_specialist" checked />
+                  <span class="checkmark"></span> Nicole Brown
                 </label>
               </div>
             </div>
@@ -47,7 +107,7 @@
         </div>
         <!-- /Search Filter -->
 
-        <!-- Search Filter price-->
+        <!-- Search Filter -->
         <div class="card search-filter">
           <div class="card-body">
             <div class="filter-widget mb-0">
@@ -55,15 +115,22 @@
                 <h4>Price</h4>
                 <i class="fas fa-angle-down"></i>
               </div>
-              <div v-for="range in priceRanges" :key="range.label">
+              <div>
                 <label class="custom_check custom_one">
-                  <input
-                      type="radio"
-                      name="select_price"
-                      :value="range"
-                      v-model="selectedPriceRange"
-                  />
-                  <span class="checkmark"></span> {{ range.label }}
+                  <input type="radio" name="select_specialist" />
+                  <span class="checkmark"></span> All (18)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check custom_one">
+                  <input type="radio" name="select_specialist" />
+                  <span class="checkmark"></span> Free (3)
+                </label>
+              </div>
+              <div>
+                <label class="custom_check custom_one mb-0">
+                  <input type="radio" name="select_specialist" checked />
+                  <span class="checkmark"></span> Paid (15)
                 </label>
               </div>
             </div>
@@ -82,16 +149,16 @@
                 <div class="post-thumb">
                   <router-link to="/course/course-details">
                     <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-01.jpg"
-                        alt=""
+                      class="img-fluid"
+                      src="@/assets/img/blog/blog-01.jpg"
+                      alt=""
                     />
                   </router-link>
                 </div>
                 <div class="post-info free-color">
                   <h4>
                     <router-link to="/course/course-details"
-                    >Introduction LearnPress – LMS plugin</router-link
+                      >Introduction LearnPress – LMS plugin</router-link
                     >
                   </h4>
                   <p>FREE</p>
@@ -101,16 +168,16 @@
                 <div class="post-thumb">
                   <router-link to="/course/course-details">
                     <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-02.jpg"
-                        alt=""
+                      class="img-fluid"
+                      src="@/assets/img/blog/blog-02.jpg"
+                      alt=""
                     />
                   </router-link>
                 </div>
                 <div class="post-info">
                   <h4>
                     <router-link to="/course/course-details"
-                    >Become a PHP Master and Make Money</router-link
+                      >Become a PHP Master and Make Money</router-link
                     >
                   </h4>
                   <p>$200</p>
@@ -120,9 +187,9 @@
                 <div class="post-thumb">
                   <router-link to="/course/course-details">
                     <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-03.jpg"
-                        alt=""
+                      class="img-fluid"
+                      src="@/assets/img/blog/blog-03.jpg"
+                      alt=""
                     />
                   </router-link>
                 </div>
@@ -137,9 +204,9 @@
                 <div class="post-thumb">
                   <router-link to="/course/course-details">
                     <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-01.jpg"
-                        alt=""
+                      class="img-fluid"
+                      src="@/assets/img/blog/blog-01.jpg"
+                      alt=""
                     />
                   </router-link>
                 </div>
@@ -154,9 +221,9 @@
                 <div class="post-thumb">
                   <router-link to="/course/course-details">
                     <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-02.jpg"
-                        alt=""
+                      class="img-fluid"
+                      src="@/assets/img/blog/blog-02.jpg"
+                      alt=""
                     />
                   </router-link>
                 </div>
@@ -175,113 +242,3 @@
     </div>
   </div>
 </template>
-<script>
-import { ref, onMounted, watch, computed } from 'vue';
-import baseApi from '@/axios';
-
-export default {
-  props: {
-    onFilterChange: {
-      type: Function,
-      required: true,
-    },
-  },
-  setup(props) {
-    const categories = ref([]); // Danh sách categories
-    const selectedCategories = ref([]); // Danh sách các category đã chọn
-    const selectedInstructors = ref([]); //danh sách giảng viên đã chọn
-    const selectedPriceRange = ref(null); //Khoảng giá
-    const courses = ref([]); // Danh sách khóa học
-
-    // Các khoảng giá cho bộ lọc
-    const priceRanges = ref([
-      { min: 0, max: 0, label: "All" },
-      { min: 100, max: 200, label: "100$ - 200$" },
-      { min: 200, max: 300, label: "200$ - 300$" },
-      { min: 300, max: 400, label: "300$ - 400$" },
-      { min: 400, max: 500, label: "400$ - 500$" },
-      { min: 500, max: 600, label: "500$ - 600$" },
-      { min: 600, max: 700, label: "600$ - 700$" },
-      { min: 700, max: 800, label: "700$ - 800$" },
-      { min: 800, max: 900, label: "800$ - 900$" },
-      { min: 900, max: 1000, label: "900$ - 1000$" },
-    ]);
-
-    // Lấy danh sách categories từ API
-    const fetchCategories = async () => {
-      try {
-        const response = await baseApi.get('/api/category/getCategorys');
-        categories.value = response.data; // Gán dữ liệu vào categories
-      } catch (error) {
-        console.error('Lỗi khi lấy danh sách categories:', error);
-      }
-    };
-
-    // Lấy danh sách khóa học từ API
-    const fetchCourses = async () => {
-      try {
-        const response = await baseApi.get('/api/v1/courses', {
-          params: {
-            categoriesIds: selectedCategories.value.join(','),
-          },
-        });
-        courses.value = response.data.content || [];
-      } catch (error) {
-        console.log('Lỗi khi lấy khóa học: ', error);
-      }
-    };
-
-    // Khi có sự thay đổi về selectedCategories hoặc selectedInstructors, gọi hàm lọc từ parent
-    watch([selectedCategories, selectedInstructors, selectedPriceRange], () => {
-      props.onFilterChange({
-        categories: selectedCategories.value,
-        instructors: selectedInstructors.value,
-        priceRange: selectedPriceRange.value,
-      });
-    });
-
-    // Tính toán danh sách giảng viên duy nhất
-    const uniqueInstructors = computed(() => {
-      // Dùng Set để lấy giảng viên duy nhất từ các khóa học
-      const instructors = new Set();
-      courses.value.forEach((course) => {
-        if (course.instructor && course.instructor.fullname) {
-          instructors.add(course.instructor.fullname); // Thêm tên giảng viên vào Set
-        }
-      });
-      console.log("ahbshda:"+[...instructors])
-      return [...instructors]; // Chuyển Set thành mảng
-    });
-
-    // Computed property để lọc khóa học theo khoảng giá
-    const filteredCourses = computed(() => {
-      if (!selectedPriceRange.value || selectedPriceRange.value.min === 0) {
-        return courses.value;
-      }
-      return courses.value.filter(course => {
-        return (
-            course.price >= selectedPriceRange.value.min &&
-            course.price <= selectedPriceRange.value.max
-        );
-      });
-    });
-
-
-    onMounted(() => {
-      fetchCategories();
-      fetchCourses();
-    });
-
-    return {
-      categories,
-      selectedCategories,
-      selectedInstructors,
-      selectedPriceRange,
-      priceRanges,
-      courses,
-      filteredCourses,
-      uniqueInstructors,
-    };
-  },
-};
-</script>
