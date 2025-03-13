@@ -10,7 +10,7 @@ export function useCourses() {
     const totalCourses = computed(() => {
       return courses.value.length; // Tính tổng số khóa học
     });
-  
+    
     const fetchCourses = async () => {
       try {
         const response = await baseApi.get("/api/v1/courses");
@@ -27,11 +27,23 @@ export function useCourses() {
         console.error("Lỗi khi lấy danh sách khóa học:", error);
       }
     };
+    
+    const deleteCourse = async (id) => {
+      try {
+        await baseApi.delete(`/api/v1/courses/${id}`);
+        console.log(`Khóa học ${id} đã bị xóa.`);
+        // Cập nhật danh sách khóa học sau khi xóa
+        courses.value = courses.value.filter(course => course.id !== id);
+      } catch (error) {
+        console.error(`Lỗi khi xóa khóa học ${id}:`, error);
+      }
+    };
   
     return {
       courses,
       totalCourses,
-      fetchCourses
+      fetchCourses,
+      deleteCourse
     };
   }
   

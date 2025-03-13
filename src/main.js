@@ -151,6 +151,7 @@ import footerthree from '@/views/pages/home/homethree/footer-three.vue'
 /*********Modal**********/
 import Support_Tickets_Modal from '@/components/support-tickets-modal.vue'
 import Instructor_Withdraw_Modal from '@/components/instructor-withdraw-modal.vue'
+import Edit_Course from '@/components/edit-course.vue'
 
 
 
@@ -163,7 +164,7 @@ import '@/assets/css/feather.css';
 
 import '@/assets/css/style.css';
 import '@/assets/css/vue.css';
-
+import '@/assets/css/khanh-style.css';
 
 
 
@@ -309,6 +310,7 @@ app.component('date-picker', DatePicker);
 app.component('vue-select', VueSelect)
 app.component(VueFeather.name, VueFeather)
 app.component('vue3-autocounter', Vue3Autocounter)
+app.component('edit-course', Edit_Course)
 
 
 const store = createStore({

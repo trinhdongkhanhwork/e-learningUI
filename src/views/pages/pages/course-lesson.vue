@@ -25,8 +25,7 @@
               </h6>
               <div class="card-collapse" v-if="viewSection[section.id]">
                 <ul>
-                  <li v-for="(lecture, index) in section.lectures"
-                    :key="index"
+                  <li v-for="(lecture, index) in section.lectures" :key="index"
                     @click="viewLectureUser(lecture.id)">
                     <p class="play-intro">{{ lecture.title }}</p>
                     <div>
@@ -253,8 +252,7 @@
               <!-- List comment -->
               <ul style="max-width: 100%; display: flex; flex-direction: column-reverse">
                 <li style="margin: 10px 0; width: 100%"
-                  v-for="(commentParent, index) in comments"
-                  :key="index"
+                  v-for="(commentParent, index) in comments" :key="index"
                   v-show="commentParent.parentId == null">
                   <div class="instructor-wrap hoverComment"
                     style=" border: none; margin: 0 0 10px 0;width: 100%; display: flex; align-items: flex-start; justify-content: start; flex-wrap: nowrap;">

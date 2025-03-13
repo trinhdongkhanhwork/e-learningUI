@@ -17,7 +17,7 @@
                 <p>Manage your courses and its updates</p>
               </div>
               <div class="checkout-form pb-0">
-                <div class="wishlist-tab">
+                <!-- <div class="wishlist-tab">
                   <ul class="nav">
                     <li class="nav-item">
                       <a
@@ -45,20 +45,20 @@
                       >
                     </li>
                   </ul>
-                </div>
+                </div> -->
 
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="enroll-courses">
                     <instructor-enroll-course></instructor-enroll-course>
                   </div>
 
-                  <div class="tab-pane fade" id="active-courses">
+                  <!-- <div class="tab-pane fade" id="active-courses">
                     <instructor-active-course></instructor-active-course>
                   </div>
 
                   <div class="tab-pane fade" id="complete-courses">
                     <instructor-complete-course></instructor-complete-course>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

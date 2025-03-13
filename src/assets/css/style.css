@@ -491,9 +491,7 @@ button.bg-danger:hover {
   background-color: #e9ab2e;
   border: 1px solid #e9ab2e;
 }
-.btn:hover {
-  background: #392c7d;
-}
+
 .btn-warning.active.focus,
 .btn-warning.active:focus,
 .btn-warning.active:hover,
@@ -20512,7 +20510,7 @@ input[type="password"]::-ms-clear {
   justify-content: space-between;
 }
 .modal .modal-body {
-  padding: 24px;
+  padding: 20px;
 }
 .modal .modal-header button {
   border: 0;

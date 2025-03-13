@@ -150,7 +150,7 @@ const routes = [
       { path: "", redirect: "/admin/admin-dashboard" },
       { path: "admin-dashboard", component: Admin_Dashboard },
       { path: "approval-course", component: Admin_Approval_Course },
-      { path: "approval-instructors", component: ApprovalInstructors }
+      // { path: "approval-instructors", component: ApprovalInstructors }
     ]
   },
   {
