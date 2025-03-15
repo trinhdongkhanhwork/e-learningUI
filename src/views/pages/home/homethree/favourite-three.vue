@@ -5,17 +5,9 @@
       <div class="row">
         <div class="container">
           <div class="home-three-head section-header-title">
-            <div class="row align-items-center d-flex justify-content-between">
-              <div class="col-lg-8 col-sm-12">
+            <div class="align-items-center d-flex justify-content-between">
+              <div class="col-sm-12">
                 <h2>Choose favourite Course from top Category</h2>
-              </div>
-              <div class="col-lg-4 col-sm-12">
-                <div class="see-all">
-                  <router-link to="/course/course-details"
-                    >See all<span class="see-all-icon"
-                      ><i class="fas fa-arrow-right"></i></span
-                  ></router-link>
-                </div>
               </div>
             </div>
           </div>

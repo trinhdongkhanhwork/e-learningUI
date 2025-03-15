@@ -5705,6 +5705,13 @@ body.home-three :-ms-input-placeholder {
   -o-transition: 0.7s;
   transition: 0.7s;
 }
+.course-three-text h3.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
 .course-box-three:hover .course-three-text h3 {
   color: #ffffff;
   -webkit-transition: 0.7s;
