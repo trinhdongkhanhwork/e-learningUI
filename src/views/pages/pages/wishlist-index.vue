@@ -180,7 +180,6 @@ export default {
     async addToCart(wish) {
       const userId = this.user.id;
       if (!userId) {
-        alert("Please log in to add to cart!");
         return;
       }
       try {
@@ -193,13 +192,11 @@ export default {
           coverImage: wish.coverImage,
         });
         if (response.status === 200) {
-          alert("Added to cart successfully!");
           // Điều hướng sang trang giỏ hàng
           router.push("/pages/cart");
         }
       } catch (error) {
         console.error("Error adding to cart:", error);
-        alert("Failed to add to cart. Please try again.");
       }
     },
 
@@ -223,10 +220,6 @@ export default {
       } else {
         this.selectedItems = [];
       }
-    },
-
-    updateSelectAllStatus() {
-      this.selectAll = this.selectedItems.length === this.wishlist.length && this.wishlist.length > 0;
     },
   },
 };

@@ -474,7 +474,6 @@ export default {
         throw error;
       }
     },
-
     // Phương thức mới để kiểm tra xem khóa học đã có trong giỏ hàng chưa
     async checkCart(courseId) {
       try {
@@ -497,9 +496,6 @@ export default {
           if (!isInCart) {
             // Thêm vào giỏ hàng qua API
             await this.addToCart(this.course.id);
-            alert("Added to cart successfully!");
-          } else {
-            alert("Course is already in the cart!");
           }
 
           // Điều hướng đến trang giỏ hàng
