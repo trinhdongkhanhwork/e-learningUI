@@ -1,5 +1,6 @@
 <template>
   <div class="chat-page main-chat-blk">
+    <student-breadcrumb title="Messages" text="Home" text1="Messages" />
     <div class="main-wrapper chat-wrapper">
       <student-header></student-header>
       <!-- <student-breadcrumb :title="title" :text="text" :text1="text1" /> -->

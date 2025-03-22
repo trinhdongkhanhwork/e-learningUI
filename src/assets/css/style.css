@@ -17828,7 +17828,7 @@ input[type="password"]::-ms-clear {
   -webkit-align-items: flex-start;
 }
 .main-chat-blk .chat .chat-body .messages .chats {
-  max-width: 75%;
+  max-width: 80%;
   margin-bottom: 1.5rem;
   display: flex;
   display: -webkit-flex;

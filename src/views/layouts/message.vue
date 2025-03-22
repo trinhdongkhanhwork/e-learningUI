@@ -22,7 +22,7 @@
                               <div class="select-group-chat">
                                 <div class="dropdown">
                                     <a href="javascript:void(0);">
-                                    All Chats
+                                      Search user
                                     </a>
                                 </div>
                               </div>
@@ -56,7 +56,7 @@
                               <!-- Left Chat Title -->
                               <div class="d-flex justify-content-between align-items-center ps-0 pe-0">
                                 <div class="fav-title pin-chat">
-                                    <h6>Group Chat</h6>
+                                    <h6>Friend chat</h6>
                                 </div>
                               </div>
                               <!-- /Left Chat Title -->
@@ -64,15 +64,15 @@
                               <!-- assembly chat -->
                               <ul class="user-list space-chat">
                                 <li class="user-list-item chat-user-list"
-                                    v-for="(assembly, index) in assemblys" :key="index"
-                                    @click="getMessageInAssembly(assembly)">
+                                    v-for="(friend, index) in friends" :key="index"
+                                    @click="selectFriend(friend)">
                                     <a href="javascript:void(0);" class="status-active">
                                       <div class="avatar avatar-online">
-                                          <img :src="assembly.imageAssembly" class="rounded-circle"/>
+                                          <img :src="friend.avatarUrl" class="rounded-circle"/>
                                       </div>
                                       <div class="users-list-body">
                                           <div>
-                                            <h5>{{ assembly.nameAssembly }}</h5>
+                                            <h5>{{ friend.fullname }}</h5>
                                             <p></p>
                                           </div>
                                       </div>
@@ -93,13 +93,14 @@
                       <div class="h-100">
                       
                         <!-- Chat header -->
-                        <div class="chat-header" v-if="assemblyChat != null">
+                        <div class="chat-header" v-if="selectedFriend != null">
                             <div class="user-details mb-0">
                               <figure class="avatar mb-0">
-                                  <img :src="assemblyChat != null ? assemblyChat.imageAssembly : null">
+                                  <img :src="selectedFriend != null ? selectedFriend.avatarUrl : null"
+                                        class="rounded-circle">
                               </figure>
                               <div class="mt-1">
-                                  <h5>{{ assemblyChat.nameAssembly }}</h5>
+                                  <h5>{{ selectedFriend.fullname }}</h5>
                               </div>
                             </div>
                         </div>
@@ -122,35 +123,34 @@
 
                                 <div class="chats"
                                     v-for="(message, index) in messages" :key="index"
-                                    :class="{'chats-right': message.idUserFrom == user.id }">
+                                    :class="{'chats-right': message.user.id == user.id }">
                                   <div class="chat-avatar">
-                                      <img :src="message.avatarUserFrom"
+                                      <img :src="message.user.avatarUrl"
                                       class="rounded-circle dreams_chat"
                                       alt="image"/>
                                   </div>
                                   <div class="chat-content">
                                       <div class="chat-profile-name">
                                         <h6>
-                                            {{ message.nameUserFrom }}
-                                            <span>{{ message.createdAt }}</span>
-                                            <span class="check-star msg-star d-none"><i class="bx bxs-star"></i></span>
+                                            {{ message.user.fullname }}
+                                            <span style="color: lightgray">{{  formatDate(message.createdAt) }}</span>
                                         </h6>
-                                        <div class="chat-action-btns ms-2" v-if="message.idUserFrom == user.id">
+                                        <div class="chat-action-btns ms-2" v-if="message.user.id == user.id">
                                             <div class="chat-action-col">
                                               <a class="#" href="javascript:void(0);" data-bs-toggle="dropdown">
                                                   <i class="fa-solid fa-ellipsis"></i>
                                               </a>
                                               <div class="dropdown-menu chat-drop-menu dropdown-menu-end">
-                                                  <a href="javascript:void(0);" class="dropdown-item"
-                                                    @click="deleteMessage(message.id)"><span><i class="bx bx-trash"></i></span>Delete</a>
+                                                  <a href="javascript:void(0);" class="dropdown-item">
+                                                    <span><i class="bx bx-trash"></i></span>Delete</a>
                                               </div>
                                             </div>
                                         </div>
                                       </div>
                                       <div class="message-content reply-getcontent" style="display: flex; justify-content: start; flex-direction: column;">
                                         {{ message.message }}
-                                        <img :src="message.urlImage" alt="" style="width: 100%; margin-top: 10px;" v-if="message.urlImage != null">
-                                        <a :href="message.urlFile" v-if="message.urlFile != null">   
+                                        <img :src="message.urlImage" alt="" style="width: 100%; margin-top: 10px;" v-if="message.urlImage != null && message.urlImage != ''">
+                                        <a :href="message.urlFile" v-if="message.urlFile != null && message.urlFile != ''">   
                                             Click here to download
                                             <img src="@/assets/img/foderDowload.jpg" width="100%">
                                         </a>
@@ -162,9 +162,9 @@
                         </div>
                       </div>
                       <!-- Chat footer -->
-                      <div class="chat-footer"  v-if="assemblyChat != null">
+                      <div class="chat-footer">
                         <form v-if="messages != null">
-                            <div class="smile-foot">
+                            <div class="smile-foot" v-if="false">
                               <div class="chat-action-btns">
                                   <div class="chat-action-col">
                                   <a class="action-circle" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -195,7 +195,7 @@
                                   class="form-control chat_form"
                                   @change="hanleUploadFile"/>
                             </div>
-                            <div class="form-buttons">
+                            <div class="form-buttons" style="margin: 0;">
                               <button class="btn send-btn" type="button"
                                       @click="sendMessage()">
                                   <i class="bx bx-paper-plane"></i>
@@ -220,10 +220,41 @@ import * as StompJs from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import baseApi from "@/axios";
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import messageService from "@/service/messages/messages"
+import moment from "moment";
 export default {
   components: {
     PerfectScrollbar,
+  },
+  setup(){
+    const {messages, friends, fetchMessages, fetchFriends} = messageService();
+    const selectedFriend = ref(null);
+  
+    onMounted(async () => {
+      await fetchFriends()
+    })
+
+    const selectFriend = async (friend) => {
+      selectedFriend.value = friend;
+      await fetchMessages(friend.id)
+    }
+
+    const formatDate = (dateString) => {
+      if(dateString == '' || dateString == null) return ''
+      return moment(dateString).format("DD/MM/YYYY");
+    }
+
+    return {
+      friends,
+      selectedFriend,
+      messages,
+      selectFriend,
+      formatDate
+    }
+  },
+  created() {
+    this.connectSocket()
   },
   data() {
     const store = useStore();
@@ -242,39 +273,14 @@ export default {
       },
       assemblys: [],
       assemblyChat: null,
-      messages:[],
       messageInput: "",
       image: {},
       file: {},
       viewInputToggle: "text",
     };
   },
-  created() {
-    this.getAssembly()
-    this.connectSocket()
-  },
   methods: {
-    getAssembly(){
-      baseApi.get(`/assembly/user/${this.user.id}`)
-      .then((response) => {
-        this.assemblys = response.data
-        console.log("Tải dữ liệu nhóm tin nhắn thành cồng: ", this.assemblys)
-      })
-      .catch((error) => {
-        console.log("Không thể tải dữ liệu các nhóm tin nhắn: ", error)
-      })
-    },
-    getMessageInAssembly(assembly){
-      baseApi.get(`/messages/group/${assembly.id}`)
-      .then((response) => {
-        this.messages = response.data
-        this.assemblyChat = assembly
-        console.log("Dữ liệu tin nhắn được tải lên: ", this.messages)
-      })
-      .catch((error) => {
-        console.log("Tải dữ liệu tin nhắn thất bại: ", error)
-      })
-    },
+    
     async sendMessage(){
       const urlImage = await this.upLoadImage()
       const urlFile = await this.upLoadFile()
@@ -295,7 +301,6 @@ export default {
             body: JSON.stringify(mesage),
           });
 
-          console.log("Đã gửi bình luận qua WebSocket", mesage);
           this.messageInput = ""
           this.image = null
           this.file = null
@@ -321,7 +326,6 @@ export default {
       this.stompClient = new StompJs.Client({
         webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
         onConnect: (frame) => {
-          console.log("Kết nối socket thành công!", frame);
           this.stompClient.subscribe("/topic/message", (message) => {
             try {
               const messageData = JSON.parse(message.body).body;
