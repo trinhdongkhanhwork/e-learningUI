@@ -1,7 +1,6 @@
 <template>
   <page-header></page-header>
   <coursedetails></coursedetails>
-<!--   <inner-page></inner-page>-->
   <div>
     <div class="inner-banner" :style="{ backgroundImage: `url(${course.coverImage})` }">
       <div class="container">
@@ -86,29 +85,15 @@
                   </ul>
                 </div>
               </div>
-              <!-- <h6>Requirements</h6>
-              <ul class="mb-0">
-                <li>
-                  You will need a copy of Adobe XD 2023 or above. A free trial
-                  can be downloaded from Adobe.
-                </li>
-                <li>No previous design experience is needed.</li>
-                <li class="mb-0">No previous Adobe XD skills are needed.</li>
-              </ul> -->
+   
             </div>
           </div>
-          <!-- /Overview -->
-
-          <!-- Course Content -->
           <div class="card content-sec" v-show="sections.length != 0">
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-6">
                   <h5 class="subs-title">Course Content</h5>
                 </div>
-                <!-- <div class="col-sm-6 text-sm-end">
-                  <h6>92 Lectures 10:56:11</h6>
-                </div> -->
               </div>
               <div class="course-card" v-for="(section, index) in sections" :key="index">
                 <h6 class="cou-title">
@@ -171,9 +156,6 @@
               <p style="font-size: 15px;">
                 {{ review.commentText }}
               </p>
-              <!-- <a href="javascript:;" class="btn btn-reply"
-                ><i class="feather-corner-up-left"></i> Reply</a
-              > -->
             </div>
           </div>
           <!-- /Reviews -->
