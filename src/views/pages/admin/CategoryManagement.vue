@@ -148,7 +148,8 @@ import AdminHeaderborder from "@/views/layouts/admin-headerborder.vue";
 import AdminBreadcrumb from "@/components/breadcrumb/admin-breadcrumb.vue";
 import AdminSidebar from "@/views/layouts/admin-sidebar.vue";
 import baseApi from "@/axios";
-import toast from "@/utils/Toast";
+import { confirmSave } from '@/utils/confirmDialogs'; // Import confirmSave
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 export default {
   components: { AdminHeaderborder, AdminBreadcrumb, AdminSidebar },
@@ -180,7 +181,7 @@ export default {
         totalPages.value = Math.ceil(response.data.length / pageSize) || 1;
       } catch (error) {
         console.error('Error fetching categories:', error);
-        toast.error('Error fetching categories');
+        Swal.fire('Error!', 'Error fetching categories', 'error');
       }
     };
 
@@ -211,6 +212,9 @@ export default {
     };
 
     const submitForm = async () => {
+      const saveResult = await confirmSave(); // Hiển thị xác nhận lưu
+      if (!saveResult.isConfirmed) return;
+
       const formData = new FormData();
       formData.append('categoryName', form.value.categoryName);
       if (form.value.coverImage instanceof File) {
@@ -222,31 +226,40 @@ export default {
           await baseApi.put(`/api/category/update/${form.value.id}`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           });
-          toast.success('Category updated successfully');
+          Swal.fire('Success!', 'Category updated successfully!', 'success');
         } else {
           await baseApi.post('/api/category/create', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           });
-          toast.success('Category created successfully');
+          Swal.fire('Success!', 'Category created successfully!', 'success');
         }
         closeModal();
         fetchCategories(currentPage.value);
       } catch (error) {
         console.error('Error submitting form:', error);
-        toast.error('Error submitting form');
+        Swal.fire('Error!', 'Error submitting form', 'error');
       }
     };
 
     const deleteCategory = async (id) => {
-      if (confirm('Are you sure you want to delete this category?')) {
-        try {
-          await baseApi.delete(`/api/category/delete/${id}`);
-          toast.success('Category deleted successfully');
-          fetchCategories(currentPage.value);
-        } catch (error) {
-          console.error('Error deleting category:', error);
-          toast.error('Error deleting category');
-        }
+      const deleteResult = await Swal.fire({ // Thay confirm bằng Swal
+        title: 'Are you sure?',
+        text: 'Do you really want to delete this category?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+      });
+
+      if (!deleteResult.isConfirmed) return;
+
+      try {
+        await baseApi.delete(`/api/category/delete/${id}`);
+        Swal.fire('Success!', 'Category deleted successfully!', 'success');
+        fetchCategories(currentPage.value);
+      } catch (error) {
+        console.error('Error deleting category:', error);
+        Swal.fire('Error!', 'Error deleting category', 'error');
       }
     };
 
