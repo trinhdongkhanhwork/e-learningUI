@@ -531,6 +531,7 @@ export default {
           console.log("Tải lên các chương học thất bại", error);
         });
     },
+    
     viewLectureUser(lectureId) {
       baseApi
         .get(`/lectures/${lectureId}`)
@@ -568,6 +569,60 @@ export default {
       } else {
         return [];
       }
+    },
+    viewPostReplyToggle(commentId) {
+      this.viewPostReply[commentId] = !this.viewPostReply[commentId];
+      this.viewEditComment[commentId] = false;
+    },
+    viewEditCommentToggle(commentId, textComment) {
+      this.viewEditComment[commentId] = !this.viewEditComment[commentId];
+      this.editCommentText[commentId] = textComment;
+      this.viewPostReply[commentId] = false;
+    },
+    viewSectionToggle(sectionId) {
+      this.viewSection[sectionId] = !this.viewSection[sectionId];
+    },
+    viewStartQuizzToggle() {
+      this.viewStartQuizz = !this.viewStartQuizz;
+    },
+    buttonNumberShowCommentToggle(commentId) {
+      this.buttonNumberShowComment[commentId] = !this.buttonNumberShowComment[commentId];
+    },
+    navigaQuestionToggleClick(index, maxQuestion) {
+      this.navigaQuestionToggle += index;
+      if (this.navigaQuestionToggle < 0) {
+        this.navigaQuestionToggle = maxQuestion - 1;
+      }
+      if (this.navigaQuestionToggle > maxQuestion - 1) {
+        this.navigaQuestionToggle = 0;
+      }
+    },
+    choseOption(option) {
+      console.log("Đáp án bạn bấm là: ", option);
+    },
+    resetForm() {
+      this.comment = {
+        id: null,
+        commentText: "",
+        userId: this.user.id,
+        videoId: null,
+        courseId: null,
+        parentId: null,
+        star: 0,
+      };
+    },
+    isNextPage(isNextPage){
+      this.exitDialog = false
+      if(isNextPage){
+        this.nextPage()
+      } else {
+        this.nextPage(false)
+      }
+      return isNextPage
+    },
+    handleBeforeUnload(event){
+      event.preventDefault();
+      event.returnValue = 'If you leave now, you will have to do it again!';
     },
     postCommentInVideo(commentText) {
       if (commentText != "" && this.lecture.videoInlectureResponse != null) {
@@ -651,66 +706,10 @@ export default {
         console.log("Không phải quyền người dùng");
       }
     },
-    viewPostReplyToggle(commentId) {
-      this.viewPostReply[commentId] = !this.viewPostReply[commentId];
-      this.viewEditComment[commentId] = false;
-    },
-    viewEditCommentToggle(commentId, textComment) {
-      this.viewEditComment[commentId] = !this.viewEditComment[commentId];
-      this.editCommentText[commentId] = textComment;
-      this.viewPostReply[commentId] = false;
-    },
-    viewSectionToggle(sectionId) {
-      this.viewSection[sectionId] = !this.viewSection[sectionId];
-    },
-    viewStartQuizzToggle() {
-      this.viewStartQuizz = !this.viewStartQuizz;
-    },
-    buttonNumberShowCommentToggle(commentId) {
-      this.buttonNumberShowComment[commentId] = !this.buttonNumberShowComment[commentId];
-    },
-    navigaQuestionToggleClick(index, maxQuestion) {
-      this.navigaQuestionToggle += index;
-      if (this.navigaQuestionToggle < 0) {
-        this.navigaQuestionToggle = maxQuestion - 1;
-      }
-      if (this.navigaQuestionToggle > maxQuestion - 1) {
-        this.navigaQuestionToggle = 0;
-      }
-    },
-    choseOption(option) {
-      console.log("Đáp án bạn bấm là: ", option);
-    },
-    resetForm() {
-      this.comment = {
-        id: null,
-        commentText: "",
-        userId: this.user.id,
-        videoId: null,
-        courseId: null,
-        parentId: null,
-        star: 0,
-      };
-    },
-    isNextPage(isNextPage){
-      this.exitDialog = false
-      if(isNextPage){
-        this.nextPage()
-      } else {
-        this.nextPage(false)
-      }
-      return isNextPage
-    },
-    handleBeforeUnload(event){
-      event.preventDefault();
-      event.returnValue = 'If you leave now, you will have to do it again!';
-    },
     connectSocket() {
       this.stompClient = new StompJs.Client({
         webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
-        // debug: (str) => {
-        //   console.log("Thông tin gỡ lỗi", str);
-        // },
+
         onConnect: (frame) => {
           console.log("Kết nối socket thành công!", frame);
           this.stompClient.subscribe("/topic/comments", (message) => {

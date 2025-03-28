@@ -6,7 +6,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import {connectSocket} from '@/service/socket/socket'
+import connectSocket from '@/service/socket/socket'
 onMounted(async () => {
   await connectSocket();
 });

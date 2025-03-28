@@ -18,41 +18,80 @@
                           @ps-scroll-y="scrollHanle">
                         <div class="slimscroll">
                         <!-- Left Chat Title -->
-                          <div class="left-chat-title all-chats d-flex justify-content-between align-items-center">
+                          <div class="left-chat-title all-chats d-flex flex-column justify-content-center align-items-center">
                               <div class="select-group-chat">
-                                <div class="dropdown">
-                                    <a href="javascript:void(0);">
-                                      Search user
+                                <input type="text" class="form-control" placeholder="Search friend..."
+                                          style="min-width: 300px;"
+                                          v-model="keyword">
+                              </div>
+                              <ul class="user-list space-chat" style="margin-top: 20px; min-width: 100%;"
+                                  v-if="friendsSearch.length > 0">
+                                <li class="user-list-item chat-user-list"
+                                    v-for="(friendSearch, index) in friendsSearch" :key="index">
+                                    <a href="javascript:void(0);" class="status-active">
+                                      <div class="avatar avatar-online">
+                                          <img :src="friendSearch?.user?.avatarUrl" class="rounded-circle"/>
+                                      </div>
+                                      <div class="users-list-body">
+                                          <div>
+                                            <h5>{{ friendSearch?.user?.fullname }}</h5>
+                                            <p></p>
+                                          </div>
+                                      </div>
+                                     <div class="d-flex flex-column justify-content-center align-items-center">
+                                        <button class="btn btn-pinkIcon"
+                                                :class="{ 'isFriend' : friendSearch?.friendStatus?.id !== null}"
+                                                :disabled="friendSearch?.friendStatus?.id !== null"
+                                                @click="addFriend(friendSearch?.user?.id)">
+                                          <img src="@/assets/img/addUser.png" style="aspect-ratio: 1 / 1; width: 20px;">
+                                        </button>
+                                     </div>
                                     </a>
-                                </div>
-                              </div>
-                              <div class="add-section">
-                                <ul>
-                                    <li><a href="javascript:void(0);" class="user-chat-search-btn">
-                                          <i class="feather-search"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <!-- Chat Search -->
-                                <div class="user-chat-search">
-                                    <form>
-                                    <span class="form-control-feedback"><i class="feather-search"></i></span>
-                                    <input type="text"
-                                        name="chat-search"
-                                        placeholder="Search"
-                                        class="form-control"/>
-                                    <div class="user-close-btn-chat">
-                                        <i class="feather-x"></i>
-                                    </div>
-                                    </form>
-                                </div>
-                                <!-- /Chat Search -->
-                              </div>
+                                </li>
+                              </ul>
                           </div>
                           <!-- /Left Chat Title -->
+                           
+                           <!-- Invitation -->
+                          <div class="sidebar-div chat-body"
+                              id="chatsidebar"
+                              v-if="invitations.length > 0">
+                              <!-- Title -->
+                              <div class="d-flex justify-content-between align-items-center ps-0 pe-0">
+                                <div class="fav-title pin-chat">
+                                    <h6>Invitation</h6>
+                                </div>
+                              </div>
+                              <!-- Title -->
+
+                              <!-- Friend invỉtation -->
+                              <ul class="user-list space-chat">
+                                <li class="user-list-item chat-user-list"
+                                    v-for="(invitation, index) in invitations" :key="index">
+                                    <a href="javascript:void(0);" class="status-active">
+                                      <div class="avatar avatar-online">
+                                          <img :src="invitation?.avatarUrl" class="rounded-circle"/>
+                                      </div>
+                                      <div class="users-list-body">
+                                          <div>
+                                            <h5>{{ invitation?.fullname }}</h5>
+                                            <p></p>
+                                          </div>
+                                      </div>
+                                     <div class="d-flex flex-column justify-content-center align-items-center">
+                                        <button class="btn btn-pink"
+                                                @click="confirmFriend(invitation.id)">Confrim</button>
+                                     </div>
+                                    </a>
+                                </li>
+                              </ul>
+                              <!-- Friend invỉtation -->
+                          </div>
+                          <!-- Invitation -->
 
                           <div class="sidebar-div chat-body"
-                              id="chatsidebar">
+                              id="chatsidebar"
+                              v-if="friends.length > 0">
                               <!-- Left Chat Title -->
                               <div class="d-flex justify-content-between align-items-center ps-0 pe-0">
                                 <div class="fav-title pin-chat">
@@ -61,25 +100,24 @@
                               </div>
                               <!-- /Left Chat Title -->
 
-                              <!-- assembly chat -->
+                              <!-- Friend chat -->
                               <ul class="user-list space-chat">
                                 <li class="user-list-item chat-user-list"
                                     v-for="(friend, index) in friends" :key="index"
                                     @click="selectFriend(friend)">
-                                    <a href="javascript:void(0);" class="status-active">
+                                    <a href="javascript:void(0);" class="d-flex justify-content-between">
                                       <div class="avatar avatar-online">
                                           <img :src="friend.avatarUrl" class="rounded-circle"/>
                                       </div>
                                       <div class="users-list-body">
                                           <div>
                                             <h5>{{ friend.fullname }}</h5>
-                                            <p></p>
                                           </div>
                                       </div>
                                     </a>
                                 </li>
                               </ul>
-                              <!-- assembly chat -->
+                              <!-- Friend chat -->
                           </div>
                         </div>
                       </perfect-scrollbar>
@@ -96,18 +134,18 @@
                         <div class="chat-header" v-if="selectedFriend != null">
                             <div class="user-details mb-0">
                               <figure class="avatar mb-0">
-                                  <img :src="selectedFriend != null ? selectedFriend.avatarUrl : null"
-                                        class="rounded-circle">
+                                <img :src="selectedFriend?.avatarUrl || ''" class="rounded-circle">
                               </figure>
                               <div class="mt-1">
-                                  <h5>{{ selectedFriend.fullname }}</h5>
+                                <h5>{{ selectedFriend?.fullname || '' }}</h5>
                               </div>
                             </div>
                         </div>
                         <!-- Chat header -->
                         
                         <div class="chat-body chat-page-group slimscroll">
-                          <perfect-scrollbar class="scroll-area-one" 
+                          <perfect-scrollbar class="scroll-area-one"
+                                               ref="messageList"
                                               :settings="settings" @ps-scroll-y="scrollHanle"
                                               :class="{'noneMessage': messages.length == 0}">
                             <div class="messages">
@@ -163,8 +201,8 @@
                       </div>
                       <!-- Chat footer -->
                       <div class="chat-footer">
-                        <form v-if="messages != null">
-                            <div class="smile-foot" v-if="false">
+                        <form v-if="selectedFriend != null">
+                            <div class="smile-foot">
                               <div class="chat-action-btns">
                                   <div class="chat-action-col">
                                   <a class="action-circle" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -184,20 +222,22 @@
                                   </div>
                               </div>
                             </div>
-                            <div class="replay-forms">
-                              <input v-model="messageInput" v-if="viewInputToggle == 'text'" type="text"
+                            <div class="replay-forms" style="margin-top: 0;">
+                              <input v-model="textMessage" type="text" v-if="viewInputToggle == 'text'"
                                   class="form-control chat_form"
                                   placeholder="Type your message here..."/>
                               <input type="file" v-if="viewInputToggle == 'image'"
+                                  ref="imageMessage"
                                   class="form-control chat_form inputImage"
-                                  @change="hanleUploadImage"/>
-                              <input type="file" v-if="viewInputToggle == 'file'"
+                                  @change="uploadImage"/>
+                              <input type="file" v-if="viewInputToggle == 'file'" 
+                                  ref="fileMessage"
                                   class="form-control chat_form"
-                                  @change="hanleUploadFile"/>
+                                  @change="uploadFile"/>
                             </div>
                             <div class="form-buttons" style="margin: 0;">
                               <button class="btn send-btn" type="button"
-                                      @click="sendMessage()">
+                                      @click="send()">
                                   <i class="bx bx-paper-plane"></i>
                               </button>                                 
                             </div>
@@ -216,28 +256,79 @@
 <script>
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
-import * as StompJs from "@stomp/stompjs";
-import SockJS from "sockjs-client";
-import baseApi from "@/axios";
-import { useStore } from "vuex";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { useStore } from 'vuex';
 import messageService from "@/service/messages/messages"
+import friendService from "@/service/friend/friend"
+import { uploadService } from "@/service/uploadFile/uploadService"
 import moment from "moment";
 export default {
   components: {
     PerfectScrollbar,
   },
   setup(){
-    const {messages, friends, fetchMessages, fetchFriends} = messageService();
+    const {messages, fetchMessages, sendMessage, receiveMessage} = messageService();
+    const {invitations, friendsSearch, friends, fetchFriends, searchFriend, sendInvitation, loadInvitation, confirmInvitaiton} = friendService();
+    const store = useStore();
+    const user = ref(store.state.userInfo);
     const selectedFriend = ref(null);
-  
+    const viewInputToggle = ref("text")
+    const textMessage = ref("");
+    const imageMessage = ref(null);
+    const fileMessage = ref(null);
+    const messageList = ref(null);
+    const keyword = ref("");
     onMounted(async () => {
-      await fetchFriends()
+      fetchFriends(),
+      receiveMessage(),
+      loadInvitation()
     })
+
+    watch(keyword, () => {
+      searchFriend(keyword.value);
+    });
+
+    const addFriend = async (idFriend) => {
+      await  sendInvitation(idFriend);
+      await searchFriend(keyword.value);
+      await fetchFriends();
+    }
+
+    const confirmFriend = async (idFriend) => {
+      await confirmInvitaiton(idFriend);
+      await loadInvitation();
+      await fetchFriends();
+    }
+
+    const uploadImage = async () => {
+      if( imageMessage?.value?.files.length == 0) return null
+      const inputImage = new FormData();
+      inputImage.append("img", imageMessage?.value?.files[0])
+      return await uploadService(inputImage);
+    }
+
+    const uploadFile = async () => {
+      if( fileMessage?.value?.files.length == 0) return null
+      const inputFile = new FormData();
+      inputFile.append("img", fileMessage?.value?.files[0]);
+      return await uploadService(inputFile);
+    }
+
+    const send = async () => {
+      if (!textMessage.value && !imageMessage.value && !fileMessage.value) return;
+      const [imageUrl, fileUrl] = await Promise.all([
+        imageMessage.value ? uploadImage() : null,
+        fileMessage.value ? uploadFile() : null
+      ]);
+      sendMessage(textMessage.value, selectedFriend?.value?.id, imageUrl, fileUrl)
+      imageMessage.value = null
+      fileMessage.value = null 
+      textMessage.value = ""
+    }
 
     const selectFriend = async (friend) => {
       selectedFriend.value = friend;
-      await fetchMessages(friend.id)
+      fetchMessages(friend.id)
     }
 
     const formatDate = (dateString) => {
@@ -246,195 +337,37 @@ export default {
     }
 
     return {
+      viewInputToggle,
       friends,
       selectedFriend,
       messages,
       selectFriend,
-      formatDate
-    }
-  },
-  created() {
-    this.connectSocket()
-  },
-  data() {
-    const store = useStore();
-    const user = ref(store.state.userInfo);
-    return {
-      title: "Messages",
-      text: "Home",
-      text1: "Messages",
-      settings: {
-        suppressScrollX: true,
-      },
+      formatDate,
+      uploadImage,
+      uploadFile,
+      send,
+      textMessage,
+      imageMessage,
+      fileMessage,
+      messageList,
+      friendsSearch,
+      keyword,
       user,
-      messageTo: {
-        id: "bc7b0320-2fbf-4aa1-aee6-0735cc35d38b",
-        avatarUrl: "https://lms-cfd.s3.amazonaws.com/profile.jpg"
-      },
-      assemblys: [],
-      assemblyChat: null,
-      messageInput: "",
-      image: {},
-      file: {},
-      viewInputToggle: "text",
-    };
-  },
-  methods: {
-    
-    async sendMessage(){
-      const urlImage = await this.upLoadImage()
-      const urlFile = await this.upLoadFile()
-      if(this.messageInput != "" || urlImage != null || urlFile != null) {
-        if(this.stompClient && this.stompClient.connected){
-          const mesage = {
-              id: null,
-              message: this.messageInput,
-              idUserFrom: this.user.id,
-              idAssembly: this.assemblyChat.id,
-              urlImage: urlImage,
-              urlFile: urlFile,
-              createdAt: null,
-              type: "text"
-            }
-          this.stompClient.publish({
-            destination: "/app/sendToGroup",
-            body: JSON.stringify(mesage),
-          });
-
-          this.messageInput = ""
-          this.image = null
-          this.file = null
-          this.viewInputToggle = 'text'
-        }
-      }  
-    },
-    deleteMessage(idMessage){
-      this.stompClient.publish({
-        destination: `/app/deleteMessage`,
-        body: JSON.stringify({
-          id: idMessage,
-          message: null,
-          idUserTo: null,
-          idUserFrom: null,
-          idAssembly: null,
-          createdAt: null,
-          type: null
-        }),
-      });
-    },
-    connectSocket() {
-      this.stompClient = new StompJs.Client({
-        webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
-        onConnect: (frame) => {
-          this.stompClient.subscribe("/topic/message", (message) => {
-            try {
-              const messageData = JSON.parse(message.body).body;
-              console.log("Nhận bình luận:", messageData);
-
-              if (this.messages != null) {
-                const index = this.messages.findIndex(
-                  (mess) => mess.id === messageData.id
-                );
-                if (index !== -1) {
-                  // Nếu bình luận đã tồn tại, cập nhật nó
-                  this.messages[index].message = messageData.message;
-                }if (messageData.idAssembly == this.assemblyChat.id){
-                  this.messages.push(messageData);
-                }
-              } else {
-                // Nếu bình luận chưa tồn tại, thêm mới
-                this.messages = [];
-                this.messages.push(messageData);
-              }
-            } catch (error) {
-              console.error("Không thể phân tích JSON:", error);
-              console.error("Nội dung nhận được:", message.body);
-            }
-          });
-          this.stompClient.subscribe("/topic/deleteMessage", (idMessage) => {
-            try {
-              const id = JSON.parse(idMessage.body);
-              console.log("Xóa bình luận có id: ", id);
-
-              const index = this.messages.findIndex((message) => message.id === id);
-              if (index !== -1) {
-                this.messages.splice(index, 1);
-              }
-            } catch (error) {
-              console.error("Không thể phân tích JSON:", error);
-              console.error("Nội dung nhận được:", idMessage.body);
-            }
-          });
-        },
-        onStompError: (frame) => {
-          console.error("Broker reported error: " + frame.headers["message"]);
-          console.error("Additional details: " + frame.body);
-        },
-      });
-      this.stompClient.activate();
-    },
-    hanleUploadFile(event){
-      this.file = event.target.files[0]
-
-    },
-    hanleUploadImage(event){
-      this.image = event.target.files[0]
-    },
-    async upLoadImage(){
-      if(!this.image){
-        return null
-      }
-      const formData = new FormData();
-      formData.append("img", this.image )
-
-      try{
-        const response = await baseApi.post("/api/s3/upload/image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log("Upload thành công: ", response.data.result.urlImg)
-        return response.data.result.urlImg
-      } catch (error) {
-        console.log("Tải hình lên không thành công: ", error)
-        return null;
-      }
-
-    },
-    async upLoadFile(){
-      if(!this.file){
-        return null
-      }
-      const formData = new FormData();
-      formData.append("img", this.file )
-
-      try{
-        const response = await baseApi.post("/api/s3/upload/image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }
-        })
-        console.log("Upload file thành công: ", response.data.result.urlImg)
-        return response.data.result.urlImg
-      } catch (error) {
-        console.log("Tải file lên không thành công: ", error)
-        return null;
-      }
-
-    },
-    scrollHanle() {},
-  },
-  beforeUnmount() {
-    if (this.stompClient) {
-      this.stompClient.deactivate();
+      addFriend,
+      invitations,
+      confirmFriend
     }
-  },
-};
+  }
+}
 </script>
 <style>
 .noneMessage {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.isFriend {
+  background-color: gray !important;
+  border: gray !important;
 }
 </style>
