@@ -1,7 +1,6 @@
 <template>
   <page-header></page-header>
   <coursedetails></coursedetails>
-<!--   <inner-page></inner-page>-->
   <div>
     <div class="inner-banner" :style="{ backgroundImage: `url(${course.coverImage})` }">
       <div class="container">
@@ -65,26 +64,36 @@
               <p>
                 {{ course.description }}
               </p>
-              <h6>Category</h6>
-              <p>
-                {{ course.categoryName }}
-              </p>
-              <h6>Creation date</h6>
-              <p>{{ formatDate(course.createdAt) }}</p>
+              <h6>What you'll learn</h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <ul>
+                    <li>Become a UX designer.</li>
+                    <li>You will be able to add UX designer to your CV</li>
+                    <li>Become a UI designer.</li>
+                    <li>Build & test a full website design.</li>
+                    <li>Build & test a full mobile app.</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <ul>
+                    <li>Learn to design websites & mobile phone apps.</li>
+                    <li>You'll learn how to choose colors.</li>
+                    <li>Prototype your designs with interactions.</li>
+                    <li>Export production ready assets.</li>
+                    <li>All the techniques used by UX professionals</li>
+                  </ul>
+                </div>
+              </div>
+   
             </div>
           </div>
-          <!-- /Overview -->
-
-          <!-- Course Content -->
           <div class="card content-sec" v-show="sections.length != 0">
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-6">
                   <h5 class="subs-title">Course Content</h5>
                 </div>
-                <!-- <div class="col-sm-6 text-sm-end">
-                  <h6>92 Lectures 10:56:11</h6>
-                </div> -->
               </div>
               <div class="course-card" v-for="(section, index) in sections" :key="index">
                 <h6 class="cou-title">
@@ -147,9 +156,6 @@
               <p style="font-size: 15px;">
                 {{ review.commentText }}
               </p>
-              <!-- <a href="javascript:;" class="btn btn-reply"
-                ><i class="feather-corner-up-left"></i> Reply</a
-              > -->
             </div>
           </div>
           <!-- /Reviews -->
