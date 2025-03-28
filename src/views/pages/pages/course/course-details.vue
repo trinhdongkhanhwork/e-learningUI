@@ -37,10 +37,10 @@
                 <img src="@/assets/img/icon/icon-01.svg" alt="" />
                 <p>{{ course.level }}</p>
               </div>
-              <div class="cou-info">
+              <!-- <div class="cou-info">
                 <img src="@/assets/img/icon/timer-icon.svg" alt="" />
                 <p>9hr 30min</p>
-              </div>
+              </div> -->
               <div class="cou-info">
                 <img src="@/assets/img/icon/people.svg" alt="" />
                 <p>{{ course.enrolledUserCount }} students enrolled</p>
@@ -159,53 +159,6 @@
             </div>
           </div>
           <!-- /Reviews -->
-
-          <!-- Comment -->
-          <!-- <div class="card comment-sec">
-            <div class="card-body">
-              <h5 class="subs-title">Post A comment</h5>
-              <form>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Full Name"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                      <input
-                        type="email"
-                        class="form-control"
-                        placeholder="Email"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group mb-3">
-                  <input
-                    type="email"
-                    class="form-control"
-                    placeholder="Subject"
-                  />
-                </div>
-                <div class="form-group mb-3">
-                  <textarea
-                    rows="4"
-                    class="form-control"
-                    placeholder="Your Comments"
-                  ></textarea>
-                </div>
-                <div class="submit-section">
-                  <button class="btn submit-btn" type="submit">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div> -->
-          <!-- /Comment -->
         </div>
 
         <div class="col-lg-4">
@@ -253,110 +206,6 @@
               </div>
             </div>
             <!-- /Video -->
-
-            <!-- Include -->
-            <div class="card include-sec">
-              <div class="card-body">
-                <div class="cat-title">
-                  <h4>Includes</h4>
-                </div>
-                <ul>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/import.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    11 hours on-demand video
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/play.svg" class="me-2" alt="" />
-                    69 downloadable resources
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/key.svg" class="me-2" alt="" />
-                    Full lifetime access
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/mobile.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Access on mobile and TV
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/cloud.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Assignments
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/teacher.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Certificate of Completion
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- /Include -->
-
-            <!-- Features -->
-            <div class="card feature-sec">
-              <div class="card-body">
-                <div class="cat-title">
-                  <h4>Includes</h4>
-                </div>
-                <ul>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/users.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Enrolled: <span>{{ course.enrolledUserCount }} students</span>
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/timer.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Duration: <span>20 hours</span>
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/chapter.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Chapters: <span>15</span>
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/video.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Video:<span> 12 hours</span>
-                  </li>
-                  <li>
-                    <img
-                        src="@/assets/img/icon/chart.svg"
-                        class="me-2"
-                        alt=""
-                    />
-                    Level: <span>Beginner</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- /Features -->
           </div>
         </div>
       </div>
@@ -370,7 +219,7 @@ import baseApi from '@/axios';
 import { useStore } from 'vuex';
 import { ref } from "vue";
 import {router} from "@/router";
-
+import moment from "moment";
 export default {
   data() {
     const store = useStore();
@@ -411,6 +260,10 @@ export default {
     }
   },
   methods: {
+    //Formet thời gian
+    formatDate(dateString) {
+      return moment(dateString).format("DD/MM/YYYY");
+    },
     // Các phương thức khác giữ nguyên
     getCourseById(idCourse) {
       baseApi.get(`/api/v1/courses/getCourseById/${idCourse}`)
