@@ -2,7 +2,7 @@
   <div class="chat-page main-chat-blk">
     <student-breadcrumb title="Messages" text="Home" text1="Messages" />
     <div class="main-wrapper chat-wrapper">
-      <student-header></student-header>
+      <layouts></layouts>
       <!-- <student-breadcrumb :title="title" :text="text" :text1="text1" /> -->
       <div class="page-content chat-page-wrapper">
         <div class="container" style="margin-top: 10px;">
