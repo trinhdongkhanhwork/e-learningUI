@@ -76,10 +76,11 @@ import { onMounted } from 'vue';
 export default {
   setup() {
     const { courses, paidCourses, fetchCourses } = useCourses();
-
+    
     onMounted(async () => {
       await fetchCourses();
     });
+
 
     return {
       courses,

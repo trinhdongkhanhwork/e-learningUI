@@ -17,7 +17,7 @@
                   <div class="col-md-9">
                     <div class="wishlist-detail">
                       <div class="wishlist-img">
-                        <router-link :to="`/course/${wish.id}`">
+                        <router-link :to="`/course/course-details?id=${wish.courseId}`">
                           <img v-if="wish.coverImage" :src="`${wish.coverImage}`" alt="Img" class="img-fluid" />
                         </router-link>
                         <div class="price-amt">
@@ -30,9 +30,7 @@
                             {{ wish.title }}
                           </router-link>
                         </h5>
-                        <div
-                            class="course-info d-flex align-items-center border-bottom-0 pb-0"
-                        >
+                        <div class="course-info d-flex align-items-center border-bottom-0 pb-0">
                           <div class="rating-img d-flex align-items-center">
                             <img src="@/assets/img/icon/icon-01.svg" alt="" />
                             <p>{{ wish.level }}</p>
@@ -66,6 +64,14 @@
                         View detail
                       </a>
                       <a
+                          v-else-if="wish.inCart"
+                          class="btn"
+                          style="background-color: orange; color: white;"
+                          @click.prevent="removeFromCart(wish.cartId)"
+                      >
+                        Remove from Cart
+                      </a>
+                      <a
                           v-else
                           href="#"
                           class="btn"
@@ -90,7 +96,6 @@
               </div>
             </div>
           </div>
-          <!-- /Plan Type -->
         </div>
       </div>
     </div>
@@ -102,52 +107,41 @@
 <script>
 import { router } from "@/router";
 import baseApi from "@/axios";
-import { useStore } from 'vuex';
-import { ref } from "vue";
+import { useStore } from "vuex";
+import { ref, onMounted } from "vue";
 
 export default {
   setup() {
     const store = useStore();
     const user = ref(store.state.userInfo);
     const wishlist = ref([]);
-    const cart = ref([]);
 
-    return {
-      store,
-      user,
-      wishlist,
-      cart,
-    };
-  },
-
-  mounted() {
-    const darkMode = localStorage.getItem("darkMode");
-    if (darkMode === "enabled") {
-      this.enableDarkMode();
-    } else {
-      this.disableDarkMode();
-    }
-
-    this.fetchWishlist();
-  },
-
-  methods: {
-    async fetchWishlist() {
-      const userId = this.user.id;
+    // Fetch wishlist từ API
+    const fetchWishlist = async () => {
+      const userId = user.value?.id;
       if (!userId) return;
       try {
         const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);
-        this.wishlist = await Promise.all(response.data.map(async (item) => {
-          const isPayment = await this.checkPaymentStatus(item.courseId);
-          return { ...item, isPayment };
-        }));
+        wishlist.value = await Promise.all(
+            response.data.map(async (item) => {
+              const isPayment = await checkPaymentStatus(item.courseId);
+              const cartStatus = await checkCartStatus(item.courseId);
+              return {
+                ...item,
+                isPayment,
+                inCart: cartStatus.inCart,
+                cartId: cartStatus.cartId, // Lưu cartId để xóa nếu cần
+              };
+            })
+        );
       } catch (error) {
         console.error("Error fetching wishlist:", error);
       }
-    },
+    };
 
-    async checkPaymentStatus(courseId) {
-      const userId = this.user.id;
+    // Kiểm tra trạng thái thanh toán của khóa học
+    const checkPaymentStatus = async (courseId) => {
+      const userId = user.value?.id;
       try {
         const response = await baseApi.get(`/api/payment/isPayment/${courseId}/${userId}`);
         return response.data;
@@ -155,79 +149,128 @@ export default {
         console.error("Error checking payment status:", error);
         return false;
       }
-    },
+    };
 
-    handleWishlistItemAction(wishlistItem) {
-      if (wishlistItem.isPayment) {
-        router.push({
-          path: '/course/course-details',
-          query: { id: wishlistItem.courseId },
-        });
-      } else {
-        this.addToCart(wishlistItem);
-      }
-    },
-
-    async unWishlist(id) {
+    // Kiểm tra trạng thái giỏ hàng của khóa học
+    const checkCartStatus = async (courseId) => {
+      const userId = user.value?.id;
       try {
-        await baseApi.delete(`/api/v1/wishlist/${id}`);
-        this.wishlist = this.wishlist.filter((course) => course.id !== id);
+        const response = await baseApi.get(`/api/v1/cart/getAllCart/${userId}`);
+        const cartItem = response.data.find((item) => item.courseId === courseId);
+        return {
+          inCart: !!cartItem,
+          cartId: cartItem ? cartItem.id : null,
+        };
       } catch (error) {
-        console.error("Error removing from wishlist:", error);
+        console.error("Error checking cart status:", error);
+        return { inCart: false, cartId: null };
       }
-    },
+    };
 
-    async addToCart(wish) {
-      const userId = this.user.id;
+    // Thêm vào giỏ hàng
+    const addToCart = async (wish) => {
+      const userId = user.value?.id;
       if (!userId) {
         alert("Please log in to add to cart!");
         return;
       }
+
+      // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
+      const cartStatus = await checkCartStatus(wish.courseId);
+      if (cartStatus.inCart) {
+        alert("This course is already in your cart!");
+        // Chuyển ngay đến trang giỏ hàng dù khóa học đã có
+        router.push("/pages/cart");
+        return;
+      }
+
       try {
-        // Gọi API để thêm khóa học vào giỏ hàng
-        const response = await baseApi.post(`/api/v1/cart/add`, {
-          userId: userId,
+        const response = await baseApi.post(`/api/v1/cart/addCart`, {
+          userId,
           courseId: wish.courseId,
-          title: wish.title,
-          price: wish.price,
-          coverImage: wish.coverImage,
         });
         if (response.status === 200) {
           alert("Added to cart successfully!");
-          // Điều hướng sang trang giỏ hàng
+          wish.inCart = true;
+          wish.cartId = response.data.id; // Giả sử API trả về cart item với id
+          // Chuyển ngay đến trang giỏ hàng
           router.push("/pages/cart");
         }
       } catch (error) {
         console.error("Error adding to cart:", error);
         alert("Failed to add to cart. Please try again.");
       }
-    },
+    };
 
-    removeFromCart(id) {
-      this.cart = this.cart.filter((course) => course.id !== id);
-    },
+    // Xóa khỏi giỏ hàng
+    const removeFromCart = async (cartId) => {
+      try {
+        await baseApi.delete(`/api/v1/cart/${cartId}`);
+        const wish = wishlist.value.find((w) => w.cartId === cartId);
+        if (wish) {
+          wish.inCart = false;
+          wish.cartId = null;
+        }
+      } catch (error) {
+        console.error("Error removing from cart:", error);
+      }
+    };
 
-    enableDarkMode() {
+    // Xóa khỏi wishlist
+    const unWishlist = async (id) => {
+      try {
+        await baseApi.delete(`/api/v1/wishlist/${id}`);
+        wishlist.value = wishlist.value.filter((course) => course.id !== id);
+      } catch (error) {
+        console.error("Error removing from wishlist:", error);
+      }
+    };
+
+    // Xử lý hành động khi nhấn nút
+    const handleWishlistItemAction = (wishlistItem) => {
+      if (wishlistItem.isPayment) {
+        router.push({
+          path: "/course/course-details",
+          query: { id: wishlistItem.courseId },
+        });
+      } else {
+        addToCart(wishlistItem);
+      }
+    };
+
+    // Dark mode
+    const enableDarkMode = () => {
       document.documentElement.setAttribute("class", "light dark");
       localStorage.setItem("darkMode", "enabled");
-    },
+    };
 
-    disableDarkMode() {
+    const disableDarkMode = () => {
       document.documentElement.setAttribute("class", "light");
       localStorage.removeItem("darkMode");
-    },
+    };
 
-    toggleSelectAll() {
-      if (this.selectAll) {
-        this.selectedItems = this.wishlist.map(item => item.id);
+    // Mounted hook
+    onMounted(() => {
+      const darkMode = localStorage.getItem("darkMode");
+      if (darkMode === "enabled") {
+        enableDarkMode();
       } else {
-        this.selectedItems = [];
+        disableDarkMode();
       }
-    },
+      fetchWishlist();
+    });
 
-    updateSelectAllStatus() {
-      this.selectAll = this.selectedItems.length === this.wishlist.length && this.wishlist.length > 0;
-    },
+    return {
+      user,
+      wishlist,
+      fetchWishlist,
+      addToCart,
+      removeFromCart,
+      unWishlist,
+      handleWishlistItemAction,
+      enableDarkMode,
+      disableDarkMode,
+    };
   },
 };
 </script>
@@ -238,32 +281,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.select-all-container {
-  margin-top: 10px;
-}
-
-.select-all {
-  font-size: 16px;
-}
-
-.select-all input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-
-.product-checkbox {
-  display: flex;
-  align-items: center;
-}
-
-.product-checkbox input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
 }
 
 .wishlist-item {
@@ -292,6 +309,7 @@ export default {
 .remove-btn {
   text-align: right;
 }
+
 .remove-btn .btn {
   margin-left: 10px;
   padding: 5px 15px;

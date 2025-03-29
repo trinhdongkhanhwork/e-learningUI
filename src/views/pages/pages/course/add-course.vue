@@ -963,7 +963,6 @@ displayQuestions() {
                       .catch(uploadError => {
                         console.error("Error occurred while uploading files:", uploadError);
                       });
-
                 })
                 .catch(error => {
                   console.error("Error occurred while saving course metadata:", error);
