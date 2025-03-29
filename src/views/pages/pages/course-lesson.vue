@@ -1,834 +1,524 @@
 <template>
   <layouts-login></layouts-login>
 
-  <!-- Course Lesson -->
   <section class="page-content course-sec course-lesson">
-    <div class="container" style="margin-top: 20px">
-      <div class="progress-stip" style="margin-bottom: 10px">
-        <div class="progress-bar bg-success progress-bar-striped active-stip"></div>
-      </div>
+    <div class="container">
       <div class="row">
+        <!-- Danh sách Sections và Lectures -->
         <div class="col-lg-4">
-          <!-- Course Lesson -->
-          <div class="lesson-group"
-            v-for="(section, index) in courses.sections"
-            :key="index">
-            <div class="course-card">
+          <div class="lesson-group">
+            <br>
+            <div class="course-card" v-for="section in course?.sections" :key="section.id">
               <h6 class="cou-title">
-                <a class="collapsed"
-                  data-bs-toggle="collapse"
-                  aria-expanded="false"
-                  @click="viewSectionToggle(section.id)">
-				  {{ section.title }}
-				  <span>{{ section.lectures.length }} Lessons</span>
+                <a class="collapsed" data-bs-toggle="collapse" :href="'#collapse' + section.id" aria-expanded="false">
+                  {{ section.title }} <span>{{ section.lectures.length }} Lessons</span>
                 </a>
               </h6>
-              <div class="card-collapse" v-if="viewSection[section.id]">
+              <div :id="'collapse' + section.id" class="card-collapse collapse">
                 <ul>
-                  <li v-for="(lecture, index) in section.lectures" :key="index"
-                    @click="viewLectureUser(lecture.id)">
-                    <p class="play-intro">{{ lecture.title }}</p>
+                  <li v-for="lecture in section.lectures" :key="lecture.id" @click="selectLecture(lecture)">
+                    <p>{{ lecture.title }}</p>
                     <div>
-                      <img src="@/assets/img/icon/play-icon.svg" alt="" />
+                      <img v-if="lecture.type === 'video'" src="@/assets/img/icon/play-icon.svg" alt="Video" />
+                      <img v-if="lecture.type === 'quiz'" src="@/assets/img/icon/question-icon-com.svg" alt="Quiz" />
                     </div>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <!-- /Course Lesson -->
         </div>
-        <div class="col-lg-8" v-if="lecture != null">
-          <div style="display: none">
-            <!-- Quiz -->
-            <div class="card"
-              style="padding: 20px; margin-bottom: 10px"
-              v-if="lecture.optionChose == null">
-              <!-- Start -->
-              <div style="display: flex; justify-content: center; flex-direction: column"
-                v-if="!viewStartQuizz">
-                <div style="display: flex; justify-content: center">
-                  <h3 style="text-align: center">
-                    You need to take the test to complete
-                  </h3>
-                </div>
-                <div style="display: flex; justify-content: center">
-                  <button class="submit-btn"
-                    type="button"
-                    style="min-width: 210px; height: 30px; padding: 0"
-                    @click="viewStartQuizzToggle()">
-                    Start
-                  </button>
-                </div>
-              </div>
-              <!-- Start -->
-              <!-- Take the quiz -->
-              <div v-if="viewStartQuizz">
-                <div style="border-bottom: 1px solid lightgray">
-                  <p style="font-size: 15px; font-weight: bold; margin-bottom: 5px">
-                    Question:
-                    <span style="color: black">{{ navigaQuestionToggle + 1 }}/{{ questions.length }}</span>
-                  </p>
-                </div>
-                <div style="margin-top: 3px">
-                  <div v-for="(question, index) in questions"cfd
-                    :key="index"
-                    v-show="navigaQuestionToggle === index">
-                    <p style="font-size: 15px; font-weight: bold; color: #392c7d; margin: 0;">
-                      Question {{ index + 1 }}:
-                      <span style="color: black">
-                        {{ question.title }}
-                      </span>
-                    </p>
-                    <div style="display: flex; flex-direction: column">
-                      <label :for="option.id"
-                        v-for="(option, index) in question.options"
-                        :key="index"
-                        style="margin: 0; font-size: 15px">
-                        <input type="radio"
-                          :name="question.id"
-                          :id="option.id"
-                          :value="option.id"
-                          v-model="optionChose[option.id]"
-                          @click="choseOption(option.id)"/>
-                        	{{ option.text }}
-                      </label>
-                    </div>
-                  </div>
-                  <div style=" margin-top: 10px; display: flex; gap: 5px; justify-content: space-between; flex-wrap: wrap;">
-                    <div style="display: flex; gap: 5px">
-                      <button class="submit-btn"
-                        		type="button"
-                        		style="min-width: 100px; height: 30px; padding: 0"
-                       	@click="navigaQuestionToggleClick(-1, lecture.quiz.questions.length)">Back</button>
-                      <button class="submit-btn"
-                        type="button"
-                        style="min-width: 100px; height: 30px; padding: 0"
-                        @click="navigaQuestionToggleClick(1, lecture.quiz.questions.length)">Next</button>
-                    </div>
-                    <div>
-                      <button class="submit-btn" type="button" style="min-width: 210px; height: 30px; padding: 0;background-clip: border-box;">Submit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Take the quiz -->
-            </div>
-            <!-- Quizz -->
-            <!-- Statistics -->
-            <div class="card" style="padding: 20px" v-if="lecture.optionChose != null">
-              <div style="display: flex; justify-content: center; flex-direction: column">
-                <p style="font-size: 15px; font-weight: bold; color: #392c7d; margin: 0">
-                  Status :
-                  <span style="color: black"> Pass </span>
-                </p>
-                <p style="font-size: 15px; font-weight: bold; color: #392c7d; margin: 0">
-                  Point :
-                  <span style="color: black"> 10/10 </span>
-                </p>
-                <p style="font-size: 15px; font-weight: bold; color: #392c7d; margin: 0">
-                  Correct answer :
-                  <span style="color: black"> 10/10 </span>
-                </p>
-              </div>
-              <div style="display: flex; justify-content: center; gap: 5px; flex-wrap: wrap">
-                <button class="submit-btn" type="button" style="min-width: 210px; height: 30px; padding: 0">Detail</button>
-                <button class="submit-btn" type="button" style="min-width: 210px; height: 30px; padding: 0">Remake</button>
-              </div>
-              <!-- Check quiz -->
-              <div>
-                <div style="border-bottom: 1px solid lightgray">
-                  <p style="font-size: 15px; font-weight: bold">
-                    Question:
-                    <span style="color: black"
-                      >{{ navigaQuestionToggle + 1 }}/{{ questions.length }}</span>
-                  </p>
-                </div>
-                <div>
-                  <div v-for="(question, index) in questions" :key="index"
-                    v-show="navigaQuestionToggle === index">
-                    <p style="font-size: 15px; font-weight: bold; color: #392c7d; margin: 0;">
-                      Question {{ index + 1 }}:
-                      <span style="color: black">
-                        {{ question.title }}
-                      </span>
-                    </p>
-                    <div style="display: flex; flex-direction: column">
-                      <label v-for="(option, index) in question.options" :key="index"
-                        style="margin: 0; font-size: 15px"
-                        :style="{ color: option.correct ? 'green' : 'black' }">
-                        <input type="radio" disabled /> {{ option.text }}
-                      </label>
-                    </div>
-                  </div>
-                  <div style="
-                      margin-top: 10px;
-                      display: flex;
-                      gap: 5px;
-                      justify-content: space-between;
-                      flex-wrap: wrap;">
-                    <div style="display: flex; gap: 5px">
-                      <button class="submit-btn"
-                        type="button"
-                        style="min-width: 100px; height: 30px; padding: 0"
-                        @click="
-                          navigaQuestionToggleClick(-1, lecture.quiz.questions.length)"> Back </button>
-                      <button class="submit-btn"
-                        type="button"
-                        style="min-width: 100px; height: 30px; padding: 0"
-                        @click="
-                          navigaQuestionToggleClick(1, lecture.quiz.questions.length)"> Next </button>
-                    </div>
-                    <div>
-                      <button class="submit-btn"
-                        type="button"
-                        style="
-                          min-width: 210px;
-                          height: 30px;
-                          padding: 0;
-                          background-clip: border-box;" > Remake </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Check quiz -->
-            </div>
-            <!-- Statistics -->
-          </div>
-          <!-- Video and comment -->
-          <div>
-            <!-- Video -->
-            <div class="student-widget lesson-introduction">
-              <div class="lesson-widget-group">
-                <h4 class="tittle">Introduction</h4>
-                <div class="introduct-video">
-                  <video controls width="100%" :src="urlVideo"></video>
-                </div>
-              </div>
-            </div>
-            <!-- /Video -->
-            <div class="card" style="width: 100%; margin-top: 10px; padding: 20px">
-              <!-- Post comment -->
-              <div class="instructor-wrap" style="border: none; margin: 0 0 20px 0">
-                <div class="comment-sec"
-                  style="
-                    margin: 0;
-                    display: flex;
-                    align-items: start;
-                    width: 100%;
-                    flex-wrap: nowrap;">
-                  <div class="abt-instructor-img" style="flex: 0 0 50px">
-                    <router-link to="/instructor/instructor-profile">
-                      <img
-                        src="@/assets/img/user/user1.jpg"
-                        alt="img"
-                        class="img-fluid"
-                      />
-                    </router-link>
-                  </div>
-                  <form style="flex-grow: 1">
-                    <div class="form-group" style="margin-bottom: 10px">
-                      <textarea rows="4"
-                        class="form-control"
-                        placeholder="Your Comments"
-                        style="width: 100%"
-                        v-model="postComment"></textarea>
-                    </div>
-                    <button class="submit-btn"
-                      type="button"
-                      style="height: 30px; padding: 0"
-                      @click="postCommentInVideo(postComment)">Submit</button>
-                  </form>
-                </div>
-              </div>
-              <!-- Post comment -->
-              <!-- List comment -->
-              <ul style="max-width: 100%; display: flex; flex-direction: column-reverse">
-                <li style="margin: 10px 0; width: 100%"
-                  v-for="(commentParent, index) in comments" :key="index"
-                  v-show="commentParent.parentId == null">
-                  <div class="instructor-wrap hoverComment"
-                    style=" border: none; margin: 0 0 10px 0;width: 100%; display: flex; align-items: flex-start; justify-content: start; flex-wrap: nowrap;">
-                    <div class="abt-instructor-img" style="flex: 0 0 50px">
-                      <router-link to="/instructor/instructor-profile">
-                        <img src="@/assets/img/user/user1.jpg" alt="img" class="img-fluid"/>
-                      </router-link>
-                    </div>
-                    <div
-                      style=" margin: 0; display: flex; justify-content: space-between; flex-wrap: nowrap; flex-grow: 1;">
-                      <div class="instructor-detail" style="width: 100%">
-                        <h5>
-                          <router-link to="/instructor/instructor-profile">{{
-                            commentParent.fullName
-                          }}</router-link>
-                        </h5>
-                        <p style="font-size: 16px; margin: 5px 0 0 0; white-space: normal; overflow-wrap: break-word; word-break: break-word;"
-                          v-if="!viewEditComment[commentParent.id]">
-                          {{ commentParent.commentText }}</p>
-                        <!-- Edit comment -->
-                        <div class="comment-sec"
-                          style="display: flex"
-                          v-if="viewEditComment[commentParent.id]">
-                          <form style="flex-grow: 1; margin: 10px 0 20px 0">
-                            <div class="form-group" style="margin-bottom: 10px">
-                              <textarea rows="4"
-                                class="form-control"
-                                placeholder="Your Comments"
-                                style="width: 100%"
-                                v-model="editCommentText[commentParent.id]"></textarea>
-                            </div>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap">
-                              <button class="submit-btn" type="button" style="height: 30px; padding: 0"
-                                @click="putComment(commentParent,editCommentText[commentParent.id],commentParent.idUserComment)">Edit</button>
-                              <button class="submit-btn" type="button"
-                                      style="height: 30px; padding: 0; border: none; background-clip: border-box;"
-                                      @click="viewEditCommentToggle(commentParent.id)">Cancel</button>
-                            </div>
-                          </form>
-                        </div>
-                        <!-- Edit comment -->
 
-                        <!-- Post reply -->
-                        <a href="javascript:;"
-                          style="font-size: 14px"
-                          @click="viewPostReplyToggle(commentParent.id)"
-                          class="rev-info"
-                          v-if="!viewEditComment[commentParent.id]">
-                          <i class="feather-corner-up-left"></i>Reply</a>
-                        <div class="comment-sec"
-                              style="display: flex"
-                              v-if="viewPostReply[commentParent.id]">
-                          <form style="flex-grow: 1; margin: 10px 0 20px 0">
-                            <div class="form-group" style="margin-bottom: 10px">
-                              <textarea rows="4"
-                                class="form-control"
-                                placeholder="Your Comments"
-                                style="width: 100%"
-                                v-model="replyText[commentParent.id]"></textarea>
-                            </div>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap">
-                              <button class="submit-btn"
-                                type="button"
-                                style="height: 30px; padding: 0"
-                                @click=" postReplyInVideo(replyText[commentParent.id],commentParent.id)">Reply</button>
-                              <button class="submit-btn" type="button"
-                                    style="height: 30px; padding: 0; border: none; background-clip: border-box;"
-                                    @click="viewPostReplyToggle(commentParent.id)">Cancel</button>
-                            </div>
-                          </form>
-                        </div>
-                        <!-- Post reply -->
-                      </div>
-                      <div class="hoverMenu"
-                        v-if="commentParent.idUserComment === user.id">
-                        <a href="javascript:;" class="listenComment">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                          </svg>
-                        </a>
-                        <div class="popupStyle">
-                          <a href="javascript:;"
-                            @click=" viewEditCommentToggle( commentParent.id, commentParent.commentText)">
-                            <p>Edit</p>
-                          </a>
-                          <a href="javascript:;"
-                            @click="deleteComment(commentParent, commentParent.idUserComment)">
-                            <p>Delete</p>
-                          </a>
-                        </div>
-                      </div>
+        <!-- Nội dung bài học -->
+        <div class="col-lg-8">
+          <br>
+          <div class="student-widget lesson-introduction">
+            <div class="lesson-widget-group">
+              <h4 class="tittle">{{ selectedLecture?.title || "Introduction" }}</h4>
+
+              <!-- Nếu là video -->
+              <div class="introduct-video" v-if="selectedLecture?.type === 'video'">
+                <a href="https://www.youtube.com/embed/1trvO6dqQUI" class="video-thumbnail" data-fancybox="">
+                  <div class="play-icon">
+                    <i class="fa-solid fa-play"></i>
+                  </div>
+                  <img src="@/assets/img/video-img-01.jpg" alt="" />
+                </a>
+              </div>
+
+              <!-- Nếu là quiz -->
+              <div v-if="selectedLecture?.type === 'quiz'">
+              <div v-if="loading">
+                <p>Check data...</p>
+              </div>
+                <div class="quiz-box" v-if="!quizStarted">
+                  <!-- nếu có dữ liệu -->
+                  <template v-if="hasQuiz">
+                    <div class="quiz-data">
+                      <h3>Previous test results:</h3>
+                      <table border="1">
+                        <thead>
+                          <tr>
+                            <th>Number of checks</th>
+                            <th>Day</th>
+                            <th>Points</th>
+                            <th>Result</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(quiz, index) in quizData" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ quiz.createdAt ? new Date(quiz.createdAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric',hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/A' }}</td>
+                            <td>{{ quiz.score }}</td>
+                            <td>{{ quiz.passedLecture ? 'Pass' : 'Fail' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
+                    <button class="begin-btn" @click="startQuiz">[ Begin ]</button>
+                  </template>
+                  <template v-else>
+                    <!-- Nếu chưa có dữ liệu -->
+                    <p><strong>Number of questions:</strong> {{ selectedLecture?.quiz?.questions?.length || 0 }}</p>
+                    <p><strong>Exercise duration:</strong> 5 Minutes</p>
+                    <p><strong>Total attempts:</strong> 0/3</p>
+                    <p><strong>Minimum score to complete:</strong> 85%</p>
+                    <button class="begin-btn" @click="startQuiz">[ Begin ]</button>
+                  </template>
+                </div>
+
+                <!-- Giao diện câu hỏi -->
+                <div v-if="quizStarted">
+                  <p><strong>Time Left:</strong> {{ Math.floor(timeLeft / 60) }}:{{ ('0' + (timeLeft % 60)).slice(-2) }}</p>
+
+                  <div class="question-box">
+                    <p><strong>Question {{ currentQuestionIndex + 1 }}: {{ currentQuestion.title }}</strong></p>
+                    <ul>
+                      <li v-for="(option, index) in currentQuestion.options" :key="index">
+                        <label>
+                          <input 
+                            type="checkbox" 
+                            :value="option.id" 
+                            @change="toggleAnswer(option.id)"
+                          />
+                          {{ option.text }}
+                        </label>
+                      </li>
+                    </ul>
                   </div>
-                  <!-- List reply -->
-                  <ul style="margin: 15px 0 0 35px">
-                    <li style="margin: 10px 0 0 0"
-                        v-for="(commentChild, index) in getReplyOfComment(commentParent.id)" :key="index"
-                        v-show="index < (buttonNumberShowComment[commentParent.id] ? getReplyOfComment(commentParent.id).length : 2)">
-                      <div class="instructor-wrap hoverReply"
-                        style=" margin: 0; border: none; width: 100%;  display: flex; align-items: flex-start; justify-content: start; flex-wrap: nowrap;">
-                        <div class="abt-instructor-img" style="flex: 0 0 40px">
-                          <router-link to="/instructor/instructor-profile">
-                            <img src="@/assets/img/user/user1.jpg"
-                                  style="width: 40px; height: 40px"
-                                  alt="img"
-                                  class="img-fluid"/>
-                          </router-link>
-                        </div>
-                        <div
-                          style="margin: 0; display: flex; justify-content: space-between; flex-wrap: nowrap; flex-grow: 1;">
-                          <div class="instructor-detail" style="width: 100%">
-                            <h5>
-                              <router-link to="/instructor/instructor-profile">{{ commentChild.fullName }}</router-link>
-                            </h5>
-                            <p style="color: gray">@{{ commentChild.nameUserParent }}</p>
-                            <p style=" font-size: 16px; margin: 5px 0 0 0; white-space: normal; overflow-wrap: break-word; word-break: break-word; padding-right: 20px;"
-                              v-if="!viewEditComment[commentChild.id]">
-                              {{ commentChild.commentText }}</p>
-                            <!-- Edit reply -->
-                            <div class="comment-sec"
-                              style="display: flex"
-                              v-if="viewEditComment[commentChild.id]">
-                              <form style="flex-grow: 1; margin: 10px 0 20px 0">
-                                <div class="form-group" style="margin-bottom: 10px">
-                                  <textarea rows="4" class="form-control"
-                                    placeholder="Your Comments"
-                                    style="width: 100%"
-                                    v-model="editCommentText[commentChild.id]"></textarea>
-                                </div>
-                                <div style="display: flex; gap: 10px; flex-wrap: wrap">
-                                  <button class="submit-btn" type="button"
-                                    style="height: 30px; padding: 0"
-                                    @click=" putComment(commentChild,editCommentText[commentChild.id], commentChild.idUserComment)">Edit</button>
-                                  <button class="submit-btn" type="button"
-                                   		 style="height: 30px; padding: 0; border: none; background-clip: border-box;"
-                                   		 @click="viewEditCommentToggle(commentChild.id)"> Cancel </button>
-                                </div>
-                              </form>
-                            </div>
-                            <!-- Edit reply -->
-                            <!-- Post reply to reply-->
-                            <a href="javascript:;" style="font-size: 14px"
-                              @click="viewPostReplyToggle(commentChild.id)"
-                              class="rev-info"
-                              v-if="!viewEditComment[commentChild.id]">
-                              <i class="feather-corner-up-left"></i>Reply</a>
-                            <div class="comment-sec"
-                              style="display: flex"
-                              v-if="viewPostReply[commentChild.id]" >
-                              <form style="flex-grow: 1; margin: 10px 0 20px 0">
-                                <div class="form-group" style="margin-bottom: 10px">
-                                  <textarea rows="4" class="form-control"
-                                    placeholder="Your Comments"
-                                    style="width: 100%"
-                                    v-model="replyText[commentChild.id]"></textarea>
-                                </div>
-                                <div style="display: flex; gap: 10px; flex-wrap: wrap">
-                                  <button class="submit-btn" type="button"
-                                          style="height: 30px; padding: 0"
-                                          @click="postReplyInVideo(replyText[commentChild.id],commentChild.id)"> Reply </button>
-                                  <button class="submit-btn" type="button"
-									                        style=" height: 30px; padding: 0; border: none; background-clip: border-box;"
-                                          @click="viewPostReplyToggle(commentChild.id)">Cancel</button>
-                                </div>
-                              </form>
-                            </div>
-                            <!-- Post reply to reply-->
-                          </div>
-                          <div class="hoverMenu"
-                            v-if="commentChild.idUserComment === user.id">
-                            <a href="javascript:;" class="listenReply">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16" >
-                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                              </svg>
-                            </a>
-                            <div class="popupStyle">
-                              <a href="javascript:;"
-                                @click="viewEditCommentToggle(commentChild.id,commentChild.commentText)">
-                                <p>Edit</p>
-                              </a>
-                              <a href="javascript:;"
-                                @click="deleteComment(commentChild, commentChild.idUserComment)">
-                                <p>Delete</p>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <div style="display: flex; justify-content: center; margin-top: 10px">
-                    <a href="javascript:;"
-                      @click="buttonNumberShowCommentToggle(commentParent.id)"
-                      v-if="getReplyOfComment(commentParent.id).length > 2">
-                      {{ buttonNumberShowComment[commentParent.id] ? "Ẩn bớt" : "Xem thêm" }}
-                    </a>
+
+                  <div class="quiz-actions">
+                    <button class="submit-btn" @click="submitQuiz">[Submit]</button>
+                    <button class="next-btn" @click="nextQuestion">[Next Question]</button>
                   </div>
-                  <!-- List reply -->
-                </li>
-              </ul>
-              <!-- List comment -->
+                </div>
+              </div>
             </div>
           </div>
-          <!-- Video and comment -->
         </div>
       </div>
     </div>
   </section>
-  <!-- /Course Lesson -->
-  <div class="modal"
-      style="display: block; background-color: rgba(0, 0, 0, 0.6)"
-      v-if="exitDialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">Will you leave?</h1>
-					<button type="button" class="btn-close" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					If you leave now, you will have to do it again!
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="submit-btn"
-                  style="min-width: 100px; height: 30px; padding: 0;"
-                  @click="isNextPage(false)">Keep</button>
-					<button type="button" class="submit-btn"
-                  style="min-width: 100px; height: 30px; padding: 0; border: none; background-clip: border-box;"
-                  @click="isNextPage(true)">Exit</button>
-				</div>
-			</div>
-		</div>
-	</div>
+
+  <layouts1></layouts1>
+
+  <!-- Popup xác nhận nộp bài -->
+  <div v-if="showSubmitPopup" class="popup-overlay">
+    <div class="popup-box">
+      <p>Bạn có chắc chắn muốn nộp bài không?</p>
+      <button class="confirm-btn" @click="confirmSubmitQuiz">Xác nhận</button>
+      <button class="cancel-btn" @click="showSubmitPopup = false">Hủy</button>
+    </div>
+  </div>
 </template>
-<script>
-import * as StompJs from "@stomp/stompjs";
-import SockJS from "sockjs-client";
-import baseApi from "@/axios";
-import { useStore } from "vuex";
-import { ref } from "vue";
+
+<script> 
+import axios from "axios";
 
 export default {
   data() {
-    const store = useStore();
-    const user = ref(store.state.userInfo);
-    return {
-      user,
-      stompClient: {},
-      comment: {},
-      comments: [],
-      replyText: {},
-      editCommentText: {},
-      postComment: "",
-      questions: [],
-      courses: {},
-      lecture: {},
-      urlVideo:"",
-      viewPostReply: {},
-      viewEditComment: {},
-      viewSection: {},
-      buttonNumberShowComment: {},
-      navigaQuestionToggle: 0,
-      viewStartQuizz: false,
-      optionChose: {},
-      exitDialog: false,
-      nextPage: null
-    };
+  return {
+    course: null,
+    courseId: null,
+    selectedLecture: null,
+    quizStarted: false, 
+    currentQuestionIndex: 0,
+    selectedAnswers: [],
+    timeLeft: 300, 
+    timer: null,
+    showSubmitPopup: false,
+    quizData: null,
+    hasQuiz: false,
+    loading: true,
+  };
+},
+  computed: {
+    currentQuestion() {
+      return this.selectedLecture?.quiz?.questions[this.currentQuestionIndex] || {};
+    },
   },
-  created() {
-    this.getCourses(this.$route.query.id);
-    this.connectSocket();
+  async mounted() {
+    
+    this.courseId = this.getCourseIdFromUrl();
+    if (!this.courseId) {
+      console.error("not find course");
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/courses/getCourseById/${this.courseId}`
+      );
+      this.course = response.data;
+    } catch (error) {
+      console.error("err data course:", error);
+    }
   },
   methods: {
-    getCourses(courseId) {
-      baseApi
-        .get(`/api/v1/courses/getCourseById/${courseId}`)
-        .then((c) => {
-          this.courses = c.data;
-          this.viewLectureUser(this.courses.sections[0].lectures[0].id);
-          this.resetForm();
-          console.log("Tải lên các chương học thành công", this.courses);
-        })
-        .catch((error) => {
-          console.log("Tải lên các chương học thất bại", error);
-        });
+    getCourseIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
     },
-    viewLectureUser(lectureId) {
-      baseApi
-        .get(`/lectures/${lectureId}`)
-        .then((lecture) => {
-          this.lecture = lecture.data;
-          this.comments = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.listComment : [];
-          this.questions = this.lecture.quiz != null ? this.lecture.quiz.questions : [];
-          this.urlVideo = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.videoUrl : "";
-          console.log("Lecture tải lên: ", this.lecture);
-        })
-        .catch((error) => {
-          console.log("Lỗi tải lecture: ", error);
-        });
-    },
-    submitQuiz() {},
-    getReplyOfComment(commentParentId) {
-      const replys = [];
-      if (this.lecture != null) {
-        const getRepliesRecursively = (parentId) => {
-          let childComments = this.findCommentChild(parentId);
-          childComments.forEach((element) => {
-            replys.push(element);
-            getRepliesRecursively(element.id);
-          });
-        };
-        getRepliesRecursively(commentParentId);
-      }
-      return replys;
-    },
-    findCommentChild(parentId) {
-      let commentChilds = [];
-      commentChilds = this.comments.filter((comment) => comment.parentId === parentId);
-      if (commentChilds.length > 0) {
-        return commentChilds;
-      } else {
-        return [];
-      }
-    },
-    postCommentInVideo(commentText) {
-      if (commentText != "" && this.lecture.videoInlectureResponse != null) {
-        this.comment.commentText = commentText;
-        this.comment.videoId = this.lecture.videoInlectureResponse != null ? this.lecture.videoInlectureResponse.idVideo : null;
-        if (this.stompClient && this.stompClient.connected) {
-          this.stompClient.publish({
-            destination: "/app/comments/post",
-            body: JSON.stringify(this.comment),
-          });
-          console.log("Đã gửi bình luận qua WebSocket");
-        } else {
-          console.error(
-            "WebSocket chưa kết nối. Đang đợi kết nối trước khi gửi bình luận."
-          );
-        }
-      }
-      this.postComment = "";
-    },
-    postReplyInVideo(replyText, parentId) {
-      if (replyText != "" && this.lecture.videoInlectureResponse != null) {
-        this.comment.parentId = parentId;
-        this.comment.commentText = replyText;
-        this.comment.videoId =
-          this.lecture.videoInlectureResponse != null
-            ? this.lecture.videoInlectureResponse.idVideo
-            : null;
-        if (this.stompClient && this.stompClient.connected) {
-          this.stompClient.publish({
-            destination: "/app/comments/post",
-            body: JSON.stringify(this.comment),
-          });
-          this.viewPostReply[parentId] = false;
-          this.resetForm();
-          console.log("Đã gửi bình luận qua WebSocket");
-        } else {
-          console.error(
-            "WebSocket chưa kết nối. Đang đợi kết nối trước khi gửi bình luận."
-          );
-        }
-      }
-      this.replyText[parentId] = "";
-    },
-    deleteComment(comment, userComment) {
-      if (userComment === this.user.id) {
-        if (this.stompClient && this.stompClient.connected) {
-          this.stompClient.publish({
-            destination: `/app/comments/delete`,
-            body: JSON.stringify(comment),
-          });
-          this.resetForm();
-          console.log("Đã xóa bình luận qua WebSocket");
-        } else {
-          console.error(
-            "WebSocket chưa kết nối. Đang đợi kết nối trước khi gửi bình luận."
-          );
-        }
-      } else {
-        console.log("Không phải quyền người dùng");
-      }
-    },
-    putComment(comment, editCommentText, userComment) {
-      if (userComment === this.user.id) {
-        this.comment.commentText = editCommentText;
-        this.comment.id = comment.id;
-        this.comment.parentId = comment.parentId;
-        if (this.stompClient && this.stompClient.connected) {
-          this.stompClient.publish({
-            destination: "/app/comments/update",
-            body: JSON.stringify(this.comment),
-          });
-          this.viewEditComment[comment.id] = false;
-          this.resetForm();
-          console.log("Đã gửi bình luận qua WebSocket");
-        } else {
-          console.error(
-            "WebSocket chưa kết nối. Đang đợi kết nối trước khi gửi bình luận."
-          );
-        }
-      } else {
-        console.log("Không phải quyền người dùng");
-      }
-    },
-    viewPostReplyToggle(commentId) {
-      this.viewPostReply[commentId] = !this.viewPostReply[commentId];
-      this.viewEditComment[commentId] = false;
-    },
-    viewEditCommentToggle(commentId, textComment) {
-      this.viewEditComment[commentId] = !this.viewEditComment[commentId];
-      this.editCommentText[commentId] = textComment;
-      this.viewPostReply[commentId] = false;
-    },
-    viewSectionToggle(sectionId) {
-      this.viewSection[sectionId] = !this.viewSection[sectionId];
-    },
-    viewStartQuizzToggle() {
-      this.viewStartQuizz = !this.viewStartQuizz;
-    },
-    buttonNumberShowCommentToggle(commentId) {
-      this.buttonNumberShowComment[commentId] = !this.buttonNumberShowComment[commentId];
-    },
-    navigaQuestionToggleClick(index, maxQuestion) {
-      this.navigaQuestionToggle += index;
-      if (this.navigaQuestionToggle < 0) {
-        this.navigaQuestionToggle = maxQuestion - 1;
-      }
-      if (this.navigaQuestionToggle > maxQuestion - 1) {
-        this.navigaQuestionToggle = 0;
-      }
-    },
-    choseOption(option) {
-      console.log("Đáp án bạn bấm là: ", option);
-    },
-    resetForm() {
-      this.comment = {
-        id: null,
-        commentText: "",
-        userId: this.user.id,
-        videoId: null,
-        courseId: null,
-        parentId: null,
-        star: 0,
-      };
-    },
-    isNextPage(isNextPage){
-      this.exitDialog = false
-      if(isNextPage){
-        this.nextPage()
-      } else {
-        this.nextPage(false)
-      }
-      return isNextPage
-    },
-    handleBeforeUnload(event){
-      // this.exitDialog = true
-      // if(this.isNextPage()){
+    async selectLecture(lecture) {
+  this.selectedLecture = lecture;
+  this.quizStarted = false;
+  this.currentQuestionIndex = 0;
+  this.selectedAnswers = [];
+  this.hasQuiz = false;
+  this.loading = true;
 
-      // } else {
-      //   event.preventDefault();
-      // }
-      event.preventDefault();
-      event.returnValue = 'If you leave now, you will have to do it again!';
-    },
-    connectSocket() {
-      this.stompClient = new StompJs.Client({
-        webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
-        debug: (str) => {
-          console.log("Thông tin gỡ lỗi", str);
-        },
-        onConnect: (frame) => {
-          console.log("Kết nối socket thành công!", frame);
-          this.stompClient.subscribe("/topic/comments", (message) => {
-            try {
-              const commentData = JSON.parse(message.body);
-              console.log("Nhận bình luận:", commentData);
-
-              if (this.comments != null) {
-                const index = this.comments.findIndex(
-                  (comment) => comment.id === commentData.id
-                );
-                if (index !== -1) {
-                  // Nếu bình luận đã tồn tại, cập nhật nó
-                  this.comments[index].commentText = commentData.commentText;
-                } else {
-                  // Nếu bình luận chưa tồn tại, thêm mới
-                  this.comments.push(commentData);
-                }
-              } else {
-                // Nếu bình luận chưa tồn tại, thêm mới
-                this.comments = [];
-                this.comments.push(commentData);
-              }
-            } catch (error) {
-              console.error("Không thể phân tích JSON:", error);
-              console.error("Nội dung nhận được:", message.body);
-            }
-          });
-          this.stompClient.subscribe("/topic/idComment", (idComment) => {
-            try {
-              const id = JSON.parse(idComment.body);
-              console.log("Xóa bình luận có id: ", id);
-
-              const index = this.comments.findIndex((comment) => comment.id === id);
-              if (index !== -1) {
-                // Nếu bình luận đã tồn tại, cập nhật nó
-                this.comments.splice(index, 1);
-              }
-            } catch (error) {
-              console.error("Không thể phân tích JSON:", error);
-              console.error("Nội dung nhận được:", idComment.body);
-            }
-          });
-        },
-        onStompError: (frame) => {
-          console.error("Broker reported error: " + frame.headers["message"]);
-          console.error("Additional details: " + frame.body);
-        },
-      });
-      this.stompClient.activate();
-    },
-  },
-  mounted() {
-    window.addEventListener("beforeunload", this.handleBeforeUnload);
-  },
-  beforeUnmount() {
-    if (this.stompClient) {
-      this.stompClient.deactivate();
-    }
-    window.removeEventListener("beforeunload", this.handleBeforeUnload);
-  },
-  beforeRouteLeave(to, from, next) { // Bắt sự kiện chuyển trang
-    this.exitDialog = true
-    this.nextPage = next
+  if (lecture.type === "quiz") {
+    this.$nextTick(() => {
+      if (typeof this.checkQuizData === "function") {
+        this.checkQuizData(lecture.id);
+      } else {
+        console.error("checkQuizData not function!");
+      }
+    });
   }
-};
+
+  this.loading = false;
+},
+
+    startQuiz() {
+    this.quizStarted = true;
+    this.currentQuestionIndex = 0;
+    this.selectedAnswers = {};
+    this.timeLeft = 300;
+    this.selectedAnswers = [];
+
+
+        // Bắt đầu đếm ngược
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+
+    this.timer = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.timer);
+        this.showSubmitPopup = true;
+      }
+    }, 1000);
+  },
+
+  nextQuestion() {
+  if (this.currentQuestionIndex < this.selectedLecture.quiz.questions.length - 1) {
+    this.currentQuestionIndex++;
+    this.$nextTick(() => {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      checkboxes.forEach(checkbox => checkbox.checked = false);
+    });
+  } else {
+    alert("Bạn đã hoàn thành tất cả các câu hỏi!");
+  }
+}
+,
+  //thêm/xóa đáp án
+  toggleAnswer(optionId) {
+  if (!Array.isArray(this.selectedAnswers)) {
+    this.selectedAnswers = [];
+  }
+
+  const index = this.selectedAnswers.indexOf(optionId);
+  if (index === -1) {
+    this.selectedAnswers.push(optionId);
+  } else {
+    this.selectedAnswers.splice(index, 1);
+  }
+  console.log("Selected Answers:", this.selectedAnswers);
+},
+
+//checkQuizData
+async checkQuizData(lectureId) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/answers/${lectureId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("Kiểm tra dữ liệu bài làm:", JSON.stringify(response.data));
+
+      if (response.data.result && response.data.result.length > 0) {
+        this.hasQuiz = true;
+        this.quizData = response.data.result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      } else {
+        this.hasQuiz = false;
+      }
+    } catch (error) {
+      console.error("Lỗi khi kiểm tra quiz:", error);
+      this.hasQuiz = false;
+    }
+  },
+
+  submitQuiz() {
+    clearInterval(this.timer); // Dừng đếm ngược
+    this.showSubmitPopup = true;
+  },
+
+  confirmSubmitQuiz() {
+  this.showSubmitPopup = false;
+
+  if (!this.selectedLecture?.id) {
+    alert("Lỗi: not find quiz hợp lệ!");
+    return;
+  }
+
+  // Kiểm tra nếu chưa chọn đáp án
+  if (this.selectedAnswers.length === 0) {
+    alert("you not chose answer!");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  const payload = {
+    lectureId: this.selectedLecture.id,
+    optionId: [...this.selectedAnswers]
+  };
+console.log(this.selectedAnswers);
+
+  console.log("Dữ liệu gửi lên API:",JSON.stringify(payload, null, 2));
+
+  axios.post("http://localhost:8080/api/answers/submit", payload, {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(response => {
+      alert("Bài làm đã được nộp thành công!");
+      this.quizStarted = false;
+      this.selectedAnswers = [];
+    })
+    .catch(error => {
+      console.error("Lỗi khi nộp bài:", error);
+      alert("Có lỗi xảy ra khi nộp bài! Vui lòng thử lại.",JSON.stringify(payload, null, 2));
+    });
+}
+  }
+}
 </script>
 
-<style>
-.green {
-  color: rgba(0, 0, 0, 0.848);
-}
-.listenComment {
-  display: none;
-}
-
-.hoverComment:hover .listenComment {
-  display: block;
+<style scoped>
+/* Hiệu ứng bàn tay khi rê chuột vào bài học */
+.cou-title a,
+ul li {
+  cursor: pointer;
 }
 
-.listenReply {
-  display: none;
-}
-
-.hoverReply:hover .listenReply {
-  display: block;
-}
-
-.hoverMenu {
-  height: 50px;
-  width: 50px;
-  position: relative;
-  padding: 0 10px 0 15px;
-}
-
-.popupStyle {
-  position: absolute;
-  right: 20px;
-  top: 30px;
-  background-color: white;
-  box-shadow: 0 0 1px rgb(111, 111, 111);
+/* Style cho bảng Quiz */
+.quiz-box {
+  background: #f9f9f9;
+  padding: 20px;
   border-radius: 10px;
-  padding: 5px 0;
-  display: none;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.popupStyle a > p {
-  margin: 0;
-  padding: 5px 20px;
+.quiz-box p {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
-.hoverMenu:hover > .popupStyle {
+.begin-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.begin-btn:hover {
+  background: #218838;
+}
+
+/* Hiển thị câu hỏi */
+.question-box {
+  background: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Danh sách câu trả lời */
+.question-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.question-box li {
+  margin: 10px 0;
+}
+
+/* Nút Submit và Next */
+.quiz-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.submit-btn,
+.next-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+.next-btn {
+  background: #ffc107;
+  color: #000;
+}
+
+.next-btn:hover {
+  background: #e0a800;
+}
+
+.next-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-btn, .cancel-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.cancel-btn {
+  background: #dc3545;
+}
+
+.confirm-btn:hover {
+  background: #0056b3;
+}
+
+.cancel-btn:hover {
+  background: #b02a37;
+}
+/* css table */
+.quiz-data {
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.quiz-data h3 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.quiz-data table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.quiz-data th,
+.quiz-data td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.quiz-data th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.quiz-data tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.quiz-data tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.quiz-data tbody tr:hover {
+  background-color: #f1f1f1;
+  transition: 0.3s;
+}
+
+.begin-btn {
   display: block;
+  width: 150px;
+  margin: 15px auto;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.begin-btn:hover {
+  background-color: #0056b3;
 }
 </style>

@@ -366,8 +366,8 @@ export default {
         .then(response => {
           Swal.fire({
             icon: 'success',
-            title: 'Thành công',
-            text: 'Cập nhật khóa học thành công!',
+            title: 'Success',
+            text: 'Updated successfully!',
             timer: 1500,
             showConfirmButton: false
           });

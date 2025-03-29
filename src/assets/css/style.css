@@ -5705,6 +5705,13 @@ body.home-three :-ms-input-placeholder {
   -o-transition: 0.7s;
   transition: 0.7s;
 }
+.course-three-text h3.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
 .course-box-three:hover .course-three-text h3 {
   color: #ffffff;
   -webkit-transition: 0.7s;
@@ -17821,7 +17828,7 @@ input[type="password"]::-ms-clear {
   -webkit-align-items: flex-start;
 }
 .main-chat-blk .chat .chat-body .messages .chats {
-  max-width: 75%;
+  max-width: 80%;
   margin-bottom: 1.5rem;
   display: flex;
   display: -webkit-flex;
