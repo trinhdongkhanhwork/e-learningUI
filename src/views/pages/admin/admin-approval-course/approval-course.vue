@@ -208,7 +208,7 @@ export default {
     },
 
     showCourseDetail(row) {
-      this.temp.value = Object.assign({}, row); // copy obj
+      this.temp.value = Object.assign({}, row);
       console.log(this.temp.value);
       this.selectedSection = this.temp.value.sections.length > 0 ? this.temp.value.sections[0].id : null;
       this.dialogCourseDetailVisible = true;
