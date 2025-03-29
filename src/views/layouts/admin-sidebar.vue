@@ -38,7 +38,6 @@
                 <i class="bx bxs-badge-dollar"></i>Earnings
               </router-link>
             </li>
-
             <li
                 class="nav-item"
                 :class="{ active: isActive('/admin/approval-course') }"
@@ -50,7 +49,6 @@
                 <i class="bx bxs-badge-dollar"></i>Approve Course
               </router-link>
             </li>
-
             <li
                 class="nav-item"
                 :class="{ active: isActive('/admin/approval-instructors') }"
@@ -60,6 +58,18 @@
                   class="nav-link"
               >
                 <i class="bx bxs-badge-dollar"></i>Approve Instructor
+              </router-link>
+            </li>
+            <!-- Nút Category mới được thêm vào đây -->
+            <li
+                class="nav-item"
+                :class="{ active: isActive('/admin/categories') }"
+            >
+              <router-link
+                  to="/admin/categories"
+                  class="nav-link"
+              >
+                <i class="bx bxs-category"></i>Categories
               </router-link>
             </li>
           </ul>
@@ -87,8 +97,8 @@
     </div>
   </div>
 </template>
-<script>
 
+<script>
 import {ref, onMounted} from "vue";
 import baseApi from "@/axios";
 
