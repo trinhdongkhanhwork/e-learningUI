@@ -28,8 +28,8 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="category in categories" :key="category.id">
-                    <td>{{ category.id }}</td>
+                  <tr v-for="(category, index) in categories" :key="index">
+                    <td>{{ index + 1 }}</td>
                     <td class="text-start">{{ category.categoryName }}</td>
                     <td>
                       <img
