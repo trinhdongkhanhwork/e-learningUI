@@ -20,11 +20,11 @@ export default function messagesService(){
             })
             messages.value = response.data;
         } catch (error){
-            console.error('Lỗi khi tải tin nhắn:', error);
+            // console.error('Lỗi khi tải tin nhắn:', error);
         }
     }
 
-    const sendMessage = (textMessage, friendId, urlImage, urlFile) => {
+    const sendMessage = async (textMessage, friendId, urlImage, urlFile) => {
         const stompClient = getStompClient()
         const message = {
             userId: user.value.id,
@@ -41,15 +41,16 @@ export default function messagesService(){
 
     const receiveMessage = async() => {
         const stompClient = getStompClient()
-        stompClient.subscribe("/topic/receiveMessage", (messageResponse) => {
+        stompClient.subscribe(`/message/${user.value.id}/private`, (messageResponse) => {
             try {
                 const messageData = JSON.parse(messageResponse.body);
-                messages.value.push(messageData.body);
+                messages.value.push(messageData);
             } catch (error) {
                 console.log("Lỗi gửi tin nhắn: ", error);
             }
         })
     }
+
     return {
         messages,
         fetchMessages,

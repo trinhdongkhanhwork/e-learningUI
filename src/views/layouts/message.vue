@@ -201,7 +201,7 @@
                       </div>
                       <!-- Chat footer -->
                       <div class="chat-footer">
-                        <form v-if="selectedFriend != null">
+                        <form v-if="selectedFriend != null" @submit.prevent="send">
                             <div class="smile-foot">
                               <div class="chat-action-btns">
                                   <div class="chat-action-col">
@@ -268,7 +268,7 @@ export default {
   },
   setup(){
     const {messages, fetchMessages, sendMessage, receiveMessage} = messageService();
-    const {invitations, friendsSearch, friends, fetchFriends, searchFriend, sendInvitation, loadInvitation, confirmInvitaiton} = friendService();
+    const {invitations, friendsSearch, friends, fetchFriends, searchFriend, sendInvitation, loadInvitation, confirmInvitaiton, receiveInvitation, receiveComfirmInvitation} = friendService();
     const store = useStore();
     const user = ref(store.state.userInfo);
     const selectedFriend = ref(null);
@@ -280,8 +280,10 @@ export default {
     const keyword = ref("");
     onMounted(async () => {
       fetchFriends(),
+      loadInvitation(),
       receiveMessage(),
-      loadInvitation()
+      receiveInvitation(),
+      receiveComfirmInvitation()
     })
 
     watch(keyword, () => {
@@ -289,15 +291,14 @@ export default {
     });
 
     const addFriend = async (idFriend) => {
-      await  sendInvitation(idFriend);
-      await searchFriend(keyword.value);
-      await fetchFriends();
+      await sendInvitation(idFriend);
+      setTimeout(() => {
+        searchFriend(keyword.value);
+      }, 500)
     }
 
     const confirmFriend = async (idFriend) => {
       await confirmInvitaiton(idFriend);
-      await loadInvitation();
-      await fetchFriends();
     }
 
     const uploadImage = async () => {
@@ -328,7 +329,7 @@ export default {
 
     const selectFriend = async (friend) => {
       selectedFriend.value = friend;
-      fetchMessages(friend.id)
+     fetchMessages(friend.id);
     }
 
     const formatDate = (dateString) => {
