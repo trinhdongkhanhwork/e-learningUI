@@ -55,9 +55,11 @@ export default function friendService(){
         })
     }
 
+    let unsubscribeInvitation = null;
     const receiveInvitation = async () => {
+        if(unsubscribeInvitation) unsubscribeInvitation.unsubscribe();
         const stompClient = getStompClient()
-        stompClient.subscribe(`/friend/${user.value.id}/private`, (invitationResponse) => {
+        unsubscribeInvitation = stompClient.subscribe(`/friend/${user.value.id}/private`, (invitationResponse) => {
             try {
                 const invitation = JSON.parse(invitationResponse.body);
                 invitations.value.push(invitation);
@@ -67,9 +69,11 @@ export default function friendService(){
         })
     }
 
+    let unsubscribeConfirmInvitation = null;
     const receiveComfirmInvitation = async () => {
+        if(unsubscribeConfirmInvitation) unsubscribeConfirmInvitation.unsubscribe();
         const stompClient = getStompClient()
-        stompClient.subscribe(`/friend/${user.value.id}/confirm/private`, (confirmResponse) => {
+        unsubscribeConfirmInvitation = stompClient.subscribe(`/friend/${user.value.id}/confirm/private`, (confirmResponse) => {
             try {
                 const confirm = JSON.parse(confirmResponse.body);
                 friends.value.push(confirm);
