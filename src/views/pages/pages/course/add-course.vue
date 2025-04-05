@@ -746,7 +746,7 @@ export default {
         }
       };
 
-    reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(file); 
   },
 
 displayQuestions() {
