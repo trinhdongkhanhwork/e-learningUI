@@ -68,6 +68,7 @@ import Instructor_Assignment from '@/views/pages/instructor/instructor-assignmen
 import Instructor_Quiz_Attempts from '@/views/pages/instructor/instructor-quiz-attempts.vue'
 import Instructor_Quiz_Attempts_Details from '@/views/pages/instructor/instructor-quiz-attempts-details.vue'
 import Instructor_Withdraw from '@/views/pages/instructor/instructor-withdraw.vue'
+import Instructor_Chart_Withdrawl from '@/views/pages/instructor/instructor-chart-withdraw.vue'
 import Instructor_Profile from '@/views/pages/instructor/instructor-profile.vue'
 import Instructor_Enrolled_Course from '@/views/pages/instructor/enrolled-course/instructor-enrolled-course.vue'
 import Instructor_Announcements from '@/views/pages/instructor/instructor-announcements.vue'
@@ -182,6 +183,7 @@ const routes = [
       { path: "instructor-quiz-attempts", component: Instructor_Quiz_Attempts },
       { path: "instructor-quiz-attempts-details",component: Instructor_Quiz_Attempts_Details,},
       { path: "instructor-withdraw", component: Instructor_Withdraw },
+      { path: "instructor-chart-withdraw", component: Instructor_Chart_Withdrawl },
       { path: "instructor-profile", component: Instructor_Profile },
       { path: "instructor-enrolled-course",component: Instructor_Enrolled_Course,},
       { path: "instructor-announcements", component: Instructor_Announcements },

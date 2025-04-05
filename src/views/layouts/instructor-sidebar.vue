@@ -182,6 +182,17 @@
             </li>
             <li
               class="nav-item"
+              :class="{ active: isActive('/instructor/instructor-chart-withdraw') }"
+            >
+              <router-link
+                to="/instructor/instructor-chart-withdraw"
+                class="nav-link"
+              >
+              <i class="bx bx-bar-chart-alt-2"></i>Withdrawal statistics
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
               :class="{
                 active: isActive('/instructor/instructor-quiz-attempts'),
               }"
