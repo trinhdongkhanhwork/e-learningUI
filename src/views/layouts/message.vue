@@ -201,7 +201,7 @@
                       </div>
                       <!-- Chat footer -->
                       <div class="chat-footer">
-                        <form v-if="selectedFriend != null">
+                        <form v-if="selectedFriend != null" @submit.prevent="send">
                             <div class="smile-foot">
                               <div class="chat-action-btns">
                                   <div class="chat-action-col">
@@ -267,8 +267,8 @@ export default {
     PerfectScrollbar,
   },
   setup(){
-    const {messages, fetchMessages, sendMessage, receiveMessage} = messageService();
-    const {invitations, friendsSearch, friends, fetchFriends, searchFriend, sendInvitation, loadInvitation, confirmInvitaiton} = friendService();
+    const {messages, friend, fetchMessages, sendMessage, receiveMessage} = messageService();
+    const {invitations, friendsSearch, friends, fetchFriends, searchFriend, sendInvitation, loadInvitation, confirmInvitaiton, receiveInvitation, receiveComfirmInvitation} = friendService();
     const store = useStore();
     const user = ref(store.state.userInfo);
     const selectedFriend = ref(null);
@@ -278,10 +278,12 @@ export default {
     const fileMessage = ref(null);
     const messageList = ref(null);
     const keyword = ref("");
+
     onMounted(async () => {
       fetchFriends(),
-      receiveMessage(),
-      loadInvitation()
+      loadInvitation(),
+      receiveInvitation(),
+      receiveComfirmInvitation()
     })
 
     watch(keyword, () => {
@@ -289,15 +291,14 @@ export default {
     });
 
     const addFriend = async (idFriend) => {
-      await  sendInvitation(idFriend);
-      await searchFriend(keyword.value);
-      await fetchFriends();
+      await sendInvitation(idFriend);
+      setTimeout(() => {
+        searchFriend(keyword.value);
+      }, 500)
     }
 
     const confirmFriend = async (idFriend) => {
       await confirmInvitaiton(idFriend);
-      await loadInvitation();
-      await fetchFriends();
     }
 
     const uploadImage = async () => {
@@ -326,9 +327,9 @@ export default {
       textMessage.value = ""
     }
 
-    const selectFriend = async (friend) => {
-      selectedFriend.value = friend;
-      fetchMessages(friend.id)
+    const selectFriend = async (friendSelect) => {
+      selectedFriend.value = friendSelect;
+      fetchMessages(friendSelect.id);
     }
 
     const formatDate = (dateString) => {
