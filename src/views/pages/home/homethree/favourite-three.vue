@@ -149,6 +149,15 @@
                                   <p>{{ course.enrolledUserCount || 0 }} Students</p>
                                 </div>
                               </div>
+                              <!-- Thêm phần hiển thị rating -->
+                              <div class="rating mt-2">
+                                <i class="fas fa-star filled me-1" v-for="n in Math.floor(course.averageRating || 0)" :key="n"></i>
+                                <i class="fas fa-star-half-alt filled me-1" v-if="(course.averageRating || 0) % 1 >= 0.5"></i>
+                                <i class="fas fa-star me-1" v-for="n in (5 - Math.ceil(course.averageRating || 0))" :key="n + 'empty'"></i>
+                                <span class="d-inline-block average-rating">
+                                  {{ (course.averageRating || 0).toFixed(1) }} ({{ course.ratingCount || 0 }})
+                                </span>
+                              </div>
                               <div class="price-three-group d-flex align-items-center justify-content-between">
                                 <div class="price-three-view d-flex align-items-center">
                                   <div class="course-price-three">
@@ -213,6 +222,15 @@
                                   <img src="@/assets/img/icon-three/student.svg" alt="" />
                                   <p>{{ course.enrolledUserCount || 0 }} Students</p>
                                 </div>
+                              </div>
+                              <!-- Thêm phần hiển thị rating -->
+                              <div class="rating mt-2">
+                                <i class="fas fa-star filled me-1" v-for="n in Math.floor(course.averageRating || 0)" :key="n"></i>
+                                <i class="fas fa-star-half-alt filled me-1" v-if="(course.averageRating || 0) % 1 >= 0.5"></i>
+                                <i class="fas fa-star me-1" v-for="n in (5 - Math.ceil(course.averageRating || 0))" :key="n + 'empty'"></i>
+                                <span class="d-inline-block average-rating">
+                                  {{ (course.averageRating || 0).toFixed(1) }} ({{ course.ratingCount || 0 }})
+                                </span>
                               </div>
                               <div class="price-three-group d-flex align-items-center justify-content-between">
                                 <div class="price-three-view d-flex align-items-center">
@@ -365,6 +383,33 @@ export default {
       }
     };
 
+    // Thêm hàm lấy rating trung bình - KHÔNG thay đổi code cũ
+    const fetchCourseRatings = async () => {
+      try {
+        const promises = courses.value.map(async (course) => {
+          const response = await baseApi.get(`/api/ratings/course/${course.id}/average`);
+          course.averageRating = response.data || 0;
+
+          const countResponse = await baseApi.get(`/api/ratings/course/${course.id}`);
+          course.ratingCount = countResponse.data.length || 0;
+        });
+
+        const categoryPromises = Object.keys(categoryCourses.value).map(async (categoryId) => {
+          const categoryCoursesList = categoryCourses.value[categoryId];
+          return Promise.all(categoryCoursesList.map(async (course) => {
+            const response = await baseApi.get(`/api/ratings/course/${course.id}/average`);
+            course.averageRating = response.data || 0;
+            const countResponse = await baseApi.get(`/api/ratings/course/${course.id}`);
+            course.ratingCount = countResponse.data.length || 0;
+          }));
+        });
+
+        await Promise.all([...promises, ...categoryPromises]);
+      } catch (error) {
+        console.error("Error fetching course ratings:", error);
+      }
+    };
+
     // Cập nhật trạng thái yêu thích của các khóa học
     const updateFavoriteStatus = async () => {
       // Cập nhật trạng thái yêu thích cho danh sách courses
@@ -465,6 +510,7 @@ export default {
       await fetchCourses();
       await fetchWishlist();
       await fetchCoursesByCategories();
+      await fetchCourseRatings(); // Chỉ thêm dòng này
     });
 
     return {
@@ -482,7 +528,25 @@ export default {
       filteredCoursesByCategory,
       setActiveFilter,
       toggleFavorites,
+      fetchCourseRatings, // Thêm vào return
     };
   },
 };
 </script>
+
+<style scoped>
+/* Thêm style cho rating */
+.rating {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.rating .filled {
+  color: #f4c150;
+}
+
+.rating .average-rating {
+  margin-left: 5px;
+  color: #666;
+}
+</style>
