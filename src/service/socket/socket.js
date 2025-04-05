@@ -17,6 +17,12 @@ export default function connectSocket(){
         stompClient.activate();
     })
 }
+export function disconnectSocket() {
+    if (stompClient && stompClient.active) {
+        stompClient.deactivate();
+        console.log("Socket disconnected");
+    }
+}
 
 export function getStompClient() {
     return stompClient;

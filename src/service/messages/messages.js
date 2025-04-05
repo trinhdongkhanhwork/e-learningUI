@@ -7,6 +7,7 @@ export default function messagesService(){
     const store = useStore();
     const user = ref(store.state.userInfo);
     const messages = ref([]);
+    const friend = ref({});
 
     const fetchMessages =  async (idUserFrom) => {
         try {
@@ -18,7 +19,9 @@ export default function messagesService(){
                     idFriend: idUserFrom
                 }
             })
-            messages.value = response.data;
+            messages.value = response.data ? response.data.messages : [];
+            friend.value = response.data ? response.data.friend : null;
+            receiveMessage(friend.value);
         } catch (error){
             // console.error('Lỗi khi tải tin nhắn:', error);
         }
@@ -39,9 +42,11 @@ export default function messagesService(){
         })
     }
 
-    const receiveMessage = async() => {
+    let unsubsribeMessage = null
+    const receiveMessage = async(friend) => {
+        if(unsubsribeMessage) unsubsribeMessage.unsubscribe();
         const stompClient = getStompClient()
-        stompClient.subscribe(`/message/${user.value.id}/private`, (messageResponse) => {
+        unsubsribeMessage = stompClient.subscribe(`/message/${friend.id}/private`, (messageResponse) => {
             try {
                 const messageData = JSON.parse(messageResponse.body);
                 messages.value.push(messageData);
@@ -53,6 +58,7 @@ export default function messagesService(){
 
     return {
         messages,
+        friend,
         fetchMessages,
         sendMessage,
         receiveMessage
