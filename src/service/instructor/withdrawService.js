@@ -12,6 +12,7 @@ export default function useEarnings() {
   const withdrawResponse = ref(null);
   const withdrawId = ref(null);
   const transactionSummary = ref([]);
+  const transactionSummaryPayment = ref([]);
 
   //tiền trong ví admin
   const fectAllEarningAdmin = async () => {
@@ -114,7 +115,7 @@ export default function useEarnings() {
     }
   };
 
-  //thống kê
+  //thống kê tiền ra
   const fetchTransactionSummary = async (timeFrame) => {
     try {
       let endpoint;
@@ -138,6 +139,31 @@ export default function useEarnings() {
       console.error("Lỗi khi lấy tóm tắt giao dịch:", error);
     }
   };
+
+  //thống kê tiền vào
+  const fetchTransactionSummaryPayment = async (timeFrame) => {
+    try {
+      let endpoint;
+      switch (timeFrame) {
+        case 'hour': endpoint = `/api/transactions/summaryPayment/hour`; break;
+        case 'day': endpoint = `/api/transactions/summaryPayment/day`; break;
+        case 'month': endpoint = `/api/transactions/summaryPayment/month`; break;
+        case 'year': endpoint = `/api/transactions/summaryPayment/year`; break;
+        default:
+          return;
+      }
+      const response = await baseApi.get(endpoint);
+  
+      if (response.data && response.data.length > 0) {
+        transactionSummaryPayment.value = response.data; // Gán trực tiếp dữ liệu từ API
+        console.log('Đã cập nhật transactionSummaryPayment:', transactionSummaryPayment.value);
+      } else {
+        console.warn('Không có dữ liệu từ API');
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy tóm tắt giao dịch:", error);
+    }
+  };
   
 
   return {
@@ -153,6 +179,8 @@ export default function useEarnings() {
     transactionSummary,
     walletAdmin,
     fetchWithdrawAllHistory,
-    withdrawAllHistory
+    withdrawAllHistory,
+    fetchTransactionSummaryPayment,
+    transactionSummaryPayment
   };
 }
