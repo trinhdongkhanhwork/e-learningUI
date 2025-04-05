@@ -99,6 +99,7 @@ import Authenticate from "@/views/pages/pages/authenticate.vue";
 import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
 import CategoryManagement from "@/views/pages/admin/CategoryManagement.vue";
 import WithdrawManagement from "@/views/pages/admin/withdraw/adminWithdraw.vue"
+import RevenueStatisticsChart from "@/views/pages/admin/revenueStatisticsChart/revenueStatisticsChart.vue";
 
 const routes = [
   {
@@ -110,6 +111,11 @@ const routes = [
     path: '/admin/withdraw',
     name: 'WithdrawManagement',
     component: WithdrawManagement
+  },
+  {
+    path: '/admin/revenue-statistics-chart',
+    name: 'RevenueStatisticsChart',
+    component: RevenueStatisticsChart
   },
   {
     path: '/payment-success',

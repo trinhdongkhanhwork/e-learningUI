@@ -83,6 +83,17 @@
               <i class="bx bx-credit-card-front"></i>Withdraw 
               </router-link>
             </li>
+            <li
+                class="nav-item"
+                :class="{ active: isActive('/admin/revenue-statistics-chart') }"
+            >
+              <router-link
+                  to="/admin/revenue-statistics-chart"
+                  class="nav-link"
+              >
+              <i class="bx bx-line-chart"></i>Revenue Statistics
+              </router-link>
+            </li>
           </ul>
           <h3>Account Settings</h3>
           <ul>
