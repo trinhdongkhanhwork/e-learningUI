@@ -36,7 +36,6 @@
                               <i class="bx bx-cloud-upload"></i>
                             </div>
                           </div>
-                          <!-- Xóa phần icon thùng rác -->
                         </div>
                       </div>
                     </div>
@@ -63,7 +62,15 @@
                     <div class="col-md-6">
                       <div class="input-block">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" v-model="editedUser.email" />
+                        <input type="email" class="form-control" v-model="editedUser.email" @change="checkEmailChange" />
+                        <button v-if="showSendOtp" type="button" class="btn btn-secondary mt-2" @click="sendOtp">Send OTP</button>
+                      </div>
+                    </div>
+                    <div class="col-md-6" v-if="otpSent">
+                      <div class="input-block">
+                        <label class="form-label">Enter OTP</label>
+                        <input type="text" class="form-control" v-model="otpInput" placeholder="Enter OTP" />
+                        <button type="button" class="btn btn-secondary mt-2" @click="verifyOtp">Verify OTP</button>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -73,7 +80,7 @@
                       </div>
                     </div>
                     <div class="col-md-12">
-                      <button class="btn btn-primary" type="submit">Update Profile</button>
+                      <button class="btn btn-primary" type="submit" :disabled="!otpVerified && emailChanged">Update Profile</button>
                     </div>
                   </div>
                 </div>
@@ -91,8 +98,8 @@
 import { useStore } from 'vuex';
 import { ref } from 'vue';
 import baseApi from '@/axios';
-import{confirmSave} from'@/utils/confirmDialogs'
-import Swal from 'sweetalert2'; // Import SweetAlert2 for success/error messages
+import { confirmSave } from '@/utils/confirmDialogs';
+import Swal from 'sweetalert2';
 
 export default {
   setup() {
@@ -107,6 +114,12 @@ export default {
       text1: 'Settings',
       editedUser: {},
       avatarFile: null,
+      showSendOtp: false,
+      otpSent: false,
+      otpInput: '',
+      otpVerified: false,
+      emailChanged: false,
+      generatedOtp: '', // OTP từ server
     };
   },
   created() {
@@ -116,39 +129,78 @@ export default {
     handleAvatarChange(event) {
       this.avatarFile = event.target.files[0];
     },
+    checkEmailChange() {
+      this.emailChanged = this.editedUser.email !== this.user.email;
+      this.showSendOtp = this.emailChanged;
+      this.otpSent = false;
+      this.otpVerified = false;
+      this.otpInput = '';
+    },
+    async sendOtp() {
+      try {
+        const response = await baseApi.post('/users/send-otp-email', { email: this.editedUser.email });
+        if (response.data.success) {
+          this.generatedOtp = response.data.otp; // Lưu OTP từ server
+          this.otpSent = true;
+          Swal.fire('Success!', 'OTP has been sent to your email!', 'success');
+        }
+      } catch (error) {
+        console.error('Error sending OTP:', error);
+        Swal.fire('Error!', 'Failed to send OTP: ' + (error.message || 'Unknown error'), 'error');
+      }
+    },
+    async verifyOtp() {
+      try {
+        const response = await baseApi.post('/users/verify-otp-email', {
+          email: this.editedUser.email,
+          otp: this.otpInput,
+          generatedOtp: this.generatedOtp, // Gửi OTP gốc để so sánh
+        });
+        if (response.data.success) {
+          this.otpVerified = true;
+          Swal.fire('Success!', 'OTP verified successfully!', 'success');
+        } else {
+          Swal.fire('Error!', 'Invalid OTP!', 'error');
+        }
+      } catch (error) {
+        console.error('Error verifying OTP:', error);
+        Swal.fire('Error!', 'Failed to verify OTP: ' + (error.message || 'Unknown error'), 'error');
+      }
+    },
     async saveChanges() {
-      // Show confirmation dialog before saving
       const result = await confirmSave();
-      if (!result.isConfirmed) return; // Exit if user cancels
+      if (!result.isConfirmed) return;
+
+      if (this.emailChanged && !this.otpVerified) {
+        Swal.fire('Error!', 'Please verify OTP to change email!', 'error');
+        return;
+      }
 
       try {
-        // Validate email
         const email = this.editedUser.email || this.user.email;
         if (!email) {
           Swal.fire('Error!', 'Email cannot be empty!', 'error');
           return;
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
           Swal.fire('Error!', 'Please enter a valid email address!', 'error');
           return;
         }
 
-        // Validate phone number
         const phone = this.editedUser.phone || this.user.phone || '';
         if (!phone) {
           Swal.fire('Error!', 'Phone number cannot be empty!', 'error');
           return;
         }
-        const phoneRegex = /^\d{10}$/; // Exactly 10 digits
+        const phoneRegex = /^\d{10}$/;
         if (!phoneRegex.test(phone)) {
           Swal.fire('Error!', 'Phone number must be exactly 10 digits!', 'error');
           return;
         }
 
-        let avatarUrl = this.user.avatarUrl; // Default to existing avatar URL
+        let avatarUrl = this.user.avatarUrl;
 
-        // Upload new avatar if a file is selected
         if (this.avatarFile) {
           const formData = new FormData();
           formData.append('img', this.avatarFile);
@@ -163,7 +215,6 @@ export default {
           console.log('Uploaded avatar URL:', avatarUrl);
         }
 
-        // Prepare profile data
         const profileData = new FormData();
         profileData.append('fullname', this.editedUser.fullname || this.user.fullname || '');
         profileData.append('email', email);
@@ -174,7 +225,6 @@ export default {
 
         console.log('Sending profileData:', Object.fromEntries(profileData));
 
-        // Update profile
         const response = await baseApi.put(`/users/profile/${this.user.id}`, profileData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -185,13 +235,15 @@ export default {
         const updatedUser = response.data.result;
         console.log('Received updatedUser:', updatedUser);
 
-        // Update Vuex store and local state
         this.store.commit('setUserInfo', updatedUser);
         this.user = updatedUser;
-        this.editedUser = { ...updatedUser };
+        this.editedUser = {...updatedUser};
         this.avatarFile = null;
+        this.showSendOtp = false;
+        this.otpSent = false;
+        this.otpVerified = false;
+        this.emailChanged = false;
 
-        // Show success message
         Swal.fire('Success!', 'Profile updated successfully!', 'success');
       } catch (error) {
         console.error('Error updating profile:', error);

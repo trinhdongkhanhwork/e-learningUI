@@ -20,12 +20,10 @@
                   <p>Phone: {{ course.instructor.phone }}</p>
                 </div>
                 <div class="rating mb-0">
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star filled me-1"></i>
-                  <i class="fas fa-star me-1"></i>
-                  <span class="d-inline-block average-rating"><span>4.5</span> (15)</span>
+                  <i class="fas fa-star filled me-1" v-for="n in Math.floor(averageRating)" :key="n"></i>
+                  <i class="fas fa-star-half-alt filled me-1" v-if="averageRating % 1 >= 0.5"></i>
+                  <i class="fas fa-star me-1" v-for="n in (5 - Math.ceil(averageRating))" :key="n"></i>
+                  <span class="d-inline-block average-rating"><span>{{ averageRating.toFixed(1) }}</span> ({{ reviews.length }})</span>
                 </div>
               </div>
               <span class="web-badge mb-3">{{ course.level }}</span>
@@ -119,13 +117,39 @@
           </div>
           <!-- /Course Content -->
 
-          <!-- Reviews -->
-          <div class="card review-sec" v-if="reviews.length != 0">
+          <!-- Phần đánh giá -->
+          <div class="card review-sec">
             <div class="card-body" style="padding-bottom: 0;">
               <h5 class="subs-title" style="margin: 0">Reviews</h5>
             </div>
+            <!-- Thay đổi: Form chỉ để thêm bình luận mới -->
+            <div class="card-body" v-if="isPayment && !userRating">
+              <h6>Add Your Review</h6>
+              <div class="form-group">
+                <label>Rating:</label>
+                <div class="star-rating">
+                  <i
+                      v-for="n in 5"
+                      :key="n"
+                      :class="[
+                      'fas fa-star',
+                      { 'filled': n <= ratingForm.rating },
+                      'me-1',
+                      'star-clickable'
+                    ]"
+                      @click="ratingForm.rating = n"
+                  ></i>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Comment:</label>
+                <textarea v-model="ratingForm.comment" class="form-control" rows="3"></textarea>
+              </div>
+              <button @click="createRating" class="btn btn-primary">Submit Review</button>
+            </div>
+            <!-- Thay đổi: Danh sách bình luận với nút sửa/xóa trên cùng hàng -->
             <div class="card-body" v-for="(review, index) in reviews" :key="index">
-              <div class="instructor-wrap">
+              <div class="instructor-wrap d-flex justify-content-between align-items-center">
                 <div class="about-instructor">
                   <div class="abt-instructor-img">
                     <router-link to="/instructor/instructor-profile">
@@ -136,16 +160,50 @@
                     <h5>
                       <router-link to="/instructor/instructor-profile">{{ review.fullName }}</router-link>
                     </h5>
-                    <p>UX/UI Designer</p>
                   </div>
                 </div>
                 <div class="rating">
-                  <i class="fas fa-star filled me-1" v-for="n in review.star" :key="n"></i>
-                  <i class="fas fa-star me-1" v-for="n in (5 - review.star)" :key="n"></i>
-                  <span class="d-inline-block average-rating">{{ review.star }} Student Rating</span>
+                  <i class="fas fa-star filled me-1" v-for="n in review.rating" :key="n"></i>
+                  <i class="fas fa-star me-1" v-for="n in (5 - review.rating)" :key="n"></i>
+                  <span class="d-inline-block average-rating">{{ review.rating }} Star Rating</span>
                 </div>
               </div>
-              <p style="font-size: 15px;">{{ review.commentText }}</p>
+              <!-- Thay đổi: Form sửa bình luận hiển thị khi nhấp nút Edit -->
+              <div v-if="editingReviewId === review.id">
+                <div class="form-group">
+                  <label>Rating:</label>
+                  <div class="star-rating">
+                    <i
+                        v-for="n in 5"
+                        :key="n"
+                        :class="[
+                        'fas fa-star',
+                        { 'filled': n <= ratingForm.rating },
+                        'me-1',
+                        'star-clickable'
+                      ]"
+                        @click="ratingForm.rating = n"
+                    ></i>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Comment:</label>
+                  <textarea v-model="ratingForm.comment" class="form-control" rows="3"></textarea>
+                </div>
+                <button @click="updateRating(review.id)" class="btn btn-primary">Save Changes</button>
+                <button @click="cancelEdit" class="btn btn-secondary ml-2">Cancel</button>
+              </div>
+              <!-- Thay đổi: Hiển thị bình luận và nút nếu không đang sửa -->
+              <div v-else>
+                <p style="font-size: 15px;">{{ review.comment }}</p>
+                <div v-if="user && review.userId === user.id" class="d-flex justify-content-end">
+                  <button @click="startEdit(review)" class="btn btn-sm btn-primary me-2">Edit</button>
+                  <button @click="deleteRating(review.id)" class="btn btn-sm btn-danger">Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" v-if="reviews.length === 0">
+              <p>No reviews yet.</p>
             </div>
           </div>
           <!-- /Reviews -->
@@ -205,30 +263,12 @@
                   <h4>Includes</h4>
                 </div>
                 <ul>
-                  <li>
-                    <img src="@/assets/img/icon/import.svg" class="me-2" alt="" />
-                    11 hours on-demand video
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/play.svg" class="me-2" alt="" />
-                    69 downloadable resources
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/key.svg" class="me-2" alt="" />
-                    Full lifetime access
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/mobile.svg" class="me-2" alt="" />
-                    Access on mobile and TV
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/cloud.svg" class="me-2" alt="" />
-                    Assignments
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/teacher.svg" class="me-2" alt="" />
-                    Certificate of Completion
-                  </li>
+                  <li><img src="@/assets/img/icon/import.svg" class="me-2" alt="" />11 hours on-demand video</li>
+                  <li><img src="@/assets/img/icon/play.svg" class="me-2" alt="" />69 downloadable resources</li>
+                  <li><img src="@/assets/img/icon/key.svg" class="me-2" alt="" />Full lifetime access</li>
+                  <li><img src="@/assets/img/icon/mobile.svg" class="me-2" alt="" />Access on mobile and TV</li>
+                  <li><img src="@/assets/img/icon/cloud.svg" class="me-2" alt="" />Assignments</li>
+                  <li><img src="@/assets/img/icon/teacher.svg" class="me-2" alt="" />Certificate of Completion</li>
                 </ul>
               </div>
             </div>
@@ -241,26 +281,11 @@
                   <h4>Includes</h4>
                 </div>
                 <ul>
-                  <li>
-                    <img src="@/assets/img/icon/users.svg" class="me-2" alt="" />
-                    Enrolled: <span>{{ course.enrolledUserCount }} students</span>
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/timer.svg" class="me-2" alt="" />
-                    Duration: <span>20 hours</span>
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/chapter.svg" class="me-2" alt="" />
-                    Chapters: <span>15</span>
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/video.svg" class="me-2" alt="" />
-                    Video: <span>12 hours</span>
-                  </li>
-                  <li>
-                    <img src="@/assets/img/icon/chart.svg" class="me-2" alt="" />
-                    Level: <span>Beginner</span>
-                  </li>
+                  <li><img src="@/assets/img/icon/users.svg" class="me-2" alt="" />Enrolled: <span>{{ course.enrolledUserCount }} students</span></li>
+                  <li><img src="@/assets/img/icon/timer.svg" class="me-2" alt="" />Duration: <span>20 hours</span></li>
+                  <li><img src="@/assets/img/icon/chapter.svg" class="me-2" alt="" />Chapters: <span>15</span></li>
+                  <li><img src="@/assets/img/icon/video.svg" class="me-2" alt="" />Video: <span>12 hours</span></li>
+                  <li><img src="@/assets/img/icon/chart.svg" class="me-2" alt="" />Level: <span>Beginner</span></li>
                 </ul>
               </div>
             </div>
@@ -270,7 +295,6 @@
       </div>
     </div>
   </section>
-  <!-- /Pricing Plan -->
   <layouts1></layouts1>
 </template>
 
@@ -304,18 +328,24 @@ export default {
     const sections = ref([]);
     const viewSectionToggle = ref({});
     const reviews = ref([]);
+    const averageRating = ref(0);
+    const userRating = ref(null);
+    const ratingForm = ref({ rating: 0, comment: "" });
+    // Thêm: Biến để theo dõi review đang sửa
+    const editingReviewId = ref(null);
 
-    // Lấy courseId từ query
     onMounted(() => {
       idCourse.value = router.currentRoute.value.query.id;
       if (idCourse.value) {
         getCourseById(idCourse.value);
         isPayments(idCourse.value);
         fetchWishlist();
+        fetchReviews(idCourse.value);
+        fetchAverageRating(idCourse.value);
+        fetchUserRating(idCourse.value);
       }
     });
 
-    // Lấy thông tin khóa học
     const getCourseById = async (courseId) => {
       try {
         const response = await baseApi.get(`/api/v1/courses/getCourseById/${courseId}`);
@@ -327,12 +357,10 @@ export default {
       }
     };
 
-    // Toggle hiển thị section
     const isViewSectionToggle = (sectionId) => {
       viewSectionToggle.value[sectionId] = !viewSectionToggle.value[sectionId];
     };
 
-    // Kiểm tra trạng thái thanh toán
     const isPayments = async (courseId) => {
       const userId = user.value?.id;
       if (!userId) return;
@@ -345,7 +373,6 @@ export default {
       }
     };
 
-    // Lấy danh sách wishlist
     const fetchWishlist = async () => {
       const userId = user.value?.id;
       if (!userId) return;
@@ -358,41 +385,31 @@ export default {
       }
     };
 
-    // Cập nhật trạng thái isFavorite của khóa học
     const updateFavoriteStatus = () => {
       course.value.isFavorite = wishlist.value.some(wish => wish.courseId === course.value.id);
     };
 
-    // Kiểm tra xem khóa học đã có trong wishlist chưa
     const isInWishlist = (courseId) => {
       return wishlist.value.some(wish => wish.courseId === courseId);
     };
 
-    // Thêm vào wishlist
     const addToWishlist = async (course) => {
       const userId = user.value?.id;
       if (!userId) {
         alert("Please log in to add to wishlist!");
         return;
       }
-
-      // Kiểm tra xem khóa học đã có trong wishlist chưa
       if (isInWishlist(course.id)) {
         alert("This course is already in your wishlist!");
         return;
       }
-
-      const wishlistData = {
-        userId: userId,
-        courseId: course.id,
-      };
-
+      const wishlistData = { userId: userId, courseId: course.id };
       try {
         const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
         if (response && response.data) {
           console.log("Khóa học đã được thêm vào wishlist:", response.data);
-          wishlist.value.push(response.data); // Thêm vào danh sách wishlist
-          course.value.isFavorite = true; // Cập nhật trạng thái
+          wishlist.value.push(response.data);
+          course.value.isFavorite = true;
         }
       } catch (error) {
         console.error("Lỗi khi thêm vào wishlist:", error);
@@ -400,27 +417,24 @@ export default {
       }
     };
 
-    // Xóa khỏi wishlist
     const unWishlist = async (courseId) => {
       const wishlistItem = wishlist.value.find(wish => wish.courseId === courseId);
       if (!wishlistItem) {
         console.error("Wishlist item không tồn tại với courseId:", courseId);
         return;
       }
-
       try {
         const response = await baseApi.delete(`/api/v1/wishlist/${wishlistItem.id}`);
         if (response.status === 200) {
           console.log("Khóa học đã bị xóa khỏi wishlist");
           wishlist.value = wishlist.value.filter(course => course.id !== wishlistItem.id);
-          course.value.isFavorite = false; // Cập nhật trạng thái
+          course.value.isFavorite = false;
         }
       } catch (error) {
         console.error("Lỗi khi xóa khỏi wishlist:", error);
       }
     };
 
-    // Toggle wishlist
     const toggleWishlist = async (course) => {
       if (course.isFavorite) {
         await unWishlist(course.id);
@@ -429,7 +443,6 @@ export default {
       }
     };
 
-    // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
     const checkCart = async (courseId) => {
       const userId = user.value?.id;
       if (!userId) return false;
@@ -443,20 +456,13 @@ export default {
       }
     };
 
-    // Thêm vào giỏ hàng
     const addToCart = async (courseId) => {
       const userId = user.value?.id;
       if (!userId) {
         alert("Please log in to add to cart!");
         return;
       }
-
-      const cartRequest = {
-        userId: userId,
-        courseId: courseId,
-        addAt: new Date().toISOString(),
-      };
-
+      const cartRequest = { userId: userId, courseId: courseId, addAt: new Date().toISOString() };
       try {
         const response = await baseApi.post('/api/v1/cart/addCart', cartRequest);
         console.log("Đã thêm vào giỏ hàng:", response.data);
@@ -467,29 +473,151 @@ export default {
       }
     };
 
-    // Xử lý nút Enroll
     const handleEnroll = async () => {
-      if (!isPayment.value) { // Nếu chưa thanh toán
+      if (!isPayment.value) {
         try {
-          // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
           const isInCart = await checkCart(course.value.id);
-
           if (!isInCart) {
-            // Thêm vào giỏ hàng qua API
             await addToCart(course.value.id);
           } else {
             alert("Course is already in the cart!");
           }
-
-          // Điều hướng đến trang giỏ hàng
           router.push({ path: '/pages/cart', query: { id: idCourse.value } });
         } catch (error) {
           alert("Failed to add to cart. Please try again.");
         }
       } else {
-        // Nếu đã thanh toán, điều hướng đến trang bài học
         router.push({ path: '/course/course-lesson/', query: { id: idCourse.value } });
       }
+    };
+
+    const fetchReviews = async (courseId) => {
+      try {
+        const response = await baseApi.get(`/api/ratings/course/${courseId}`);
+        reviews.value = response.data.map(review => ({
+          id: review.id,
+          fullName: review.fullname,
+          rating: review.rating,
+          comment: review.comment,
+          userId: review.userId,
+        }));
+        console.log("Lấy danh sách bình luận thành công");
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách bình luận:", error);
+      }
+    };
+
+    const fetchAverageRating = async (courseId) => {
+      try {
+        const response = await baseApi.get(`/api/ratings/course/${courseId}/average`);
+        averageRating.value = response.data || 0;
+        console.log("Trung bình rating:", averageRating.value);
+      } catch (error) {
+        console.error("Lỗi khi lấy trung bình rating:", error);
+      }
+    };
+
+    const fetchUserRating = async (courseId) => {
+      const userId = user.value?.id;
+      if (!userId) return;
+      try {
+        const response = await baseApi.get(`/api/ratings/course/${courseId}`);
+        const userReview = response.data.find(r => r.userId === userId);
+        if (userReview) {
+          userRating.value = userReview;
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy bình luận của user:", error);
+      }
+    };
+
+    const createRating = async () => {
+      const userId = user.value?.id;
+      if (!userId) {
+        alert("Please log in to leave a rating!");
+        return;
+      }
+      if (!isPayment.value) {
+        alert("You must purchase the course to leave a rating!");
+        return;
+      }
+      try {
+        const response = await baseApi.post('/api/ratings', {
+          userId: userId,
+          courseId: idCourse.value,
+          rating: ratingForm.value.rating,
+          comment: ratingForm.value.comment,
+        });
+        userRating.value = response.data;
+        reviews.value.push(response.data);
+        ratingForm.value = { rating: 0, comment: "" };
+        fetchAverageRating(idCourse.value);
+        console.log("Thêm bình luận thành công");
+      } catch (error) {
+        console.error("Lỗi khi thêm bình luận:", error);
+        alert("Failed to submit rating. Please try again.");
+      }
+    };
+
+    // Thay đổi: Hàm sửa bình luận nhận ratingId
+    const updateRating = async (ratingId) => {
+      const userId = user.value?.id;
+      if (!userId) return;
+      try {
+        const response = await baseApi.put('/api/ratings', {
+          userId: userId,
+          courseId: idCourse.value,
+          ratingId: ratingId,
+          rating: ratingForm.value.rating,
+          comment: ratingForm.value.comment,
+        });
+        reviews.value = reviews.value.map(r => r.id === response.data.id ? response.data : r);
+        if (userRating.value && userRating.value.id === ratingId) {
+          userRating.value = response.data;
+        }
+        editingReviewId.value = null; // Thoát chế độ sửa
+        ratingForm.value = { rating: 0, comment: "" };
+        fetchAverageRating(idCourse.value);
+        console.log("Sửa bình luận thành công");
+      } catch (error) {
+        console.error("Lỗi khi sửa bình luận:", error);
+        alert("Failed to update rating. Please try again.");
+      }
+    };
+
+    // Thay đổi: Hàm xóa bình luận nhận ratingId
+    const deleteRating = async (ratingId) => {
+      const userId = user.value?.id;
+      if (!userId) return;
+      try {
+        await baseApi.delete('/api/ratings', {
+          data: {
+            userId: userId,
+            ratingId: ratingId,
+          }
+        });
+        reviews.value = reviews.value.filter(r => r.id !== ratingId);
+        if (userRating.value && userRating.value.id === ratingId) {
+          userRating.value = null;
+        }
+        fetchAverageRating(idCourse.value);
+        console.log("Xóa bình luận thành công");
+      } catch (error) {
+        console.error("Lỗi khi xóa bình luận:", error);
+        alert("Failed to delete rating. Please try again.");
+      }
+    };
+
+    // Thêm: Bắt đầu chế độ sửa
+    const startEdit = (review) => {
+      editingReviewId.value = review.id;
+      ratingForm.value = { rating: review.rating, comment: review.comment };
+    };
+
+    // Thêm: Hủy chế độ sửa
+    const cancelEdit = () => {
+      editingReviewId.value = null;
+      ratingForm.value = { rating: 0, comment: "" };
     };
 
     return {
@@ -501,12 +629,26 @@ export default {
       sections,
       viewSectionToggle,
       reviews,
+      averageRating,
+      userRating,
+      ratingForm,
+      // Thêm: Trả về biến mới
+      editingReviewId,
       getCourseById,
       isViewSectionToggle,
       isPayments,
       fetchWishlist,
       toggleWishlist,
       handleEnroll,
+      fetchReviews,
+      fetchAverageRating,
+      fetchUserRating,
+      createRating,
+      updateRating,
+      deleteRating,
+      // Thêm: Trả về hàm mới
+      startEdit,
+      cancelEdit,
     };
   },
 };

@@ -25,16 +25,16 @@
                         <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">{{ course.title }}</router-link>
                       </h3>
                       <div class="all-btn all-category d-flex align-items-center">
-                      <router-link 
-                        v-if="!course.isPayment" 
-                        to="#" 
-                        class="btn btn-primary" 
+                      <router-link
+                        v-if="!course.isPayment"
+                        to="#"
+                        class="btn btn-primary"
                         @click.prevent="handleEnroll(course)">
                         BUY NOW
                       </router-link>
-                      <router-link 
-                        v-else 
-                        :to="{ path: '/course/course-details', query: { id: course.id } }" 
+                      <router-link
+                        v-else
+                        :to="{ path: '/course/course-details', query: { id: course.id } }"
                         class="btn btn-primary">
                         VIEW DETAIL
                       </router-link>
@@ -176,7 +176,7 @@ export default {
       const userId = this.user?.id;
       if (!userId) {
         alert("Please log in to add a course to your cart.");
-        router.push("/");  
+        router.push("/");
         return;
       }
       if (!this.isPayment) {  // Kiểm tra nếu chưa thanh toán
@@ -211,7 +211,7 @@ export default {
       const destination = this.isPayment ? "/course/course-lesson/" : "/pages/cart";
       this.$router.push({ path: destination, query: { id: course.id } });
     },
-    
+
     handleFilterChange({ categories, instructors, priceRange,filters}) {
       this.selectedCategories = categories || [];
       this.selectedInstructors = instructors || [];
@@ -235,15 +235,15 @@ export default {
       this.filteredCourses = this.courses.filter(course => {
         // Lọc theo danh mục
         const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(course.categoryId.toString());
-        
+
         // Lọc theo giảng viên
         const instructorMatch = selectedInstructors.length === 0 || selectedInstructors.includes(course.instructor.fullname);
-        
+
         // Lọc theo khoảng giá
         const priceMatch =
           (this.selectedPriceRange.min === 0 && this.selectedPriceRange.max === 0) ||
           (course.price >= this.selectedPriceRange.min && course.price <= this.selectedPriceRange.max);
-        
+
         // Lọc theo từ khóa tìm kiếm
         const searchQueryMatch = !this.searchQuery || (course.title && course.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
 
