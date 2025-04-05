@@ -76,6 +76,7 @@ import BlogMasonryBreadcrumb from '@/components/breadcrumb/blog-masonry.vue'
 import BlogModernBreadcrumb from '@/components/breadcrumb/blog-modern.vue'
 
 /*********Student**********/
+import VideoLecture from './views/pages/pages/course-lecture/video-lecture.vue';
 import StudentFilter from '@/components/student-filter.vue'
 import Studentsidebar from '@/views/layouts/student-sidebar.vue'
 import SettingsupportviewticketsBreadcrumb from '@/components/breadcrumb/settingsupportview-tickets.vue'
@@ -224,6 +225,7 @@ app.component('bloglist', BloglistBreadcrumb);
 app.component('blogmasonry', BlogMasonryBreadcrumb);
 app.component('blog-modern', BlogModernBreadcrumb);
 /*********Student**********/
+app.component('video-lecture', VideoLecture);
 app.component('student-filter', StudentFilter);
 app.component('student-sidebar', Studentsidebar);
 app.component('settingsupportviewtickets', SettingsupportviewticketsBreadcrumb);
