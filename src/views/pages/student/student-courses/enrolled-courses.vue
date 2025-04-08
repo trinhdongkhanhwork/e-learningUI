@@ -14,7 +14,7 @@
                    alt="Img" class="img-fluid" style="width: 300px;height: 270px;"/>
             </router-link>
             <div class="price">
-              <h3>{{ course.price }} <span>$99.00</span></h3>
+              <h3>{{ course.price }} </h3>
             </div>
           </div>
           <div class="product-content">

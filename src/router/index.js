@@ -7,7 +7,7 @@ import Blog_List from '@/views/pages/blog/blog-list'
 import Blog_Masonry from '@/views/pages/blog/blog-masonry'
 import Blog_Modern from '@/views/pages/blog/blog-modern'
 import comesoon from '@/views/pages/pages/error/come-soon.vue'
-import courselesson from '@/views/pages/pages/course-lesson.vue'
+import courselesson from '@/views/pages/pages/course-lecture/course-lesson.vue'
 import error404 from '@/views/pages/pages/error/error-404.vue'
 import error500 from '@/views/pages/pages/error/error-500.vue'
 import forgotpassword from '@/views/pages/pages/forgot-password.vue'
@@ -98,12 +98,24 @@ import { useStore } from "vuex";
 import Authenticate from "@/views/pages/pages/authenticate.vue";
 import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
 import CategoryManagement from "@/views/pages/admin/CategoryManagement.vue";
+import WithdrawManagement from "@/views/pages/admin/withdraw/adminWithdraw.vue"
+import RevenueStatisticsChart from "@/views/pages/admin/revenueStatisticsChart/revenueStatisticsChart.vue";
 
 const routes = [
   {
     path: '/admin/categories',
     name: 'CategoryManagement',
     component: CategoryManagement
+  },
+  {
+    path: '/admin/withdraw',
+    name: 'WithdrawManagement',
+    component: WithdrawManagement
+  },
+  {
+    path: '/admin/revenue-statistics-chart',
+    name: 'RevenueStatisticsChart',
+    component: RevenueStatisticsChart
   },
   {
     path: '/payment-success',

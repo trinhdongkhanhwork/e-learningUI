@@ -3,11 +3,10 @@
 
   <section class="page-content course-sec course-lesson">
     <div class="container">
-      <div class="row">
+      <div class="row" style="margin-top: 30px;">
         <!-- Danh sách Sections và Lectures -->
         <div class="col-lg-4">
           <div class="lesson-group">
-            <br>
             <div class="course-card" v-for="section in course?.sections" :key="section.id">
               <h6 class="cou-title">
                 <a class="collapsed" data-bs-toggle="collapse" :href="'#collapse' + section.id" aria-expanded="false">
@@ -31,26 +30,18 @@
 
         <!-- Nội dung bài học -->
         <div class="col-lg-8">
-          <br>
           <div class="student-widget lesson-introduction">
             <div class="lesson-widget-group">
               <h4 class="tittle">{{ selectedLecture?.title || "Introduction" }}</h4>
 
               <!-- Nếu là video -->
-              <div class="introduct-video" v-if="selectedLecture?.type === 'video'">
-                <a href="https://www.youtube.com/embed/1trvO6dqQUI" class="video-thumbnail" data-fancybox="">
-                  <div class="play-icon">
-                    <i class="fa-solid fa-play"></i>
-                  </div>
-                  <img src="@/assets/img/video-img-01.jpg" alt="" />
-                </a>
-              </div>
+              <video-lecture :lecture="selectedLecture"></video-lecture>
 
               <!-- Nếu là quiz -->
               <div v-if="selectedLecture?.type === 'quiz'">
-              <div v-if="loading">
-                <p>Check data...</p>
-              </div>
+                <div v-if="loading">
+                  <p>Check data...</p>
+                </div>
                 <div class="quiz-box" v-if="!quizStarted">
                   <!-- nếu có dữ liệu -->
                   <template v-if="hasQuiz">
@@ -120,7 +111,7 @@
     </div>
   </section>
 
-  <layouts1></layouts1>
+
 
   <!-- Popup xác nhận nộp bài -->
   <div v-if="showSubmitPopup" class="popup-overlay">
@@ -130,6 +121,7 @@
       <button class="cancel-btn" @click="showSubmitPopup = false">Hủy</button>
     </div>
   </div>
+  <layouts1></layouts1>
 </template>
 
 <script> 
@@ -137,28 +129,27 @@ import axios from "axios";
 
 export default {
   data() {
-  return {
-    course: null,
-    courseId: null,
-    selectedLecture: null,
-    quizStarted: false, 
-    currentQuestionIndex: 0,
-    selectedAnswers: [],
-    timeLeft: 300, 
-    timer: null,
-    showSubmitPopup: false,
-    quizData: null,
-    hasQuiz: false,
-    loading: true,
-  };
-},
+    return {
+        course: null,
+        courseId: null,
+        selectedLecture: null,
+        quizStarted: false, 
+        currentQuestionIndex: 0,
+        selectedAnswers: [],
+        timeLeft: 300, 
+        timer: null,
+        showSubmitPopup: false,
+        quizData: null,
+        hasQuiz: false,
+        loading: true,
+      };
+  },
   computed: {
     currentQuestion() {
       return this.selectedLecture?.quiz?.questions[this.currentQuestionIndex] || {};
     },
   },
   async mounted() {
-    
     this.courseId = this.getCourseIdFromUrl();
     if (!this.courseId) {
       console.error("not find course");
@@ -179,25 +170,24 @@ export default {
       return params.get("id");
     },
     async selectLecture(lecture) {
-  this.selectedLecture = lecture;
-  this.quizStarted = false;
-  this.currentQuestionIndex = 0;
-  this.selectedAnswers = [];
-  this.hasQuiz = false;
-  this.loading = true;
+      this.selectedLecture = lecture;
+      this.quizStarted = false;
+      this.currentQuestionIndex = 0;
+      this.selectedAnswers = [];
+      this.hasQuiz = false;
+      this.loading = true;
 
-  if (lecture.type === "quiz") {
-    this.$nextTick(() => {
-      if (typeof this.checkQuizData === "function") {
-        this.checkQuizData(lecture.id);
-      } else {
-        console.error("checkQuizData not function!");
+      if (lecture.type === "quiz") {
+        this.$nextTick(() => {
+          if (typeof this.checkQuizData === "function") {
+            this.checkQuizData(lecture.id);
+          } else {
+            console.error("checkQuizData not function!");
+          }
+        });
       }
-    });
-  }
-
-  this.loading = false;
-},
+      this.loading = false;
+    },
 
     startQuiz() {
     this.quizStarted = true;
@@ -206,8 +196,7 @@ export default {
     this.timeLeft = 300;
     this.selectedAnswers = [];
 
-
-        // Bắt đầu đếm ngược
+    // Bắt đầu đếm ngược
     if (this.timer) {
       clearInterval(this.timer);
     }

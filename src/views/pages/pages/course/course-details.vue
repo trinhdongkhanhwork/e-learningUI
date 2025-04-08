@@ -653,13 +653,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.star-clickable {
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.star-clickable:hover {
-  color: #ffca28;
-}
-</style>
