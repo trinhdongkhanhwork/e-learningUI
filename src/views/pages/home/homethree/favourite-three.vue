@@ -71,9 +71,10 @@
               </div>
             </Slide>
 
-            <!-- Tùy chỉnh pagination -->
+            <!-- Tùy chỉnh pagination, chỉ giữ chấm tròn -->
             <template #addons>
               <div class="custom-pagination">
+                <!-- Chỉ giữ chấm tròn -->
                 <div class="pagination-dots">
                   <span
                       v-for="index in totalFavouriteSlides"
@@ -141,10 +142,10 @@
                 </div>
               </Slide>
 
-              <!-- Tùy chỉnh pagination -->
+              <!-- Tùy chỉnh pagination, chỉ giữ chấm tròn -->
               <template #addons>
                 <div class="custom-pagination">
-                  <!-- Chấm tròn -->
+                  <!-- Chỉ giữ chấm tròn -->
                   <div class="pagination-dots">
                     <span
                         v-for="index in totalCategorySlides"
@@ -273,7 +274,7 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Carousel, Pagination, Slide } from "vue3-carousel";
+import { Carousel, Slide } from "vue3-carousel"; // Xóa Pagination khỏi import
 import "vue3-carousel/dist/carousel.css";
 import baseApi from "@/axios";
 import { useStore } from "vuex";
@@ -284,7 +285,7 @@ export default {
   components: {
     Carousel,
     Slide,
-    Pagination,
+    // Xóa Pagination khỏi danh sách components vì không sử dụng
   },
   setup() {
     const store = useStore();
