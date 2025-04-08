@@ -46,7 +46,7 @@ export default function messagesService(){
     const receiveMessage = async(friend) => {
         if(unsubsribeMessage) unsubsribeMessage.unsubscribe();
         const stompClient = getStompClient()
-        unsubsribeMessage = stompClient.subscribe(`/message/${friend.id}/private`, (messageResponse) => {
+        unsubsribeMessage = stompClient.subscribe(`/message/${friend.id}/post`, (messageResponse) => {
             try {
                 const messageData = JSON.parse(messageResponse.body);
                 messages.value.push(messageData);
