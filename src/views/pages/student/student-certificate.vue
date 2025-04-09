@@ -15,7 +15,7 @@
             <div class="col-lg-4 col-md-6 d-flex">
               <div class="card dash-info flex-fill">
                 <div class="card-body">
-                  <h5>Enrolled Courses</h5>
+                  <h5>Student_Certificate</h5>
                   <h2>{{ totalCourses }}</h2>
                 </div>
               </div>
@@ -40,7 +40,7 @@
           <!-- /Dashboard Grid -->
 
           <div class="dashboard-title">
-            <h4>Recently Enrolled Courses</h4>
+            <h4>certificate</h4>
           </div>
           <div class="row">
             <!-- Course Grid -->

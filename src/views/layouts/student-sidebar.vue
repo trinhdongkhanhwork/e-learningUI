@@ -37,6 +37,14 @@
             </li>
             <li
               class="nav-item"
+              :class="{ active: isActive('/student/student-certificate') }"
+            >
+              <router-link to="/student/student-certificate" class="nav-link">
+                <i class="bx bxs-graduation"></i>Certificate
+              </router-link>
+            </li>
+            <li
+              class="nav-item"
               :class="{ active: isActive('/student/student-profile') }"
             >
               <router-link to="/student/student-profile" class="nav-link">
