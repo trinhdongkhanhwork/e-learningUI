@@ -141,22 +141,6 @@
                   </div>
                 </div>
               </Slide>
-
-              <!-- Tùy chỉnh pagination, chỉ giữ chấm tròn -->
-              <template #addons>
-                <div class="custom-pagination">
-                  <!-- Chỉ giữ chấm tròn -->
-                  <div class="pagination-dots">
-                    <span
-                        v-for="index in totalCategorySlides"
-                        :key="index"
-                        class="pagination-dot"
-                        :class="{ active: currentCategorySlide === index - 1 }"
-                        @click="goToSlide('categoryCarousel', index - 1)"
-                    ></span>
-                  </div>
-                </div>
-              </template>
             </Carousel>
           </div>
 
