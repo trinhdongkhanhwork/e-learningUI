@@ -15,11 +15,16 @@
               </h6>
               <div :id="'collapse' + section.id" class="card-collapse collapse">
                 <ul>
-                  <li v-for="lecture in section.lectures" :key="lecture.id" @click="selectLecture(lecture)">
-                    <p>{{ lecture.title }}</p>
+                  <li :id="'lecture-' + lecture.id" v-for="lecture in section.lectures" :key="lecture.id"
+                    @click="selectLecture(lecture)">
                     <div>
                       <img v-if="lecture.type === 'video'" src="@/assets/img/icon/play-icon.svg" alt="Video" />
                       <img v-if="lecture.type === 'quiz'" src="@/assets/img/icon/question-icon-com.svg" alt="Quiz" />
+                    </div>
+                    <p>{{ lecture.title }}</p>
+                    <div>
+                      <img v-if="!firstIncompleteLectureId || lecture.id < firstIncompleteLectureId"
+                        src="@/assets/img/icon/icon-4.svg" alt="Passed" />
                     </div>
                   </li>
                 </ul>
@@ -32,10 +37,12 @@
         <div class="col-lg-8">
           <div class="student-widget lesson-introduction">
             <div class="lesson-widget-group">
-              <h4 class="tittle">{{ selectedLecture?.title || "Introduction" }}</h4>
+              <h3 class="tittle">Course: {{ course?.title }}</h3>
+              <h4 class="tittle">Lecture: {{ selectedLecture?.title || "Introduction" }}</h4>
 
               <!-- Nếu là video -->
-              <video-lecture :lecture="selectedLecture"></video-lecture>
+              <video-lecture v-if="selectedLecture?.type === 'video'" :lecture="selectedLecture"
+                :startSecond="startSecond"></video-lecture>
 
               <!-- Nếu là quiz -->
               <div v-if="selectedLecture?.type === 'quiz'">
@@ -57,41 +64,46 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(quiz, index) in quizData" :key="index">
+                          <tr v-for="(quiz, index) in quizData.slice(0, 5)" :key="index">
                             <td>{{ index + 1 }}</td>
-                            <td>{{ quiz.createdAt ? new Date(quiz.createdAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric',hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/A' }}</td>
+                            <td>{{ quiz.createdAt ? new Date(quiz.createdAt).toLocaleString('vi-VN', {
+                              day: '2-digit',
+                              month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
+                            })
+                              : 'N/A' }}</td>
                             <td>{{ quiz.score }}</td>
                             <td>{{ quiz.passedLecture ? 'Pass' : 'Fail' }}</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <button class="begin-btn" @click="startQuiz">[ Begin ]</button>
+                    <button class="begin-btn"
+                      @click="startQuiz((selectedLecture?.quiz?.questions?.length || 0) * 2 * 60)"> Begin </button>
                   </template>
                   <template v-else>
                     <!-- Nếu chưa có dữ liệu -->
                     <p><strong>Number of questions:</strong> {{ selectedLecture?.quiz?.questions?.length || 0 }}</p>
-                    <p><strong>Exercise duration:</strong> 5 Minutes</p>
+                    <p><strong>Exercise duration:</strong> {{ (selectedLecture?.quiz?.questions?.length || 0) * 2 }}
+                      Minutes
+                    </p>
                     <p><strong>Total attempts:</strong> 0/3</p>
                     <p><strong>Minimum score to complete:</strong> 85%</p>
-                    <button class="begin-btn" @click="startQuiz">[ Begin ]</button>
+                    <button class="begin-btn"
+                      @click="startQuiz((selectedLecture?.quiz?.questions?.length || 0) * 2 * 60)"> Begin </button>
                   </template>
                 </div>
 
                 <!-- Giao diện câu hỏi -->
                 <div v-if="quizStarted">
-                  <p><strong>Time Left:</strong> {{ Math.floor(timeLeft / 60) }}:{{ ('0' + (timeLeft % 60)).slice(-2) }}</p>
+                  <p><strong>Time Left:</strong> {{ Math.floor(timeLeft / 60) }}:{{ ('0' + (timeLeft % 60)).slice(-2) }}
+                  </p>
 
                   <div class="question-box">
                     <p><strong>Question {{ currentQuestionIndex + 1 }}: {{ currentQuestion.title }}</strong></p>
                     <ul>
                       <li v-for="(option, index) in currentQuestion.options" :key="index">
                         <label>
-                          <input 
-                            type="checkbox" 
-                            :value="option.id" 
-                            @change="toggleAnswer(option.id)"
-                          />
+                          <input type="checkbox" :value="option.id" @change="toggleAnswer(option.id)" />
                           {{ option.text }}
                         </label>
                       </li>
@@ -99,8 +111,8 @@
                   </div>
 
                   <div class="quiz-actions">
-                    <button class="submit-btn" @click="submitQuiz">[Submit]</button>
-                    <button class="next-btn" @click="nextQuestion">[Next Question]</button>
+                    <button class="submit-btn" @click="submitQuiz">Submit</button>
+                    <button class="next-btn" @click="nextQuestion">Next Question</button>
                   </div>
                 </div>
               </div>
@@ -112,37 +124,48 @@
   </section>
 
 
-
   <!-- Popup xác nhận nộp bài -->
   <div v-if="showSubmitPopup" class="popup-overlay">
     <div class="popup-box">
-      <p>Bạn có chắc chắn muốn nộp bài không?</p>
-      <button class="confirm-btn" @click="confirmSubmitQuiz">Xác nhận</button>
-      <button class="cancel-btn" @click="showSubmitPopup = false">Hủy</button>
+      <p>Are you sure you want to submit?</p>
+      <button class="confirm-btn" @click="confirmSubmitQuiz">Submit</button>
+      <button class="cancel-btn" @click="showSubmitPopup = false">Cancle</button>
     </div>
   </div>
+
+  <!-- popup chúc mừng -->
+  <div v-if="showCongrats" class="popup">
+    <h2>🎉 Congratulations!</h2>
+    <p>You have successfully completed the course.</p>
+    <p>🎓 Your certificate has been issued and sent to your email.</p>
+    <button @click="showCongrats = false">Close</button>
+  </div>
+
   <layouts1></layouts1>
 </template>
 
-<script> 
+<script>
 import axios from "axios";
 
 export default {
   data() {
     return {
-        course: null,
-        courseId: null,
-        selectedLecture: null,
-        quizStarted: false, 
-        currentQuestionIndex: 0,
-        selectedAnswers: [],
-        timeLeft: 300, 
-        timer: null,
-        showSubmitPopup: false,
-        quizData: null,
-        hasQuiz: false,
-        loading: true,
-      };
+      course: null,
+      courseId: null,
+      selectedLecture: null,
+      quizStarted: false,
+      currentQuestionIndex: 0,
+      selectedAnswers: [],
+      timeLeft: 300,
+      timer: null,
+      showSubmitPopup: false,
+      quizData: null,
+      hasQuiz: false,
+      loading: true,
+      firstIncompleteLectureId: null,
+      startSecond: 0,
+      showCongrats: false,
+    };
   },
   computed: {
     currentQuestion() {
@@ -160,6 +183,10 @@ export default {
         `http://localhost:8080/api/v1/courses/getCourseById/${this.courseId}`
       );
       this.course = response.data;
+      // load đến bài học chưa hoàn thành
+      await this.loadFirstIncompleteLecture();
+      await this.loadFirstIncompleteLectureId();
+
     } catch (error) {
       console.error("err data course:", error);
     }
@@ -169,13 +196,16 @@ export default {
       const params = new URLSearchParams(window.location.search);
       return params.get("id");
     },
-    async selectLecture(lecture) {
+    async selectLecture(lecture, startSecond) {
       this.selectedLecture = lecture;
       this.quizStarted = false;
       this.currentQuestionIndex = 0;
       this.selectedAnswers = [];
       this.hasQuiz = false;
       this.loading = true;
+      this.startSecond = startSecond;
+      console.log("------" + startSecond);
+
 
       if (lecture.type === "quiz") {
         this.$nextTick(() => {
@@ -188,131 +218,205 @@ export default {
       }
       this.loading = false;
     },
+    startQuiz(timeLeft) {
+      this.quizStarted = true;
+      this.currentQuestionIndex = 0;
+      this.selectedAnswers = [];
 
-    startQuiz() {
-    this.quizStarted = true;
-    this.currentQuestionIndex = 0;
-    this.selectedAnswers = {};
-    this.timeLeft = 300;
-    this.selectedAnswers = [];
+      this.timeLeft = timeLeft;
 
-    // Bắt đầu đếm ngược
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-
-    this.timer = setInterval(() => {
-      if (this.timeLeft > 0) {
-        this.timeLeft--;
-      } else {
+      if (this.timer) {
         clearInterval(this.timer);
-        this.showSubmitPopup = true;
       }
-    }, 1000);
-  },
 
-  nextQuestion() {
-  if (this.currentQuestionIndex < this.selectedLecture.quiz.questions.length - 1) {
-    this.currentQuestionIndex++;
-    this.$nextTick(() => {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-      checkboxes.forEach(checkbox => checkbox.checked = false);
-    });
-  } else {
-    alert("Bạn đã hoàn thành tất cả các câu hỏi!");
-  }
-}
-,
-  //thêm/xóa đáp án
-  toggleAnswer(optionId) {
-  if (!Array.isArray(this.selectedAnswers)) {
-    this.selectedAnswers = [];
-  }
-
-  const index = this.selectedAnswers.indexOf(optionId);
-  if (index === -1) {
-    this.selectedAnswers.push(optionId);
-  } else {
-    this.selectedAnswers.splice(index, 1);
-  }
-  console.log("Selected Answers:", this.selectedAnswers);
-},
-
-//checkQuizData
-async checkQuizData(lectureId) {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/api/answers/${lectureId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+      this.timer = setInterval(() => {
+        if (this.timeLeft > 0) {
+          this.timeLeft--;
+        } else {
+          clearInterval(this.timer);
+          this.showSubmitPopup = true;
         }
-      );
-      console.log("Kiểm tra dữ liệu bài làm:", JSON.stringify(response.data));
+      }, 1000);
+    },
 
-      if (response.data.result && response.data.result.length > 0) {
-        this.hasQuiz = true;
-        this.quizData = response.data.result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
+    nextQuestion() {
+      if (this.currentQuestionIndex < this.selectedLecture.quiz.questions.length - 1) {
+        this.currentQuestionIndex++;
+        this.$nextTick(() => {
+          const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+          checkboxes.forEach(checkbox => checkbox.checked = false);
+        });
       } else {
+        alert("You have completed all the questions!");
+      }
+    }
+    ,
+    //thêm/xóa đáp án
+    toggleAnswer(optionId) {
+      if (!Array.isArray(this.selectedAnswers)) {
+        this.selectedAnswers = [];
+      }
+
+      const index = this.selectedAnswers.indexOf(optionId);
+      if (index === -1) {
+        this.selectedAnswers.push(optionId);
+      } else {
+        this.selectedAnswers.splice(index, 1);
+      }
+      console.log("Selected Answers:", this.selectedAnswers);
+    },
+
+    //checkQuizData
+    async checkQuizData(lectureId) {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/answers/${lectureId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("Kiểm tra dữ liệu bài làm:", JSON.stringify(response.data));
+
+        if (response.data.result && response.data.result.length > 0) {
+          this.hasQuiz = true;
+          this.quizData = response.data.result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        } else {
+          this.hasQuiz = false;
+        }
+      } catch (error) {
+        console.error("Lỗi khi kiểm tra quiz:", error);
         this.hasQuiz = false;
       }
-    } catch (error) {
-      console.error("Lỗi khi kiểm tra quiz:", error);
-      this.hasQuiz = false;
-    }
-  },
+    },
 
-  submitQuiz() {
-    clearInterval(this.timer); // Dừng đếm ngược
-    this.showSubmitPopup = true;
-  },
+    submitQuiz() {
+      clearInterval(this.timer); // Dừng đếm ngược
+      this.showSubmitPopup = true;
+    },
 
-  confirmSubmitQuiz() {
-  this.showSubmitPopup = false;
+    async confirmSubmitQuiz() {
+      this.showSubmitPopup = false;
 
-  if (!this.selectedLecture?.id) {
-    alert("Lỗi: not find quiz hợp lệ!");
-    return;
-  }
+      if (!this.selectedLecture?.id) {
+        alert("Lỗi: Not found valid quiz!");
+        return;
+      }
 
-  // Kiểm tra nếu chưa chọn đáp án
-  if (this.selectedAnswers.length === 0) {
-    alert("you not chose answer!");
-    return;
-  }
+      if (this.selectedAnswers.length === 0) {
+        alert("You haven't chosen any answer!");
+        return;
+      }
 
-  const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-  const payload = {
-    lectureId: this.selectedLecture.id,
-    optionId: [...this.selectedAnswers]
-  };
-console.log(this.selectedAnswers);
+      const payload = {
+        lectureId: this.selectedLecture.id,
+        optionId: [...this.selectedAnswers]
+      };
 
-  console.log("Dữ liệu gửi lên API:",JSON.stringify(payload, null, 2));
+      try {
+        console.log("Dữ liệu gửi lên API:", JSON.stringify(payload, null, 2));
 
-  axios.post("http://localhost:8080/api/answers/submit", payload, {
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  })
-    .then(response => {
-      alert("Bài làm đã được nộp thành công!");
-      this.quizStarted = false;
-      this.selectedAnswers = [];
-    })
-    .catch(error => {
-      console.error("Lỗi khi nộp bài:", error);
-      alert("Có lỗi xảy ra khi nộp bài! Vui lòng thử lại.",JSON.stringify(payload, null, 2));
-    });
-}
+        // Nộp bài
+        await axios.post("http://localhost:8080/api/answers/submit", payload, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+
+        });
+
+        this.quizStarted = false;
+        this.selectedAnswers = [];
+        await this.checkQuizData(this.selectedLecture.id);
+
+      } catch (error) {
+        console.error("Lỗi khi nộp bài:", error);
+        alert("An error occurred while submitting your assignment! Please try again.");
+      }
+    },
+
+
+    async loadFirstIncompleteLecture() {
+      const token = localStorage.getItem("token");
+      try {
+        const res = await axios.get(`http://localhost:8080/api/progress/first-incomplete/${this.courseId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        console.log("First Incomplete Lecture:", res.data);
+
+        if (res.data?.lectureId) {
+          this.firstIncompleteLectureId = res.data.lectureId;
+
+          const lecture = this.findLectureById(this.firstIncompleteLectureId);
+          if (lecture) {
+            this.selectLecture(lecture, res.data.currentSecond || 0);
+          }
+
+          this.$nextTick(() => {
+            this.scrollToLecture(this.firstIncompleteLectureId);
+          });
+
+        } else {
+          console.log("Tất cả bài học đã hoàn thành");
+          this.showCongrats = true;
+        }
+      } catch (error) {
+        console.error("Lỗi khi load bài học chưa hoàn thành:", error);
+      }
+    },
+    //scroll tới bài học
+    scrollToLecture(lectureId) {
+      const el = document.getElementById(`lecture-${lectureId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("highlight");
+
+        setTimeout(() => {
+          el.classList.remove("highlight");
+        }, 3000);
+      }
+    },
+    findLectureById(lectureId) {
+      for (const section of this.course?.sections || []) {
+        for (const lecture of section.lectures || []) {
+          if (lecture.id === lectureId) {
+            return lecture;
+          }
+        }
+      }
+      return null;
+    },
+
+
+    async loadFirstIncompleteLectureId() {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`http://localhost:8080/api/progress/first-incomplete/${this.courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      this.firstIncompleteLectureId = res.data?.lectureId;
+    },
   }
 }
 </script>
 
 <style scoped>
+.incomplete,
+.highlight {
+  background-color: #ffe082;
+  border-left: 4px solid #ff9800;
+  padding-left: 10px;
+}
+
 /* Hiệu ứng bàn tay khi rê chuột vào bài học */
 .cou-title a,
 ul li {
@@ -403,6 +507,7 @@ ul li {
   background: #ccc;
   cursor: not-allowed;
 }
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -423,7 +528,8 @@ ul li {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.confirm-btn, .cancel-btn {
+.confirm-btn,
+.cancel-btn {
   background: #007bff;
   color: white;
   border: none;
@@ -445,6 +551,7 @@ ul li {
 .cancel-btn:hover {
   background: #b02a37;
 }
+
 /* css table */
 .quiz-data {
   margin-top: 20px;
@@ -509,5 +616,35 @@ ul li {
 
 .begin-btn:hover {
   background-color: #0056b3;
+}
+
+/* Popup chuc mừng */
+
+.popup {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  background: #fff;
+  border: 2px solid #4caf50;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  z-index: 999;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.popup h2 {
+  color: #4caf50;
+}
+
+/* đang học */
+.active-lecture {
+  background-color: #e0f7fa;
+  /* màu nền nhẹ */
+  border-left: 4px solid #00bcd4;
+  /* viền trái nổi bật */
+  font-weight: bold;
+  color: #00796b;
 }
 </style>
