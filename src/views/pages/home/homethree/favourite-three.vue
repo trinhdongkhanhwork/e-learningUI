@@ -23,8 +23,14 @@
               class="home-three-favourite-carousel"
               :settings="settings"
               :breakpoints="breakpoints"
+              ref="favouriteCarousel"
+              @slide-change="updateFavouriteSlide"
           >
-            <Slide v-for="category in categories" :key="category.categoryName" class="favourite-box">
+            <Slide
+                v-for="category in categories"
+                :key="category.categoryName"
+                class="favourite-box"
+            >
               <div class="carousel__item favourite-item flex-fill text-start">
                 <div class="categories-icon">
                   <img
@@ -40,7 +46,10 @@
                   <div class="instructors-info">
                     <p class="me-4">Courses</p>
                     <ul class="instructors-list">
-                      <li v-for="course in filteredCoursesByCategory(category.id).firstThreeCourses" :key="course.id">
+                      <li
+                          v-for="course in filteredCoursesByCategory(category.id).firstThreeCourses"
+                          :key="course.id"
+                      >
                         <a
                             href="javascript:;"
                             data-bs-toggle="tooltip"
@@ -51,15 +60,31 @@
                         </a>
                       </li>
                     </ul>
-                    <li class="more-set" v-if="filteredCoursesByCategory(category.id).remainingCoursesCount > 0">
+                    <li
+                        class="more-set"
+                        v-if="filteredCoursesByCategory(category.id).remainingCoursesCount > 0"
+                    >
                       <a href="javascript:;">+{{ filteredCoursesByCategory(category.id).remainingCoursesCount }}</a>
                     </li>
                   </div>
                 </div>
               </div>
             </Slide>
+
+            <!-- Tùy chỉnh pagination, chỉ giữ chấm tròn -->
             <template #addons>
-              <Pagination />
+              <div class="custom-pagination">
+                <!-- Chỉ giữ chấm tròn -->
+                <div class="pagination-dots">
+                  <span
+                      v-for="index in totalFavouriteSlides"
+                      :key="index"
+                      class="pagination-dot"
+                      :class="{ active: currentFavouriteSlide === index - 1 }"
+                      @click="goToSlide('favouriteCarousel', index - 1)"
+                  ></span>
+                </div>
+              </div>
             </template>
           </Carousel>
         </div>
@@ -68,7 +93,7 @@
   </section>
   <!-- /Favourite Course -->
 
-  <!-- Courses -->
+  <!-- Courses Section -->
   <section class="home-three-courses">
     <div class="container">
       <div class="favourite-course-sec">
@@ -88,179 +113,124 @@
             </div>
           </div>
 
-          <div class="all-corses-main">
-            <div class="tab-content">
-              <!-- Dynamic tabs from categories -->
-              <div class="nav tablist-three" role="tablist">
-                <a
-                    class="nav-tab active me-3"
-                    data-bs-toggle="tab"
-                    href="#alltab"
-                    role="tab"
-                    @click="setActiveFilter('all')"
-                >All</a>
-                <a
-                    v-for="(category, index) in categories"
-                    :key="index"
-                    class="nav-tab me-3"
-                    :data-bs-toggle="'tab'"
-                    :href="'#' + category.categoryName.toLowerCase().replace(/\s+/g, '') + 'tab'"
-                    role="tab"
+          <!-- Category Carousel -->
+          <div v-if="categories && categories.length" class="category-carousel-wrapper">
+            <Carousel
+                :settings="categorySettings"
+                :breakpoints="categoryBreakpoints"
+                :wrap-around="true"
+                :autoplay="0"
+                ref="categoryCarousel"
+                @slide-change="updateCategorySlide"
+            >
+              <Slide v-for="category in categories" :key="category.id">
+                <div
+                    class="category-box"
+                    :class="{ active: activeFilter === category.id }"
                     @click="setActiveFilter(category.id)"
-                >{{ category.categoryName }}</a>
-              </div>
+                >
+                  <div class="category-icon">
+                    <img
+                        class="img-fluid"
+                        :src="category.coverImage"
+                        :alt="category.categoryName"
+                    />
+                  </div>
+                  <div class="category-content">
+                    <h4>{{ category.categoryName }}</h4>
+                  </div>
+                </div>
+              </Slide>
+            </Carousel>
+          </div>
 
-              <!-- Tab Content -->
-              <div class="tab-content mt-4">
-                <!-- All Courses Tab -->
-                <div class="tab-pane fade show active" id="alltab" role="tabpanel">
-                  <div class="all-course">
-                    <div class="row">
-                      <div class="col-xl-3 col-lg-6 col-md-6 col-12" data-aos="fade-up" v-for="course in filteredCourses" :key="course.id">
-                        <div class="course-box-three">
-                          <div class="course-three-item">
-                            <div class="course-three-img">
-                              <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-                                <img v-if="course.coverImage" :src="course.coverImage" alt="Img" class="img-fluid" style="width: 300px; height: 270px;" />
+          <!-- Danh sách khóa học -->
+          <div class="all-corses-main" data-aos="fade-up">
+            <div class="tab-content mt-4">
+              <div class="all-course">
+                <div class="row">
+                  <div class="col-xl-3 col-lg-6 col-md-6 col-12"
+                       v-for="course in filteredCourses"
+                       :key="course.id">
+                    <div class="course-box-three">
+                      <div class="course-three-item">
+                        <div class="course-three-img">
+                          <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
+                            <img v-if="course.coverImage"
+                                 :src="course.coverImage"
+                                 alt="Img"
+                                 class="img-fluid"
+                                 style="width: 300px; height: 270px;" />
+                          </router-link>
+                          <div class="heart-three">
+                            <a @click.prevent="toggleFavorites(course)">
+                              <i :class="course.isFavorite ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="course-three-content">
+                          <div class="course-group-three">
+                            <div class="group-three-img">
+                              <router-link to="/instructor/instructor-profile">
+                                <img :src="course.instructor?.avatarUrl || '@/assets/img/user/user1.jpg'"
+                                     alt=""
+                                     class="img-fluid" />
                               </router-link>
-                              <div class="heart-three">
-                                <a @click.prevent="toggleFavorites(course)">
-                                  <i :class="course.isFavorite ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'"></i>
-                                </a>
+                            </div>
+                          </div>
+                          <div class="course-three-text">
+                            <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
+                              <p>{{ course.level || "Unknown" }}</p>
+                              <h3 class="title instructor-text">{{ course.title }}</h3>
+                            </router-link>
+                          </div>
+                          <div class="student-counts-info d-flex align-items-center">
+                            <div class="students-three-counts d-flex align-items-center">
+                              <img src="@/assets/img/icon-three/student.svg" alt="" />
+                              <p>{{ course.enrolledUserCount || 0 }} Students</p>
+                            </div>
+                          </div>
+                          <div class="rating mt-2">
+                            <i class="fas fa-star filled me-1"
+                               v-for="n in Math.floor(course.averageRating || 0)"
+                               :key="n"></i>
+                            <i class="fas fa-star-half-alt filled me-1"
+                               v-if="(course.averageRating || 0) % 1 >= 0.5"></i>
+                            <i class="fas fa-star me-1"
+                               v-for="n in (5 - Math.ceil(course.averageRating || 0))"
+                               :key="n + 'empty'"></i>
+                            <span class="d-inline-block average-rating">
+                              {{ (course.averageRating || 0).toFixed(1) }} ({{ course.ratingCount || 0 }})
+                            </span>
+                          </div>
+                          <div class="price-three-group d-flex align-items-center justify-content-between">
+                            <div class="price-three-view d-flex align-items-center">
+                              <div class="course-price-three">
+                                <h3>{{ course.price ? `${course.price}$` : "Free" }}</h3>
                               </div>
                             </div>
-                            <div class="course-three-content">
-                              <div class="course-group-three">
-                                <div class="group-three-img">
-                                  <router-link to="/instructor/instructor-profile">
-                                    <img :src="course.instructor?.avatarUrl || '@/assets/img/user/user1.jpg'" alt="" class="img-fluid" />
-                                  </router-link>
-                                </div>
-                              </div>
-                              <div class="course-three-text">
-                                <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-                                  <p>{{ course.level || "Unknown" }}</p>
-                                  <h3 class="title instructor-text">{{ course.title }}</h3>
-                                </router-link>
-                              </div>
-                              <div class="student-counts-info d-flex align-items-center">
-                                <div class="students-three-counts d-flex align-items-center">
-                                  <img src="@/assets/img/icon-three/student.svg" alt="" />
-                                  <p>{{ course.enrolledUserCount || 0 }} Students</p>
-                                </div>
-                              </div>
-                              <!-- Thêm phần hiển thị rating -->
-                              <div class="rating mt-2">
-                                <i class="fas fa-star filled me-1" v-for="n in Math.floor(course.averageRating || 0)" :key="n"></i>
-                                <i class="fas fa-star-half-alt filled me-1" v-if="(course.averageRating || 0) % 1 >= 0.5"></i>
-                                <i class="fas fa-star me-1" v-for="n in (5 - Math.ceil(course.averageRating || 0))" :key="n + 'empty'"></i>
-                                <span class="d-inline-block average-rating">
-                                  {{ (course.averageRating || 0).toFixed(1) }} ({{ course.ratingCount || 0 }})
-                                </span>
-                              </div>
-                              <div class="price-three-group d-flex align-items-center justify-content-between">
-                                <div class="price-three-view d-flex align-items-center">
-                                  <div class="course-price-three">
-                                    <h3>{{ course.price ? `${course.price}$` : "Free" }}</h3>
-                                  </div>
-                                </div>
-                                <div class="price-three-time d-inline-flex align-items-center">
-                                  <i class="fa-regular fa-clock me-2"></i>
-                                  <span>{{ course.duration || "6hr 30min" }}</span>
-                                </div>
-                              </div>
+                            <div class="price-three-time d-inline-flex align-items-center">
+                              <i class="fa-regular fa-clock me-2"></i>
+                              <span>{{ course.duration || "6hr 30min" }}</span>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div v-if="filteredCourses.length === 0" class="col-12 text-center">
-                        <p>No courses available.</p>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <!-- Dynamic Category Tabs -->
-                <div
-                    v-for="category in categories"
-                    :key="category.categoryName"
-                    class="tab-pane fade"
-                    :id="category.categoryName.toLowerCase().replace(/\s+/g, '') + 'tab'"
-                    role="tabpanel"
-                >
-                  <div class="all-course">
-                    <div class="row">
-                      <div class="col-xl-3 col-lg-6 col-md-6 col-12" data-aos="fade-up" v-for="course in filteredCourses" :key="course.id">
-                        <div class="course-box-three">
-                          <div class="course-three-item">
-                            <div class="course-three-img">
-                              <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-                                <img v-if="course.coverImage" :src="course.coverImage" alt="Img" class="img-fluid" style="width: 300px; height: 270px;" />
-                              </router-link>
-                              <div class="heart-three">
-                                <a @click.prevent="toggleFavorites(course)">
-                                  <i :class="course.isFavorite ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'"></i>
-                                </a>
-                              </div>
-                            </div>
-                            <div class="course-three-content">
-                              <div class="course-group-three">
-                                <div class="group-three-img">
-                                  <router-link to="/instructor/instructor-profile">
-                                    <img :src="course.instructor?.avatarUrl || '@/assets/img/user/user1.jpg'" alt="" class="img-fluid" />
-                                  </router-link>
-                                </div>
-                              </div>
-                              <div class="course-three-text">
-                                <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
-                                  <p>{{ course.level || "Unknown" }}</p>
-                                  <h3 class="title instructor-text">{{ course.title }}</h3>
-                                </router-link>
-                              </div>
-                              <div class="student-counts-info d-flex align-items-center">
-                                <div class="students-three-counts d-flex align-items-center">
-                                  <img src="@/assets/img/icon-three/student.svg" alt="" />
-                                  <p>{{ course.enrolledUserCount || 0 }} Students</p>
-                                </div>
-                              </div>
-                              <!-- Thêm phần hiển thị rating -->
-                              <div class="rating mt-2">
-                                <i class="fas fa-star filled me-1" v-for="n in Math.floor(course.averageRating || 0)" :key="n"></i>
-                                <i class="fas fa-star-half-alt filled me-1" v-if="(course.averageRating || 0) % 1 >= 0.5"></i>
-                                <i class="fas fa-star me-1" v-for="n in (5 - Math.ceil(course.averageRating || 0))" :key="n + 'empty'"></i>
-                                <span class="d-inline-block average-rating">
-                                  {{ (course.averageRating || 0).toFixed(1) }} ({{ course.ratingCount || 0 }})
-                                </span>
-                              </div>
-                              <div class="price-three-group d-flex align-items-center justify-content-between">
-                                <div class="price-three-view d-flex align-items-center">
-                                  <div class="course-price-three">
-                                    <h3>{{ course.price ? `${course.price}$` : "Free" }}</h3>
-                                  </div>
-                                </div>
-                                <div class="price-three-time d-inline-flex align-items-center">
-                                  <i class="fa-regular fa-clock me-2"></i>
-                                  <span>{{ course.duration || "6hr 30min" }}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div v-if="filteredCourses.length === 0" class="col-12 text-center">
-                        <p>No courses available in this category.</p>
-                      </div>
-                    </div>
+                  <div v-if="filteredCourses.length === 0" class="col-12 text-center">
+                    <p>No courses available.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- /Danh sách khóa học -->
         </div>
       </div>
     </div>
   </section>
-  <!-- /Courses -->
+  <!-- /Courses Section -->
 
   <!-- Call to Action -->
   <section class="home-three-transform">
@@ -288,17 +258,18 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Carousel, Pagination, Slide } from "vue3-carousel";
+import { Carousel, Slide } from "vue3-carousel"; // Xóa Pagination khỏi import
 import "vue3-carousel/dist/carousel.css";
 import baseApi from "@/axios";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 
 export default {
+  name: "CoursePage",
   components: {
     Carousel,
     Slide,
-    Pagination,
+    // Xóa Pagination khỏi danh sách components vì không sử dụng
   },
   setup() {
     const store = useStore();
@@ -306,26 +277,42 @@ export default {
     const categories = ref([]);
     const courses = ref([]);
     const categoryCourses = ref({});
-    const activeFilter = ref("all");
     const wishlist = ref([]);
+    const activeFilter = ref("all");
 
+    // Thêm ref để theo dõi slide hiện tại
+    const favouriteCarousel = ref(null);
+    const categoryCarousel = ref(null);
+    const currentFavouriteSlide = ref(0);
+    const currentCategorySlide = ref(0);
+    const totalFavouriteSlides = computed(() => categories.value.length || 1);
+    const totalCategorySlides = computed(() => categories.value.length || 1);
+
+    // Settings cho carousel Favourite Course
     const settings = {
       itemsToShow: 1,
       snapAlign: "center",
+      transition: 500,
     };
 
     const breakpoints = {
-      700: {
-        itemsToShow: 2,
-        snapAlign: "center",
-      },
-      1024: {
-        itemsToShow: 5.4,
-        snapAlign: "start",
-      },
+      700: { itemsToShow: 2, snapAlign: "center" },
+      1024: { itemsToShow: 5.4, snapAlign: "start" },
     };
 
-    // Computed property để lọc khóa học theo danh mục
+    // Settings cho carousel danh mục (Category)
+    const categorySettings = {
+      itemsToShow: 4,
+      snapAlign: "start",
+      transition: 500,
+    };
+
+    const categoryBreakpoints = {
+      576: { itemsToShow: 2, snapAlign: "center" },
+      768: { itemsToShow: 3, snapAlign: "center" },
+      1024: { itemsToShow: 5, snapAlign: "start" },
+    };
+
     const filteredCourses = computed(() => {
       if (activeFilter.value === "all") {
         return courses.value;
@@ -333,7 +320,6 @@ export default {
       return categoryCourses.value[activeFilter.value] || [];
     });
 
-    // Lấy danh sách danh mục
     const fetchCategories = async () => {
       try {
         const response = await baseApi.get("/api/category/getCategorys");
@@ -343,20 +329,18 @@ export default {
       }
     };
 
-    // Lấy danh sách tất cả khóa học
     const fetchCourses = async () => {
       try {
         const response = await baseApi.get("/api/v1/courses");
         if (Array.isArray(response.data.content)) {
           courses.value = response.data.content;
-          await updateFavoriteStatus(); // Cập nhật trạng thái yêu thích
+          await updateFavoriteStatus();
         }
       } catch (error) {
         console.error("Lỗi khi lấy danh sách khóa học:", error);
       }
     };
 
-    // Lấy danh sách khóa học theo danh mục
     const fetchCoursesByCategories = async () => {
       try {
         const categoryPromises = categories.value.map(async (category) => {
@@ -364,13 +348,12 @@ export default {
           categoryCourses.value[category.id] = response.data || [];
         });
         await Promise.all(categoryPromises);
-        await updateFavoriteStatus(); // Cập nhật trạng thái yêu thích
+        await updateFavoriteStatus();
       } catch (error) {
         console.error("Lỗi khi lấy khóa học theo danh mục:", error);
       }
     };
 
-    // Lấy danh sách wishlist
     const fetchWishlist = async () => {
       const userId = user.value?.id;
       if (!userId) return;
@@ -383,13 +366,11 @@ export default {
       }
     };
 
-    // Thêm hàm lấy rating trung bình - KHÔNG thay đổi code cũ
     const fetchCourseRatings = async () => {
       try {
         const promises = courses.value.map(async (course) => {
           const response = await baseApi.get(`/api/ratings/course/${course.id}/average`);
           course.averageRating = response.data || 0;
-
           const countResponse = await baseApi.get(`/api/ratings/course/${course.id}`);
           course.ratingCount = countResponse.data.length || 0;
         });
@@ -403,21 +384,16 @@ export default {
             course.ratingCount = countResponse.data.length || 0;
           }));
         });
-
         await Promise.all([...promises, ...categoryPromises]);
       } catch (error) {
         console.error("Error fetching course ratings:", error);
       }
     };
 
-    // Cập nhật trạng thái yêu thích của các khóa học
     const updateFavoriteStatus = async () => {
-      // Cập nhật trạng thái yêu thích cho danh sách courses
       courses.value.forEach((course) => {
         course.isFavorite = wishlist.value.some((wish) => wish.courseId === course.id);
       });
-
-      // Cập nhật trạng thái yêu thích cho danh sách categoryCourses
       Object.keys(categoryCourses.value).forEach((categoryId) => {
         categoryCourses.value[categoryId].forEach((course) => {
           course.isFavorite = wishlist.value.some((wish) => wish.courseId === course.id);
@@ -425,36 +401,24 @@ export default {
       });
     };
 
-    // Kiểm tra xem khóa học đã có trong wishlist chưa
-    const isInWishlist = (courseId) => {
-      return wishlist.value.some((wish) => wish.courseId === courseId);
-    };
+    const isInWishlist = (courseId) => wishlist.value.some((wish) => wish.courseId === courseId);
 
-    // Thêm vào wishlist
     const addToWishlist = async (course) => {
       const userId = user.value?.id;
       if (!userId) {
         alert("Please log in to add to wishlist!");
         return;
       }
-
-      // Kiểm tra xem khóa học đã có trong wishlist chưa
       if (isInWishlist(course.id)) {
         alert("This course is already in your wishlist!");
         return;
       }
-
-      const wishlistData = {
-        userId: userId,
-        courseId: course.id,
-      };
-
+      const wishlistData = { userId: userId, courseId: course.id };
       try {
         const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
         if (response && response.data) {
-          console.log("Khóa học đã được thêm vào wishlist:", response.data);
-          wishlist.value.push(response.data); // Thêm vào danh sách wishlist
-          course.isFavorite = true; // Cập nhật trạng thái
+          wishlist.value.push(response.data);
+          course.isFavorite = true;
         }
       } catch (error) {
         console.error("Lỗi khi thêm vào wishlist:", error);
@@ -462,27 +426,23 @@ export default {
       }
     };
 
-    // Xóa khỏi wishlist
     const unWishlist = async (courseId) => {
       const wishlistItem = wishlist.value.find((wish) => wish.courseId === courseId);
       if (!wishlistItem) {
         console.error("Wishlist item không tồn tại với courseId:", courseId);
         return;
       }
-
       try {
         const response = await baseApi.delete(`/api/v1/wishlist/${wishlistItem.id}`);
         if (response.status === 200) {
-          console.log("Khóa học đã bị xóa khỏi wishlist");
           wishlist.value = wishlist.value.filter((course) => course.id !== wishlistItem.id);
-          await updateFavoriteStatus(); // Cập nhật lại trạng thái yêu thích
+          await updateFavoriteStatus();
         }
       } catch (error) {
         console.error("Lỗi khi xóa khỏi wishlist:", error);
       }
     };
 
-    // Toggle yêu thích
     const toggleFavorites = async (course) => {
       if (course.isFavorite) {
         await unWishlist(course.id);
@@ -490,7 +450,7 @@ export default {
         await addToWishlist(course);
       }
     };
-    // Lọc khóa học theo danh mục để hiển thị trong carousel
+
     const filteredCoursesByCategory = (categoryId) => {
       const coursesByCategory = categoryCourses.value[categoryId] || [];
       const firstThreeCourses = coursesByCategory.slice(0, 3);
@@ -498,19 +458,35 @@ export default {
       return { firstThreeCourses, remainingCoursesCount };
     };
 
-    // Đặt bộ lọc danh mục
     const setActiveFilter = (filter) => {
       activeFilter.value = filter;
     };
 
-    // Mounted hook
+    // Hàm để chuyển slide khi click vào chấm
+    const goToSlide = (carouselRef, index) => {
+      if (carouselRef === 'favouriteCarousel' && favouriteCarousel.value) {
+        favouriteCarousel.value.slideTo(index);
+      } else if (carouselRef === 'categoryCarousel' && categoryCarousel.value) {
+        categoryCarousel.value.slideTo(index);
+      }
+    };
+
+    // Cập nhật slide hiện tại
+    const updateFavouriteSlide = (event) => {
+      currentFavouriteSlide.value = event.currentSlide;
+    };
+
+    const updateCategorySlide = (event) => {
+      currentCategorySlide.value = event.currentSlide;
+    };
+
     onMounted(async () => {
       AOS.init();
       await fetchCategories();
       await fetchCourses();
       await fetchWishlist();
       await fetchCoursesByCategories();
-      await fetchCourseRatings(); // Chỉ thêm dòng này
+      await fetchCourseRatings();
     });
 
     return {
@@ -520,22 +496,28 @@ export default {
       activeFilter,
       settings,
       breakpoints,
+      categorySettings,
+      categoryBreakpoints,
       filteredCourses,
-      fetchCategories,
-      fetchCourses,
-      fetchCoursesByCategories,
-      fetchWishlist,
       filteredCoursesByCategory,
       setActiveFilter,
       toggleFavorites,
-      fetchCourseRatings, // Thêm vào return
+      fetchCourseRatings,
+      favouriteCarousel,
+      categoryCarousel,
+      currentFavouriteSlide,
+      currentCategorySlide,
+      totalFavouriteSlides,
+      totalCategorySlides,
+      goToSlide,
+      updateFavouriteSlide,
+      updateCategorySlide,
     };
   },
 };
 </script>
 
 <style scoped>
-/* Thêm style cho rating */
 .rating {
   margin-top: 10px;
   font-size: 14px;
@@ -548,5 +530,78 @@ export default {
 .rating .average-rating {
   margin-left: 5px;
   color: #666;
+}
+
+/* CSS cho Category Carousel trong Courses Section */
+.category-carousel-wrapper {
+  margin-bottom: 20px;
+}
+
+.category-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.category-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-box.active {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.category-icon img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.category-content {
+  padding: 8px 0;
+}
+
+.category-content h4 {
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+}
+
+.carousel__slide {
+  padding: 0 5px;
+}
+
+/* CSS cho thanh pagination tùy chỉnh */
+.custom-pagination {
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* Chấm tròn */
+.pagination-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pagination-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #d3d3d3;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-dot.active {
+  background-color: #6a0dad;
 }
 </style>

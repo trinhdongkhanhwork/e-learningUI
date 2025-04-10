@@ -40,6 +40,23 @@ export default function commentService(){
         })
     }
 
+    const putComment = async (comment) => {
+        const stompClient = getStompClient()
+        stompClient.publish({
+            destination: "/app/comments/update",
+            body: JSON.stringify(comment)
+        })
+    }
+
+    
+    const deleteComment = async (idComment) => {
+        const stompClient = getStompClient()
+        stompClient.publish({
+            destination: "/app/comments/delete",
+            body: idComment.toString()
+        })
+    }
+
     const fetchComment = async (idVideo) => {
         if(idVideo != null){
             try {
@@ -52,19 +69,46 @@ export default function commentService(){
                 console.error('Lỗi khi tải comment:', error);
             }
         }
-    }  
+    } 
 
-    let subscriptionComment = null;
+    let subscriptionCommentPost = null;
+    let subscriptionCommentPut = null;
+    let subscriptionCommentDelete = null;
     const receiveComment = async (idvideo) => {
-        if(subscriptionComment) subscriptionComment.unsubscribe();
+        if(subscriptionCommentPost) subscriptionCommentPost.unsubscribe();
+        if(subscriptionCommentPut) subscriptionCommentPut.unsubscribe();
+        if(subscriptionCommentDelete) subscriptionCommentDelete.unsubscribe();
 
         const stompClient = getStompClient()
-        subscriptionComment = stompClient.subscribe(`/comment/${idvideo}/private`, (commentResponse) => {
+        subscriptionCommentPost = stompClient.subscribe(`/comment/${idvideo}/post`, (commentResponse) => {
             try {
                 const commentData = JSON.parse(commentResponse.body);
                 comments.value.push(commentData);
             } catch (error) {
-                console.log("Lỗi gửi tin nhắn: ", error);
+                console.error("Lỗi gửi tin nhắn: ", error);
+            }
+        }) 
+
+        subscriptionCommentPut = stompClient.subscribe(`/comment/${idvideo}/put`, (commentResponse) => {
+            try {
+                const commentData = JSON.parse(commentResponse.body);
+                comments.value.forEach(comment => {
+                    if(comment.id == commentData.id) {
+                        comment.commentText = commentData.commentText;
+                        comment.updatedAt = commentData.updatedAt;
+                    }
+                });
+            } catch (error) {
+                console.error("Lỗi cập nhật thay đổi tin nhắn: ", error);
+            }
+        })
+
+        subscriptionCommentDelete = stompClient.subscribe(`/comment/${idvideo}/delete`, (idcommentResponse) => {
+            try {
+                const idcommentData = parseInt(idcommentResponse.body);
+                comments.value = comments.value.filter(c => c.id != idcommentData);
+            } catch (error) {
+                console.error("Lỗi cập nhật xóa tin nhắn: ", error);
             }
         })
     }
@@ -72,8 +116,11 @@ export default function commentService(){
     return {
         postComment,
         postReply,
+        deleteComment,
+        putComment,
         fetchComment,
         receiveComment,
-        comments
+        comments,
+        user
     }
 }
