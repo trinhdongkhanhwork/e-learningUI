@@ -54,7 +54,7 @@
       <div class="row">
         <div class="col-lg-8">
           <!-- Overview -->
-          <div class="card overview-sec">
+          <!-- <div class="card overview-sec">
             <div class="card-body">
               <h5 class="subs-title">Overview</h5>
               <h6>Course Description</h6>
@@ -81,7 +81,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- /Overview -->
 
           <!-- Course Content -->
@@ -105,10 +105,10 @@
                         <img src="@/assets/img/icon/play.svg" alt="" class="me-2" />
                         {{ lecture.title }}
                       </p>
-                      <div>
+                      <!-- <div>
                         <a href="javascript:;">Preview</a>
                         <span>02:53</span>
-                      </div>
+                      </div> -->
                     </li>
                   </ul>
                 </div>
