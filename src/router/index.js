@@ -35,6 +35,7 @@ import verificationcode from '@/views/pages/pages/verification-code.vue'
 
 import Homethree from '@/views/pages/home/homethree/homethree.vue'
 import Student_Dashboard from '@/views/pages/student/student-dashboard.vue';
+import Student_Certificate from '@/views/pages/student/student-certificate.vue';
 import Student_Index from '@/views/pages/student/student-index.vue'
 import Student_Profile from '@/views/pages/student/student-profile.vue'
 import Student_Grid from '@/views/pages/student/students-grid.vue'
@@ -131,6 +132,7 @@ const routes = [
     children: [
       { path: "", redirect: "/student/student-dashboard" },
       { path: "student-dashboard", component: Student_Dashboard },
+      { path: "student-certificate", component: Student_Certificate },
       { path: "student-profile", component: Student_Profile },
       { path: "student-courses", component: Student_Courses },
       { path: "student-wishlist", component: Student_Wishlist },
