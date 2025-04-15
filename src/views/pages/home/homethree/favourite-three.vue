@@ -123,6 +123,27 @@
                 ref="categoryCarousel"
                 @slide-change="updateCategorySlide"
             >
+              <!-- Thêm mục lọc All -->
+              <Slide key="all">
+                <div
+                    class="category-box"
+                    :class="{ active: activeFilter === 'all' }"
+                    @click="setActiveFilter('all')"
+                >
+                  <div class="category-icon">
+                    <img
+                        class="img-fluid"
+                        src="@/assets/img/home.png"
+                        alt="All"
+                    />
+                  </div>
+                  <div class="category-content">
+                    <h4>All Courses</h4>
+                  </div>
+                </div>
+              </Slide>
+
+              <!-- Lặp qua các danh mục có sẵn -->
               <Slide v-for="category in categories" :key="category.id">
                 <div
                     class="category-box"
