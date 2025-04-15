@@ -96,13 +96,13 @@
 import baseApi from '@/axios';
 import { useStore } from 'vuex';
 import { ref, onMounted } from "vue";
-import {router} from "@/router";
+import { router } from "@/router";
+import { showError, showSuccess } from '@/utils/confirmDialogs';
 
 export default {
   data() {
     const store = useStore();
     const user = ref(store.state.userInfo);
-    console.log(user);
     return {
       courses: [],
       filteredCourses: [],
@@ -114,228 +114,200 @@ export default {
     };
   },
   async mounted() {
-    this.fetchWishlist(); // Lấy dữ liệu wishlist trước khi lấy danh sách khóa học
-    this.fetchCourses();
+    await this.fetchWishlist();
+    await this.fetchCourses();
   },
   methods: {
     async fetchWishlist() {
-
       const userId = this.user?.id;
-      console.log("Fetching wishlist for user ID:", userId);
+      if (!userId) return;
       try {
         const response = await baseApi.get(`/api/v1/wishlist/getAllWS/${userId}`);
         this.wishlist = response.data || [];
-        console.log("Wishlist data:", this.wishlist); // Kiểm tra dữ liệu
         this.updateFavoriteStatus();
       } catch (error) {
-        console.error("Error fetching wishlist:", error);
+        showError("Lỗi khi lấy danh sách yêu thích!");
       }
     },
-    fetchCourses() {
-  baseApi
-    .get("/api/v1/courses")
-    .then((response) => {
-      if (Array.isArray(response.data.content)) {
-        // Lọc chỉ những khóa học có published = true
-        this.courses = response.data.content
-          .filter(course => course.published) // Lọc theo điều kiện published
-          .map(course => ({
-            ...course,
-            isFavorite: this.wishlist.some(wish => wish.id === course.id),
-            isPayment: false,
-          }));
+    async fetchCourses() {
+      try {
+        const response = await baseApi.get("/api/v1/courses");
+        if (Array.isArray(response.data.content)) {
+          this.courses = response.data.content
+              .filter(course => course.published)
+              .map(course => ({
+                ...course,
+                isFavorite: this.wishlist.some(wish => wish.courseId === course.id),
+                isPayment: false,
+              }));
 
-        // Kiểm tra trạng thái thanh toán cho từng khóa học
-        this.courses.forEach(course => {
-          this.isPayments(course.id);
-        });
-
-        this.updateFavoriteStatus();
-        this.applyFilters();
-      } else {
-        console.error("Dữ liệu không phải là mảng:", response.data);
-      }
-    })
-    .catch((error) => {
-      console.error("Lỗi khi lấy danh sách khóa học:", error);
-    });
-},
-
-    isPayments(courseId) {
-      const userId = this.user?.id;
-      baseApi.get(`/api/payment/isPayment/${courseId}/${userId}`)
-        .then(value => {
-          const course = this.courses.find(course => course.id === courseId);  // Tìm khóa học tương ứng
-          if (course) {
-            course.isPayment = value.data;  // Cập nhật giá trị isPayment cho khóa học
-            console.log("Payment status for course ID " + courseId + ": " + course.isPayment);
+          for (const course of this.courses) {
+            await this.isPayments(course.id);
           }
-        });
+
+          this.updateFavoriteStatus();
+          this.applyFilters();
+        } else {
+          showError("Dữ liệu khóa học không hợp lệ!");
+        }
+      } catch (error) {
+        showError("Lỗi khi lấy danh sách khóa học!");
+      }
     },
-    handleEnroll(course) {
+    async isPayments(courseId) {
+      const userId = this.user?.id;
+      if (!userId) return;
+      try {
+        const response = await baseApi.get(`/api/payment/isPayment/${courseId}/${userId}`);
+        const course = this.courses.find(course => course.id === courseId);
+        if (course) {
+          course.isPayment = response.data;
+        }
+      } catch (error) {
+        showError("Lỗi khi kiểm tra trạng thái thanh toán!");
+      }
+    },
+    async checkCart(courseId) {
+      const userId = this.user?.id;
+      if (!userId) return false;
+      try {
+        const response = await baseApi.get(`/api/v1/cart/getAllCart/${userId}`);
+        const carts = response.data;
+        return carts.some(cart => cart.courseId === courseId);
+      } catch (error) {
+        showError("Lỗi khi kiểm tra giỏ hàng!");
+        return false;
+      }
+    },
+    async addToCart(courseId) {
       const userId = this.user?.id;
       if (!userId) {
-        alert("Please log in to add a course to your cart.");
+        throw new Error("Vui lòng đăng nhập để thêm vào giỏ hàng!");
+      }
+      const cartRequest = { userId: userId, courseId: courseId, addAt: new Date().toISOString() };
+        const response = await baseApi.post('/api/v1/cart/addCart', cartRequest);
+        return response.data;
+
+    },
+    async handleEnroll(course) {
+      const userId = this.user?.id;
+      if (!userId) {
+        showError("Vui lòng đăng nhập để mua khóa học!");
         router.push("/");
         return;
       }
-      if (!this.isPayment) {  // Kiểm tra nếu chưa thanh toán
-        // Lấy danh sách giỏ hàng từ localStorage hoặc tạo mảng mới nếu chưa có
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Tạo đối tượng khóa học để thêm vào giỏ hàng
-        const courseToAdd = {
-          id: course.id,
-          courseId: course.id, // Thêm courseId ở đây
-          title: course.title,
-          price: course.price,
-          coverImage: course.coverImage,
-          description: course.description,
-          level: course.level,
-          enrolledUserCount: course.enrolledUserCount,
-          category: course.category,
-          instructor: course.instructor,
-        };
-
-        // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
-        if (!cart.some(item => item.id === courseToAdd.id)) {
-          cart.push(courseToAdd);  // Thêm khóa học vào giỏ hàng
-          localStorage.setItem("cart", JSON.stringify(cart));  // Cập nhật localStorage
-          alert("Added to cart successfully!");
-        } else {
-          alert("Course is already in the cart!");
+      if (course.isPayment) {
+        router.push({ path: '/course/course-lesson/', query: { id: course.id } });
+      } else {
+        try {
+          const isInCart = await this.checkCart(course.id);
+          if (!isInCart) {
+            await this.addToCart(course.id);
+            showSuccess("Đã thêm khóa học vào giỏ hàng!");
+          } else {
+            showError("Khóa học đã có trong giỏ hàng!");
+          }
+          router.push({ path: '/pages/cart', query: { id: course.id } });
+        } catch (error) {
+          showError("Không thể thêm vào giỏ hàng. Vui lòng thử lại!");
         }
       }
-
-      // Điều hướng tùy theo giá trị của isPayment
-      const destination = this.isPayment ? "/course/course-lesson/" : "/pages/cart";
-      this.$router.push({ path: destination, query: { id: course.id } });
     },
-
-    handleFilterChange({ categories, instructors, priceRange,filters}) {
+    handleFilterChange({ categories, instructors, priceRange, filters }) {
       this.selectedCategories = categories || [];
       this.selectedInstructors = instructors || [];
       this.selectedPriceRange = priceRange || { min: 0, max: 0 };
-      // Kiểm tra sự tồn tại của filters trước khi sử dụng
       if (filters) {
         this.searchQuery = filters.searchQuery || '';
         this.selectedCategory = filters.selectedCategory || null;
       } else {
-        // Nếu filters không tồn tại, gán giá trị mặc định
         this.searchQuery = '';
         this.selectedCategory = null;
       }
       this.applyFilters();
     },
-
     applyFilters() {
       const selectedCategories = this.selectedCategories.map(category => category.toString());
       const selectedInstructors = this.selectedInstructors.map(instructor => instructor.toString());
 
       this.filteredCourses = this.courses.filter(course => {
-        // Lọc theo danh mục
         const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(course.categoryId.toString());
-
-        // Lọc theo giảng viên
         const instructorMatch = selectedInstructors.length === 0 || selectedInstructors.includes(course.instructor.fullname);
-
-        // Lọc theo khoảng giá
         const priceMatch =
-          (this.selectedPriceRange.min === 0 && this.selectedPriceRange.max === 0) ||
-          (course.price >= this.selectedPriceRange.min && course.price <= this.selectedPriceRange.max);
-
-        // Lọc theo từ khóa tìm kiếm
+            (this.selectedPriceRange.min === 0 && this.selectedPriceRange.max === 0) ||
+            (course.price >= this.selectedPriceRange.min && course.price <= this.selectedPriceRange.max);
         const searchQueryMatch = !this.searchQuery || (course.title && course.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
 
         return categoryMatch && instructorMatch && priceMatch && searchQueryMatch;
       });
-
-      console.log("Filtered Courses:", this.filteredCourses);
     },
-
-    toggleFavorites(course) {
+    async toggleFavorites(course) {
       const userId = this.user?.id;
       if (!userId) {
-        console.error("User ID is not available");
+        showError("Vui lòng đăng nhập để thêm vào danh sách yêu thích!");
         return;
       }
 
-      // Tìm `wishlistItem` từ `wishlist` dựa vào `course.id`
       const wishlistItem = this.wishlist.find(wish => wish.courseId === course.id);
 
       if (course.isFavorite) {
-        // Kiểm tra `wishlistItem` tồn tại trước khi xóa
         if (wishlistItem && wishlistItem.id) {
-          baseApi
-              .delete(`/api/v1/wishlist/${wishlistItem.id}`)
-              .then(() => {
-                // Cập nhật trạng thái yêu thích và xóa khỏi `wishlist`
-                course.isFavorite = false;
-                this.wishlist = this.wishlist.filter(wish => wish.courseId !== course.id);
-                console.log(`Đã xóa khóa học ${course.id} khỏi wishlist`);
-              })
-              .catch((error) => {
-                console.error("Lỗi khi xóa khỏi danh sách yêu thích:", error);
-              });
+          try {
+            await baseApi.delete(`/api/v1/wishlist/${wishlistItem.id}`);
+            course.isFavorite = false;
+            this.wishlist = this.wishlist.filter(wish => wish.courseId !== course.id);
+            showSuccess("Đã xóa khóa học khỏi danh sách yêu thích!");
+          } catch (error) {
+            showError("Lỗi khi xóa khỏi danh sách yêu thích!");
+          }
         } else {
-          console.error("Wishlist item không tồn tại hoặc không có ID.");
+          showError("Không tìm thấy mục yêu thích!");
         }
       } else {
-        // Thêm vào wishlist nếu chưa có
         const wishlistData = { userId, courseId: course.id };
-        baseApi
-            .post("/api/v1/wishlist/addWishlist", wishlistData)
-            .then((response) => {
-              if (response && response.data) {
-                course.isFavorite = true;
-                this.wishlist.push(response.data); // Thêm vào `wishlist` mới
-                console.log("Đã thêm vào danh sách yêu thích:", response.data);
-              } else {
-                console.error("Định dạng phản hồi không như mong đợi:", response);
-              }
-            })
-            .catch((error) => {
-              console.error("Lỗi khi thêm vào danh sách yêu thích:", error);
-            });
-      }
-    },
-    async addToWishlist(course) {
-      const userId = this.user?.id;
-      console.log(userId);
-      const wishlistData = {
-        userId: userId,
-        courseId: course.id
-      };
-
-      try {
-        const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
-        if (response && response.data && response.data.code === 9898) {
-          console.log("Khóa học đã được thêm vào wishlist:", response.data);
-        } else {
-          console.error("Định dạng phản hồi không như mong đợi:", response);
+        try {
+          const response = await baseApi.post("/api/v1/wishlist/addWishlist", wishlistData);
+          if (response && response.data) {
+            course.isFavorite = true;
+            this.wishlist.push(response.data);
+            showSuccess("Đã thêm vào danh sách yêu thích!");
+          } else {
+            showError("Phản hồi không hợp lệ khi thêm vào danh sách yêu thích!");
+          }
+        } catch (error) {
+          showError("Lỗi khi thêm vào danh sách yêu thích!");
         }
-      } catch (error) {
-        console.error("Lỗi khi thêm vào wishlist:", error);
       }
     },
-
     updateFavoriteStatus() {
-      // Duyệt qua từng khóa học và đánh dấu `isFavorite` nếu có trong `wishlist`
       this.courses.forEach(course => {
         course.isFavorite = this.wishlist.some(wish => wish.courseId === course.id);
       });
     },
-
+    async addToWishlist(course) {
+      const userId = this.user?.id;
+      const wishlistData = { userId: userId, courseId: course.id };
+      try {
+        const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
+        if (response && response.data) {
+          showSuccess("Đã thêm vào danh sách yêu thích!");
+        } else {
+          showError("Phản hồi không hợp lệ khi thêm vào danh sách yêu thích!");
+        }
+      } catch (error) {
+        showError("Lỗi khi thêm vào danh sách yêu thích!");
+      }
+    },
     async unWishlist(courseId) {
       try {
         await baseApi.delete(`/api/v1/wishlist/${courseId}`);
-        console.log("Khóa học đã bị xóa khỏi wishlist");
-        this.wishlist = this.wishlist.filter(course => course.id !== courseId); // Cập nhật danh sách wishlist
+        showSuccess("Đã xóa khỏi danh sách yêu thích!");
+        this.wishlist = this.wishlist.filter(course => course.id !== courseId);
       } catch (error) {
-        console.error("Error removing from wishlist:", error);
+        showError("Lỗi khi xóa khỏi danh sách yêu thích!");
       }
     },
   },
 };
-
 </script>

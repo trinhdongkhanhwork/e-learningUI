@@ -122,7 +122,7 @@
             <div class="card-body" style="padding-bottom: 0;">
               <h5 class="subs-title" style="margin: 0">Reviews</h5>
             </div>
-            <!-- Thay đổi: Form chỉ để thêm bình luận mới -->
+            <!-- Form chỉ để thêm bình luận mới -->
             <div class="card-body" v-if="isPayment && !userRating">
               <h6>Add Your Review</h6>
               <div class="form-group">
@@ -147,7 +147,7 @@
               </div>
               <button @click="createRating" class="btn btn-primary">Submit Review</button>
             </div>
-            <!-- Thay đổi: Danh sách bình luận với nút sửa/xóa trên cùng hàng -->
+            <!-- Danh sách bình luận với nút sửa/xóa -->
             <div class="card-body" v-for="(review, index) in reviews" :key="index">
               <div class="instructor-wrap d-flex justify-content-between align-items-center">
                 <div class="about-instructor">
@@ -168,7 +168,7 @@
                   <span class="d-inline-block average-rating">{{ review.rating }} Star Rating</span>
                 </div>
               </div>
-              <!-- Thay đổi: Form sửa bình luận hiển thị khi nhấp nút Edit -->
+              <!-- Form sửa bình luận -->
               <div v-if="editingReviewId === review.id">
                 <div class="form-group">
                   <label>Rating:</label>
@@ -193,7 +193,7 @@
                 <button @click="updateRating(review.id)" class="btn btn-primary">Save Changes</button>
                 <button @click="cancelEdit" class="btn btn-secondary ml-2">Cancel</button>
               </div>
-              <!-- Thay đổi: Hiển thị bình luận và nút nếu không đang sửa -->
+              <!-- Hiển thị bình luận và nút -->
               <div v-else>
                 <p style="font-size: 15px;">{{ review.comment }}</p>
                 <div v-if="user && review.userId === user.id" class="d-flex justify-content-end">
@@ -303,6 +303,7 @@ import baseApi from '@/axios';
 import { useStore } from 'vuex';
 import { ref, onMounted } from "vue";
 import { router } from "@/router";
+import { showError, showSuccess } from '@/utils/confirmDialogs';
 
 export default {
   setup() {
@@ -331,7 +332,6 @@ export default {
     const averageRating = ref(0);
     const userRating = ref(null);
     const ratingForm = ref({ rating: 0, comment: "" });
-    // Thêm: Biến để theo dõi review đang sửa
     const editingReviewId = ref(null);
 
     onMounted(() => {
@@ -351,9 +351,8 @@ export default {
         const response = await baseApi.get(`/api/v1/courses/getCourseById/${courseId}`);
         course.value = response.data;
         sections.value = course.value.sections || [];
-        console.log("Tìm khóa học thành công");
       } catch (error) {
-        console.log("Tìm khóa học thất bại", error);
+        showError("Không thể tải thông tin khóa học!");
       }
     };
 
@@ -367,9 +366,8 @@ export default {
       try {
         const response = await baseApi.get(`/api/payment/isPayment/${courseId}/${userId}`);
         isPayment.value = response.data;
-        console.log("Enrollment: " + response.data);
       } catch (error) {
-        console.error("Error checking payment status:", error);
+        showError("Lỗi khi kiểm tra trạng thái thanh toán!");
       }
     };
 
@@ -381,7 +379,7 @@ export default {
         wishlist.value = response.data || [];
         updateFavoriteStatus();
       } catch (error) {
-        console.error("Error fetching wishlist:", error);
+        showError("Lỗi khi lấy danh sách yêu thích!");
       }
     };
 
@@ -396,42 +394,34 @@ export default {
     const addToWishlist = async (course) => {
       const userId = user.value?.id;
       if (!userId) {
-        alert("Please log in to add to wishlist!");
+        showError("Vui lòng đăng nhập để thêm vào danh sách yêu thích!");
         return;
       }
       if (isInWishlist(course.id)) {
-        alert("This course is already in your wishlist!");
+        showError("Khóa học đã có trong danh sách yêu thích!");
         return;
       }
       const wishlistData = { userId: userId, courseId: course.id };
-      try {
-        const response = await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
-        if (response && response.data) {
-          console.log("Khóa học đã được thêm vào wishlist:", response.data);
-          wishlist.value.push(response.data);
-          course.value.isFavorite = true;
-        }
-      } catch (error) {
-        console.error("Lỗi khi thêm vào wishlist:", error);
-        alert("Failed to add to wishlist. Please try again.");
-      }
+      await baseApi.post('/api/v1/wishlist/addWishlist', wishlistData);
+      await fetchWishlist();
+      showSuccess("Đã thêm vào danh sách yêu thích!");
     };
 
     const unWishlist = async (courseId) => {
       const wishlistItem = wishlist.value.find(wish => wish.courseId === courseId);
       if (!wishlistItem) {
-        console.error("Wishlist item không tồn tại với courseId:", courseId);
+        showError("Không tìm thấy khóa học trong danh sách yêu thích!");
         return;
       }
       try {
         const response = await baseApi.delete(`/api/v1/wishlist/${wishlistItem.id}`);
         if (response.status === 200) {
-          console.log("Khóa học đã bị xóa khỏi wishlist");
-          wishlist.value = wishlist.value.filter(course => course.id !== wishlistItem.id);
+          wishlist.value = wishlist.value.filter(wish => wish.id !== wishlistItem.id);
           course.value.isFavorite = false;
+          showSuccess("Đã xóa khỏi danh sách yêu thích!");
         }
       } catch (error) {
-        console.error("Lỗi khi xóa khỏi wishlist:", error);
+        showError("Lỗi khi xóa khỏi danh sách yêu thích!");
       }
     };
 
@@ -451,7 +441,7 @@ export default {
         const carts = response.data;
         return carts.some(cart => cart.courseId === courseId);
       } catch (error) {
-        console.error("Lỗi khi kiểm tra giỏ hàng:", error);
+        showError("Lỗi khi kiểm tra giỏ hàng!");
         return false;
       }
     };
@@ -459,16 +449,14 @@ export default {
     const addToCart = async (courseId) => {
       const userId = user.value?.id;
       if (!userId) {
-        alert("Please log in to add to cart!");
+        showError("Vui lòng đăng nhập để thêm vào giỏ hàng!");
         return;
       }
       const cartRequest = { userId: userId, courseId: courseId, addAt: new Date().toISOString() };
       try {
         const response = await baseApi.post('/api/v1/cart/addCart', cartRequest);
-        console.log("Đã thêm vào giỏ hàng:", response.data);
         return response.data;
       } catch (error) {
-        console.error("Lỗi khi thêm vào giỏ hàng:", error);
         throw error;
       }
     };
@@ -480,11 +468,11 @@ export default {
           if (!isInCart) {
             await addToCart(course.value.id);
           } else {
-            alert("Course is already in the cart!");
+            showError("Khóa học đã có trong giỏ hàng!");
           }
           router.push({ path: '/pages/cart', query: { id: idCourse.value } });
         } catch (error) {
-          alert("Failed to add to cart. Please try again.");
+          showError("Không thể thêm vào giỏ hàng. Vui lòng thử lại!");
         }
       } else {
         router.push({ path: '/course/course-lesson/', query: { id: idCourse.value } });
@@ -492,28 +480,16 @@ export default {
     };
 
     const fetchReviews = async (courseId) => {
-      try {
-        const response = await baseApi.get(`/api/ratings/course/${courseId}`);
-        reviews.value = response.data.map(review => ({
-          id: review.id,
-          fullName: review.fullname,
-          rating: review.rating,
-          comment: review.comment,
-          userId: review.userId,
-        }));
-        console.log("Lấy danh sách bình luận thành công");
-      } catch (error) {
-        console.error("Lỗi khi lấy danh sách bình luận:", error);
-      }
+      const response = await baseApi.get(`/api/ratings/course/${courseId}`);
+      reviews.value = response.data;
     };
 
     const fetchAverageRating = async (courseId) => {
       try {
         const response = await baseApi.get(`/api/ratings/course/${courseId}/average`);
         averageRating.value = response.data || 0;
-        console.log("Trung bình rating:", averageRating.value);
       } catch (error) {
-        console.error("Lỗi khi lấy trung bình rating:", error);
+        showError("Lỗi khi lấy điểm đánh giá trung bình!");
       }
     };
 
@@ -527,18 +503,18 @@ export default {
           userRating.value = userReview;
         }
       } catch (error) {
-        console.error("Lỗi khi lấy bình luận của user:", error);
+        showError("Lỗi khi lấy đánh giá của bạn!");
       }
     };
 
     const createRating = async () => {
       const userId = user.value?.id;
       if (!userId) {
-        alert("Please log in to leave a rating!");
+        showError("Vui lòng đăng nhập để gửi đánh giá!");
         return;
       }
       if (!isPayment.value) {
-        alert("You must purchase the course to leave a rating!");
+        showError("Bạn cần mua khóa học để gửi đánh giá!");
         return;
       }
       try {
@@ -552,14 +528,12 @@ export default {
         reviews.value.push(response.data);
         ratingForm.value = { rating: 0, comment: "" };
         fetchAverageRating(idCourse.value);
-        console.log("Thêm bình luận thành công");
+        showSuccess("Đã gửi đánh giá thành công!");
       } catch (error) {
-        console.error("Lỗi khi thêm bình luận:", error);
-        alert("Failed to submit rating. Please try again.");
+        showError("Không thể gửi đánh giá. Vui lòng thử lại!");
       }
     };
 
-    // Thay đổi: Hàm sửa bình luận nhận ratingId
     const updateRating = async (ratingId) => {
       const userId = user.value?.id;
       if (!userId) return;
@@ -575,17 +549,15 @@ export default {
         if (userRating.value && userRating.value.id === ratingId) {
           userRating.value = response.data;
         }
-        editingReviewId.value = null; // Thoát chế độ sửa
+        editingReviewId.value = null;
         ratingForm.value = { rating: 0, comment: "" };
         fetchAverageRating(idCourse.value);
-        console.log("Sửa bình luận thành công");
+        showSuccess("Đã cập nhật đánh giá thành công!");
       } catch (error) {
-        console.error("Lỗi khi sửa bình luận:", error);
-        alert("Failed to update rating. Please try again.");
+        showError("Không thể cập nhật đánh giá. Vui lòng thử lại!");
       }
     };
 
-    // Thay đổi: Hàm xóa bình luận nhận ratingId
     const deleteRating = async (ratingId) => {
       const userId = user.value?.id;
       if (!userId) return;
@@ -601,20 +573,17 @@ export default {
           userRating.value = null;
         }
         fetchAverageRating(idCourse.value);
-        console.log("Xóa bình luận thành công");
+        showSuccess("Đã xóa đánh giá thành công!");
       } catch (error) {
-        console.error("Lỗi khi xóa bình luận:", error);
-        alert("Failed to delete rating. Please try again.");
+        showError("Không thể xóa đánh giá. Vui lòng thử lại!");
       }
     };
 
-    // Thêm: Bắt đầu chế độ sửa
     const startEdit = (review) => {
       editingReviewId.value = review.id;
       ratingForm.value = { rating: review.rating, comment: review.comment };
     };
 
-    // Thêm: Hủy chế độ sửa
     const cancelEdit = () => {
       editingReviewId.value = null;
       ratingForm.value = { rating: 0, comment: "" };
@@ -632,7 +601,6 @@ export default {
       averageRating,
       userRating,
       ratingForm,
-      // Thêm: Trả về biến mới
       editingReviewId,
       getCourseById,
       isViewSectionToggle,
@@ -646,7 +614,6 @@ export default {
       createRating,
       updateRating,
       deleteRating,
-      // Thêm: Trả về hàm mới
       startEdit,
       cancelEdit,
     };
