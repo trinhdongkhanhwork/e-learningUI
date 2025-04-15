@@ -145,7 +145,7 @@
                 <label>Comment:</label>
                 <textarea v-model="ratingForm.comment" class="form-control" rows="3"></textarea>
               </div>
-              <button @click="createRating" class="btn btn-primary">Submit Review</button>
+              <button @click="createRating" class="btn btn-primary" style="margin-top: 10px;">Submit Review</button>
             </div>
             <!-- Thay đổi: Danh sách bình luận với nút sửa/xóa trên cùng hàng -->
             <div class="card-body" v-for="(review, index) in reviews" :key="index">
@@ -153,12 +153,12 @@
                 <div class="about-instructor">
                   <div class="abt-instructor-img">
                     <router-link to="/instructor/instructor-profile">
-                      <img src="@/assets/img/user/user1.jpg" alt="img" class="img-fluid" />
+                      <img :src="`${review.avatarUrl}`" alt="img" class="img-fluid" />
                     </router-link>
                   </div>
                   <div class="instructor-detail">
                     <h5>
-                      <router-link to="/instructor/instructor-profile">{{ review.fullName }}</router-link>
+                      {{ review.fullName }}
                     </h5>
                   </div>
                 </div>
@@ -174,15 +174,15 @@
                   <label>Rating:</label>
                   <div class="star-rating">
                     <i
-                        v-for="n in 5"
-                        :key="n"
-                        :class="[
+                      v-for="n in 5"
+                      :key="n"
+                      :class="[
                         'fas fa-star',
                         { 'filled': n <= ratingForm.rating },
                         'me-1',
                         'star-clickable'
                       ]"
-                        @click="ratingForm.rating = n"
+                      @click="ratingForm.rating = n"
                     ></i>
                   </div>
                 </div>
@@ -190,8 +190,8 @@
                   <label>Comment:</label>
                   <textarea v-model="ratingForm.comment" class="form-control" rows="3"></textarea>
                 </div>
-                <button @click="updateRating(review.id)" class="btn btn-primary">Save Changes</button>
-                <button @click="cancelEdit" class="btn btn-secondary ml-2">Cancel</button>
+                <button @click="updateRating(review.id)" class="btn btn-primary" style="margin-right: 10px; margin-top: 10px;">Save Changes</button>
+                <button @click="cancelEdit" class="btn btn-secondary ml-2" style="margin-top: 10px;">Cancel</button>
               </div>
               <!-- Thay đổi: Hiển thị bình luận và nút nếu không đang sửa -->
               <div v-else>
@@ -497,6 +497,7 @@ export default {
         reviews.value = response.data.map(review => ({
           id: review.id,
           fullName: review.fullname,
+          avatarUrl: review.avatarUrl,
           rating: review.rating,
           comment: review.comment,
           userId: review.userId,
@@ -549,7 +550,16 @@ export default {
           comment: ratingForm.value.comment,
         });
         userRating.value = response.data;
-        reviews.value.push(response.data);
+        
+        reviews.value.push({
+          id: response.data.id,
+          fullName: response.data.fullname,
+          avatarUrl: response.data.avatarUrl, 
+          rating: response.data.rating,
+          comment: response.data.comment,
+          userId: response.data.userId,
+        });
+        
         ratingForm.value = { rating: 0, comment: "" };
         fetchAverageRating(idCourse.value);
         console.log("Thêm bình luận thành công");
@@ -653,3 +663,22 @@ export default {
   },
 };
 </script>
+
+<style>
+.star-rating .fas.fa-star {
+  color: #e0e0e0; /* White/light gray color for unselected stars */
+  cursor: pointer;
+}
+
+.star-rating .fas.fa-star.filled {
+  color: #ffb800; /* Yellow color for selected stars */
+}
+
+.star-clickable {
+  transition: transform 0.1s ease-in-out;
+}
+
+.star-clickable:hover {
+  transform: scale(1.1);
+}
+</style>

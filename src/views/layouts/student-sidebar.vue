@@ -6,19 +6,18 @@
         <div class="settings-menu">
           <div class="profile-bg">
             <div class="profile-img">
-              <router-link to="/student/student-profile"
-                ><img src="@/assets/img/user/user16.jpg" alt="Img"
+              <router-link to="/instructor/instructor-profile"
+                ><img :src="user?.avatarUrl" alt="Img" class="object-fit-cover"
               /></router-link>
             </div>
           </div>
           <div class="profile-group">
             <div class="profile-name text-center">
               <h4>
-                <router-link to="/student/student-profile"
-                  >Rolands Richard</router-link
-                >
+                <router-link to="/instructor/instructor-profile"
+                >{{user?.fullname}}</router-link>
               </h4>
-              <p>Student</p>
+              <p>{{user?.roleEntity.roleName}}</p>
             </div>
           </div>
         </div>
@@ -143,11 +142,34 @@
   <!-- /sidebar -->
 </template>
 <script>
+import { ref, onMounted } from "vue";
+import baseApi from "@/axios";
+
 export default {
   data() {
+
+    const user = ref(null);
+
+    function getUserInfo() {
+      baseApi
+          .get("/users/myInfo")
+          .then((response) => {
+            user.value = response.data.result;
+          })
+          .catch((error) => {
+            console.error("Error during introspection:", error);
+          });
+      return user;
+    }
+
+    onMounted(() => {
+      getUserInfo()
+    });
+
     return {
       activeClass: "active",
       Available: ["I am Available Now", "Not Available"],
+      user
     };
   },
   methods: {
