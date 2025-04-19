@@ -151,8 +151,8 @@ export default {
       }
 
       try {
-        withdrawResponse.value = await requestWithdrawal(amount.value);
         showOtpForm.value = true;
+        withdrawResponse.value = await requestWithdrawal(amount.value);
         startTimer();
 
         setTimeout(() => {

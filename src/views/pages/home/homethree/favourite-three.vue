@@ -123,6 +123,27 @@
                 ref="categoryCarousel"
                 @slide-change="updateCategorySlide"
             >
+              <!-- Thêm mục lọc All -->
+              <Slide key="all">
+                <div
+                    class="category-box"
+                    :class="{ active: activeFilter === 'all' }"
+                    @click="setActiveFilter('all')"
+                >
+                  <div class="category-icon">
+                    <img
+                        class="img-fluid"
+                        src="@/assets/img/home.png"
+                        alt="All"
+                    />
+                  </div>
+                  <div class="category-content">
+                    <h4>All Courses</h4>
+                  </div>
+                </div>
+              </Slide>
+
+              <!-- Lặp qua các danh mục có sẵn -->
               <Slide v-for="category in categories" :key="category.id">
                 <div
                     class="category-box"
@@ -533,9 +554,6 @@ export default {
 }
 
 /* CSS cho Category Carousel trong Courses Section */
-.category-carousel-wrapper {
-  margin-bottom: 20px;
-}
 
 .category-box {
   border: 1px solid #e0e0e0;
@@ -545,7 +563,7 @@ export default {
   cursor: pointer;
   text-align: center;
   background-color: #fff;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .category-box:hover {
@@ -565,9 +583,6 @@ export default {
   border-radius: 4px;
 }
 
-.category-content {
-  padding: 8px 0;
-}
 
 .category-content h4 {
   font-size: 16px;
