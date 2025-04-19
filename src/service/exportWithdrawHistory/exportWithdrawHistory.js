@@ -70,7 +70,7 @@ export const exportAllMoneyHistory = async (payload) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'tat-ca-lich-su-rut-tien.xlsx');
+        link.setAttribute('download', 'tat-ca-lich-su-tien-vao.xlsx');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -121,7 +121,7 @@ export const exportUserWithdrawHistory = async (payload) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'lich-su-thanh-toan.xlsx'); // Khớp với tên file của backend
+        link.setAttribute('download', 'lich-su-rut-tien.xlsx'); // Khớp với tên file của backend
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -171,7 +171,7 @@ export const exportMoneyHistory = async (payload) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'lich-su-thanh-toan.xlsx'); // Khớp với tên file của backend
+        link.setAttribute('download', 'lich-su-tien-vao.xlsx'); // Khớp với tên file của backend
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

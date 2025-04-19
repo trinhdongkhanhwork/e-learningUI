@@ -29,12 +29,12 @@
                         data-bs-toggle="modal"
                         data-bs-target="#withdraw-request"
                     >Yêu Cầu Rút Tiền</a>
-                    <a
-                        href="#"
-                        class="btn btn-primary"
-                        @click.prevent="openExportModal('payment')"
-                    >Xuất Lịch Sử Tiền Vào</a>
                   </div>
+                  <a
+                      href="#"
+                      class="btn btn-primary"
+                      @click.prevent="openExportModal('payment')"
+                  >Xuất excel</a>
                 </div>
               </div>
             </div>
@@ -48,7 +48,7 @@
                     href="#"
                     class="btn btn-primary"
                     @click.prevent="openExportModal('withdraw')"
-                >Xuất Lịch Sử Rút Tiền</a>
+                >Xuất excel</a>
               </div>
               <div class="checkout-form">
                 <div class="table-responsive custom-table">

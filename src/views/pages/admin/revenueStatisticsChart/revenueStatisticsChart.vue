@@ -20,12 +20,12 @@
                   </div>
                 </div>
                 <div class="add-announcement-btn">
-                  <a
-                      href="#"
-                      class="btn btn-primary me-2"
-                      @click.prevent="openExportModal('payment')"
-                  >Xuất Lịch Sử Tiền Vào</a>
                 </div>
+                <a
+                    href="#"
+                    class="btn btn-primary me-2"
+                    @click.prevent="openExportModal('payment')"
+                >Xuất excel</a>
               </div>
               <!-- Existing chart and table sections remain unchanged -->
               <h4 class="card-title mt-4">Thống kê tiền vào</h4>
@@ -77,7 +77,7 @@
                   </select>
                 </div>
                 <a href="#" class="btn btn-primary" @click.prevent="openExportModal('withdraw')">
-                  Xuất Lịch Sử Rút Tiền
+                  Xuất excel
                 </a>
               </div>
 
@@ -627,5 +627,9 @@ export default {
 
 .add-announcement-btn .btn.me-2 {
   margin-right: 8px;
+}
+.timeframe-selector .form-select {
+  padding-right: 2rem;
+  background-position: calc(100% - 0.5rem) center !important;
 }
 </style>

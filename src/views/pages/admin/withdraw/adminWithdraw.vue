@@ -1,46 +1,49 @@
 <template>
-  <admin-headerborder></admin-headerborder>
-  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
+  <admin-headerborder />
+  <admin-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container-fluid">
       <div class="row">
         <!-- Sidebar -->
-        <admin-sidebar></admin-sidebar>
+        <admin-sidebar />
         <!-- /Sidebar -->
         <div class="col-xl-10 col-lg-10">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Rút Tiền</h4>
-              <div class="withdrawel-head">
-                <div class="title-withdrawel">
-                    <span class="file-text-icon">
-                      <i class="bx bxs-wallet"></i>
-                    </span>
+              <!-- Balance and actions -->
+              <div class="withdrawel-head d-flex justify-content-between align-items-start">
+                <div class="title-withdrawel d-flex align-items-center">
+                  <span class="file-text-icon me-2">
+                    <i class="bx bxs-wallet"></i>
+                  </span>
                   <div class="info-withdraw">
                     <h6>Số Dư Hiện Tại</h6>
                     <h5>Bạn có <span>{{ totalEarnings }}$</span> sẵn sàng để rút ngay bây giờ</h5>
                   </div>
                 </div>
-                <div class="add-announcement-btn">
-                  <a
-                      href="#"
+                <div class="d-flex gap-2">
+                  <button
                       class="btn btn-primary"
                       data-bs-toggle="modal"
                       data-bs-target="#withdraw-request"
-                  >Yêu Cầu Rút Tiền</a>
-                </div>
-                <!-- Nút xuất Excel -->
-                <div class="add-announcement-btn">
-                  <a
-                      href="#"
+                  >Yêu Cầu Rút Tiền</button>
+                  <button
                       class="btn btn-primary"
-                      @click.prevent="openExportModal"
-                  >Xuất Excel</a>
+                      @click.prevent="openExportModal('payment')"
+                  >Xuất excel</button>
                 </div>
               </div>
 
-              <h4 class="card-title mt-4">Lịch Sử Rút Tiền</h4>
-              <div class="table-responsive custom-table">
+              <div class="d-flex justify-content-between align-items-center mt-4">
+                <h4 class="card-title mb-0">Lịch Sử Rút Tiền</h4>
+                <button
+                    class="btn btn-primary"
+                    @click.prevent="openExportModal('withdraw')"
+                >Xuất excel</button>
+              </div>
+
+              <!-- History table -->
+              <div class="table-responsive custom-table mt-3">
                 <table class="table table-nowrap mb-0">
                   <thead>
                   <tr>
@@ -54,24 +57,29 @@
                   <tbody>
                   <tr v-for="transaction in sortedWithdrawalHistory" :key="transaction.id">
                     <td>
-                      <div class="payment-method-data">
-                            <span>
-                              <img src="@/assets/img/icon/paypal-icon.svg" alt="Img" />
-                            </span>
+                      <div class="payment-method-data d-flex align-items-center">
+                        <img
+                            src="@/assets/img/icon/paypal-icon.svg"
+                            alt="Img"
+                            class="me-2"
+                        />
                         <div class="payment-name">
-                          {{ transaction.fullname }} <br />
+                          {{ transaction.fullname }}<br />
                           {{ transaction.email }}
                         </div>
                       </div>
                     </td>
-                    <td>
-                      {{ formatDate(transaction.createdAt) }}
-                    </td>
+                    <td>{{ formatDate(transaction.createdAt) }}</td>
                     <td>${{ transaction.amount.toFixed(2) }}</td>
                     <td>
-                          <span :class="{'badge-soft-warning': transaction.status === 'PENDING', 'badge-soft-success': transaction.status === 'COMPLETED'}">
-                            {{ transaction.status }}
-                          </span>
+                        <span
+                            :class="{
+                            'badge-soft-warning': transaction.status === 'PENDING',
+                            'badge-soft-success': transaction.status === 'COMPLETED'
+                          }"
+                        >
+                          {{ transaction.status }}
+                        </span>
                     </td>
                     <td><i class="bx bx-info-circle"></i></td>
                   </tr>
@@ -79,21 +87,18 @@
                 </table>
               </div>
 
-              <div class="dash-pagination">
+              <!-- Pagination -->
+              <div class="dash-pagination mt-3">
                 <div class="row align-items-center">
                   <div class="col-6">
                     <p>Trang 1 của 2</p>
                   </div>
                   <div class="col-6">
-                    <ul class="pagination">
-                      <li class="active">
-                        <a href="#">1</a>
-                      </li>
-                      <li>
-                        <a href="#">2</a>
-                      </li>
-                      <li>
-                        <a href="#"><i class="bx bx-chevron-right"></i></a>
+                    <ul class="pagination justify-content-end mb-0">
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#"><i class="bx bx-chevron-right"></i></a>
                       </li>
                     </ul>
                   </div>
@@ -108,13 +113,15 @@
     <instructor-withdraw-modal
         @withdrawal-requested="fetchWithdrawalHistory"
         @withdrawal-success="fetchEarnings"
-    ></instructor-withdraw-modal>
+    />
 
-    <!-- Modal chọn ngày giờ -->
+    <!-- Export modal -->
     <div v-if="showExportModal" class="custom-modal">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Xuất Lịch Sử Rút Tiền</h5>
+          <h5 class="modal-title">
+            {{ exportType === 'withdraw' ? 'Xuất Lịch Sử Rút Tiền' : 'Xuất Lịch Sử Tiền Vào' }}
+          </h5>
           <button class="close-btn" @click="closeExportModal">×</button>
         </div>
         <div class="modal-body">
@@ -151,19 +158,20 @@
 </template>
 
 <script>
-import {onMounted, computed, reactive, ref} from "vue";
+import { onMounted, computed, reactive, ref } from "vue";
 import useEarnings from "../../../../service/instructor/withdrawService";
-import {exportWithdrawHistory} from "../../../../service/exportWithdrawHistory/exportWithdrawHistory"; // Đảm bảo import đúng
+import {exportWithdrawHistory, exportAllMoneyHistory} from "../../../../service/exportWithdrawHistory/exportWithdrawHistory";
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminHeaderborder from "@/views/layouts/admin-headerborder.vue";
 import AdminBreadcrumb from "@/components/breadcrumb/admin-breadcrumb.vue";
 import AdminSidebar from "@/views/layouts/admin-sidebar.vue";
 import { showError, showSuccess } from '@/utils/confirmDialogs.js';
+
 export default {
-  components: {AdminHeaderborder, AdminBreadcrumb, AdminSidebar},
+  components: { AdminHeaderborder, AdminBreadcrumb, AdminSidebar },
   setup() {
-    const {totalEarnings, withdrawalHistory, fetchEarnings, fetchWithdrawalHistory} = useEarnings();
+    const { totalEarnings, withdrawalHistory, fetchEarnings, fetchWithdrawalHistory } = useEarnings();
 
     const formatDate = (dateString) => {
       const date = new Date(dateString);
@@ -180,11 +188,13 @@ export default {
       endDate: '',
     });
 
-    // State cho modal
+    // State cho modal và loại xuất
     const showExportModal = ref(false);
+    const exportType = ref('withdraw');
 
-    // Hàm mở/đóng modal
-    const openExportModal = () => {
+    // Hàm mở/đóng modal với loại xuất
+    const openExportModal = (type) => {
+      exportType.value = type;
       showExportModal.value = true;
     };
 
@@ -212,15 +222,20 @@ export default {
         endDate: endDate.toISOString().slice(0, 19),
       };
 
-      const result = await exportWithdrawHistory(payload);
+      let result;
+      if (exportType.value === 'withdraw') {
+        result = await exportWithdrawHistory(payload);
+      } else if (exportType.value === 'payment') {
+        result = await exportAllMoneyHistory(payload);
+      }
 
       if (result.success) {
-        showSuccess(`Xuất file Excel thành công!`);
+        showSuccess(`Xuất file Excel ${exportType.value === 'withdraw' ? 'rút tiền' : 'tiền vào'} thành công!`);
         closeExportModal();
       } else {
         showError(result.error || "Có lỗi xảy ra khi xuất file. Vui lòng thử lại.");
       }
-    } ;
+    };
 
     onMounted(() => {
       fetchEarnings();
@@ -238,6 +253,7 @@ export default {
       openExportModal,
       closeExportModal,
       exportHistory,
+      exportType,
     };
   }
 };

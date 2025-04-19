@@ -159,18 +159,18 @@
     <li class="nav-item user-nav">
       <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
         <span class="user-img">
-          <img src="@/assets/img/user/user11.jpg" alt="Img" />
+      <img :src="user.avatarUrl || defaultAvatar" alt="User Image" class="avatar-img rounded-circle" />
           <span class="status online"></span>
         </span>
       </a>
       <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
         <div class="user-header">
           <div class="avatar avatar-sm">
-            <img src="@/assets/img/user/user11.jpg" alt="User Image" class="avatar-img rounded-circle" />
+            <img :src="user.avatarUrl || defaultAvatar" alt="User Image" class="avatar-img rounded-circle" />
           </div>
           <div class="user-text">
-            <h6>Rolands R</h6>
-            <p class="text-muted mb-0">Student</p>
+            <p>{{ this.user.fullname }}</p>
+            <p>{{ this.user.roleEntity.roleName }}</p>
           </div>
         </div>
         <router-link class="dropdown-item" to="/student/setting-edit-profile">
@@ -208,6 +208,7 @@ export default {
     const user = ref(store.state.userInfo);
     const wishlist = ref([]);
     const cart = ref([]);
+
 
     // Fetch wishlist từ API
     const fetchWishlist = async () => {
@@ -359,6 +360,7 @@ export default {
       removeFromCart,
       unWishlist,
       viewCourseDetails,
+      user,
     };
   },
 };
