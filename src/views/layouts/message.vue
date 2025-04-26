@@ -175,23 +175,29 @@
                                         </h6>
                                         <div class="chat-action-btns ms-2" v-if="message.user.id == user.id">
                                             <div class="chat-action-col">
-                                              <a class="#" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                              <a href="javascript:void(0);" data-bs-toggle="dropdown"
+                                                v-if="message.recall">
                                                   <i class="fa-solid fa-ellipsis"></i>
                                               </a>
                                               <div class="dropdown-menu chat-drop-menu dropdown-menu-end">
-                                                  <a href="javascript:void(0);" class="dropdown-item">
-                                                    <span><i class="bx bx-trash"></i></span>Delete</a>
+                                                  <a href="javascript:void(0);" class="dropdown-item" @click="recallMessage(message.id)">
+                                                    <span><i class="bx bx-trash"></i></span>Recall</a>
                                               </div>
                                             </div>
                                         </div>
                                       </div>
-                                      <div class="message-content reply-getcontent" style="display: flex; justify-content: start; flex-direction: column;">
+                                      <div class="message-content reply-getcontent" style="display: flex; justify-content: start; flex-direction: column;"
+                                            v-if="message.recall">
                                         {{ message.message }}
                                         <img :src="message.urlImage" alt="" style="width: 100%; margin-top: 10px;" v-if="message.urlImage != null && message.urlImage != ''">
                                         <a :href="message.urlFile" v-if="message.urlFile != null && message.urlFile != ''">   
                                             Click here to download
                                             <img src="@/assets/img/foderDowload.jpg" width="100%">
                                         </a>
+                                      </div>
+                                      <div class="message-content reply-getcontent" style="display: flex; justify-content: start; flex-direction: column; background-color: white; border: solid 1px lightgray; color: lightgray;"
+                                            v-if="!message.recall">
+                                        Recall
                                       </div>
                                   </div>
                                 </div>
@@ -267,7 +273,7 @@ export default {
     PerfectScrollbar,
   },
   setup(){
-    const {messages, friend, fetchMessages, sendMessage, receiveMessage} = messageService();
+    const {messages, friend, fetchMessages, sendMessage, recallMessage} = messageService();
     const {invitations, friendsSearch, friends, fetchFriends, searchFriend, sendInvitation, loadInvitation, confirmInvitaiton, receiveInvitation, receiveComfirmInvitation} = friendService();
     const store = useStore();
     const user = ref(store.state.userInfo);
@@ -350,6 +356,7 @@ export default {
       textMessage,
       imageMessage,
       fileMessage,
+      recallMessage,
       messageList,
       friendsSearch,
       keyword,
