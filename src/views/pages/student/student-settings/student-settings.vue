@@ -50,7 +50,8 @@
                     <div class="col-md-6">
                       <div class="input-block">
                         <label class="form-label">Full Name</label>
-                        <input type="text" class="form-control" v-model="editedUser.fullname" />
+                        <input type="text" class="form-control" v-model.trim="editedUser.fullname" @input="validateFullName" />
+                        <span v-if="errors.fullname" class="text-danger">{{ errors.fullname }}</span>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -62,25 +63,19 @@
                     <div class="col-md-6">
                       <div class="input-block">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" v-model="editedUser.email" @change="checkEmailChange" />
-                        <button v-if="showSendOtp" type="button" class="btn btn-secondary mt-2" @click="sendOtp">Send OTP</button>
-                      </div>
-                    </div>
-                    <div class="col-md-6" v-if="otpSent">
-                      <div class="input-block">
-                        <label class="form-label">Enter OTP</label>
-                        <input type="text" class="form-control" v-model="otpInput" placeholder="Enter OTP" />
-                        <button type="button" class="btn btn-secondary mt-2" @click="verifyOtp">Verify OTP</button>
+                        <input type="email" class="form-control" v-model.trim="editedUser.email" @input="validateEmail" />
+                        <span v-if="errors.email" class="text-danger">{{ errors.email }}</span>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="input-block">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" v-model="editedUser.phone" />
+                        <input type="text" class="form-control" v-model.trim="editedUser.phone" @input="validatePhone" />
+                        <span v-if="errors.phone" class="text-danger">{{ errors.phone }}</span>
                       </div>
                     </div>
                     <div class="col-md-12">
-                      <button class="btn btn-primary" type="submit" :disabled="!otpVerified && emailChanged">Update Profile</button>
+                      <button class="btn btn-primary" type="submit" :disabled="hasErrors">Update Profile</button>
                     </div>
                   </div>
                 </div>
@@ -96,7 +91,7 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import baseApi from '@/axios';
 import { confirmSave } from '@/utils/confirmDialogs';
 import Swal from 'sweetalert2';
@@ -114,91 +109,63 @@ export default {
       text1: 'Settings',
       editedUser: {},
       avatarFile: null,
-      showSendOtp: false,
-      otpSent: false,
-      otpInput: '',
-      otpVerified: false,
-      emailChanged: false,
-      generatedOtp: '', // OTP từ server
+      errors: {
+        fullname: '',
+        email: '',
+        phone: '',
+      },
     };
   },
   created() {
     this.editedUser = { ...this.user };
   },
+  computed: {
+    hasErrors() {
+      return Object.values(this.errors).some(error => error !== '');
+    },
+  },
   methods: {
     handleAvatarChange(event) {
       this.avatarFile = event.target.files[0];
     },
-    checkEmailChange() {
-      this.emailChanged = this.editedUser.email !== this.user.email;
-      this.showSendOtp = this.emailChanged;
-      this.otpSent = false;
-      this.otpVerified = false;
-      this.otpInput = '';
+    validateFullName() {
+      const value = this.editedUser.fullname || '';
+      this.errors.fullname = value.trim() ? '' : 'Full Name is required';
     },
-    async sendOtp() {
-      try {
-        const response = await baseApi.post('/users/send-otp-email', { email: this.editedUser.email });
-        if (response.data.success) {
-          this.generatedOtp = response.data.otp; // Lưu OTP từ server
-          this.otpSent = true;
-          Swal.fire('Success!', 'OTP has been sent to your email!', 'success');
-        }
-      } catch (error) {
-        console.error('Error sending OTP:', error);
-        Swal.fire('Error!', 'Failed to send OTP: ' + (error.message || 'Unknown error'), 'error');
+    validateEmail() {
+      const value = this.editedUser.email || '';
+      if (!value.trim()) {
+        this.errors.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        this.errors.email = 'Please enter a valid email address';
+      } else {
+        this.errors.email = '';
       }
     },
-    async verifyOtp() {
-      try {
-        const response = await baseApi.post('/users/verify-otp-email', {
-          email: this.editedUser.email,
-          otp: this.otpInput,
-          generatedOtp: this.generatedOtp, // Gửi OTP gốc để so sánh
-        });
-        if (response.data.success) {
-          this.otpVerified = true;
-          Swal.fire('Success!', 'OTP verified successfully!', 'success');
-        } else {
-          Swal.fire('Error!', 'Invalid OTP!', 'error');
-        }
-      } catch (error) {
-        console.error('Error verifying OTP:', error);
-        Swal.fire('Error!', 'Failed to verify OTP: ' + (error.message || 'Unknown error'), 'error');
+    validatePhone() {
+      const value = this.editedUser.phone || '';
+      if (!value.trim()) {
+        this.errors.phone = 'Phone Number is required';
+      } else if (!/^\d{10}$/.test(value)) {
+        this.errors.phone = 'Phone Number must be exactly 10 digits';
+      } else {
+        this.errors.phone = '';
       }
     },
     async saveChanges() {
-      const result = await confirmSave();
-      if (!result.isConfirmed) return;
+      // Validate tất cả trước khi gửi
+      this.validateFullName();
+      this.validateEmail();
+      this.validatePhone();
 
-      if (this.emailChanged && !this.otpVerified) {
-        Swal.fire('Error!', 'Please verify OTP to change email!', 'error');
+      if (this.hasErrors) {
         return;
       }
 
+      const result = await confirmSave();
+      if (!result.isConfirmed) return;
+
       try {
-        const email = this.editedUser.email || this.user.email;
-        if (!email) {
-          Swal.fire('Error!', 'Email cannot be empty!', 'error');
-          return;
-        }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          Swal.fire('Error!', 'Please enter a valid email address!', 'error');
-          return;
-        }
-
-        const phone = this.editedUser.phone || this.user.phone || '';
-        if (!phone) {
-          Swal.fire('Error!', 'Phone number cannot be empty!', 'error');
-          return;
-        }
-        const phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(phone)) {
-          Swal.fire('Error!', 'Phone number must be exactly 10 digits!', 'error');
-          return;
-        }
-
         let avatarUrl = this.user.avatarUrl;
 
         if (this.avatarFile) {
@@ -216,9 +183,9 @@ export default {
         }
 
         const profileData = new FormData();
-        profileData.append('fullname', this.editedUser.fullname || this.user.fullname || '');
-        profileData.append('email', email);
-        profileData.append('phone', phone);
+        profileData.append('fullname', this.editedUser.fullname);
+        profileData.append('email', this.editedUser.email);
+        profileData.append('phone', this.editedUser.phone);
         if (avatarUrl) {
           profileData.append('avatarUrl', avatarUrl);
         }
@@ -237,12 +204,9 @@ export default {
 
         this.store.commit('setUserInfo', updatedUser);
         this.user = updatedUser;
-        this.editedUser = {...updatedUser};
+        this.editedUser = { ...updatedUser };
         this.avatarFile = null;
-        this.showSendOtp = false;
-        this.otpSent = false;
-        this.otpVerified = false;
-        this.emailChanged = false;
+        this.errors = { fullname: '', email: '', phone: '' };
 
         Swal.fire('Success!', 'Profile updated successfully!', 'success');
       } catch (error) {
@@ -256,3 +220,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.text-danger {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+</style>

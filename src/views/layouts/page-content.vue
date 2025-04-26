@@ -198,6 +198,7 @@ import { router } from "@/router";
 import baseApi from "@/axios";
 import { useStore } from "vuex";
 import { ref, onMounted } from "vue";
+import { showError, showSuccess } from '@/utils/confirmDialogs';
 
 export default {
   setup() {
@@ -266,15 +267,12 @@ export default {
     // Thêm vào giỏ hàng qua API
     const addToCart = async (wish) => {
       const userId = user.value?.id;
-      if (!userId) {
-        alert("Please log in to add to cart!");
-        return;
-      }
 
       // Kiểm tra xem khóa học đã có trong giỏ hàng chưa
       const alreadyInCart = await isInCart(wish.courseId);
+      showSuccess("Đã thêm khóa học vào giỏ hàng.");
       if (alreadyInCart) {
-        alert("This course is already in your cart!");
+        showError("Khóa học đã có trong giỏ hàng!");
         return;
       }
 
@@ -284,8 +282,7 @@ export default {
           courseId: wish.courseId,
         });
         if (response.status === 200) {
-          alert("Added to cart successfully!");
-          fetchCart(); // Cập nhật lại giỏ hàng
+          showSuccess("Đã thêm khóa học vào giỏ hàng!");
           router.push("/pages/cart");
         }
       } catch (error) {

@@ -52,6 +52,21 @@ export function confirmLogout(store) {
             router.push("/");
             Swal.fire("Logged out!", "You have been logged out.", "success");
         }
-    });
+    })
 }
+    export function showError(message) {
+        return Swal.fire({
+            icon: 'error',
+            text: message,
+        });
+    }
+
+    export function showSuccess(message) {
+        return Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+        });
+    }
+
 
