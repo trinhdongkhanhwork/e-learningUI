@@ -46,13 +46,27 @@ export default function messagesService(){
     const receiveMessage = async(friend) => {
         if(unsubsribeMessage) unsubsribeMessage.unsubscribe();
         const stompClient = getStompClient()
-        unsubsribeMessage = stompClient.subscribe(`/message/${friend.id}/post`, (messageResponse) => {
+        unsubsribeMessage = stompClient.subscribe(`/message/${friend.id}`, (messageResponse) => {
             try {
                 const messageData = JSON.parse(messageResponse.body);
-                messages.value.push(messageData);
+                console.log("Tin nhăn được tải lên: ", messageData);
+                
+                const index = messages.value.findIndex((item) => item.id === messageData.id);
+                if(index !== -1) {
+                    messages.value[index] = messageData;
+                } else {
+                    messages.value.push(messageData);
+                }
             } catch (error) {
                 console.log("Lỗi gửi tin nhắn: ", error);
             }
+        })
+    }
+
+    const recallMessage = async (idMessage) => {
+        const stompClient = getStompClient()
+        stompClient.publish({
+            destination: `/app/message/recall/${idMessage}`
         })
     }
 
@@ -61,6 +75,6 @@ export default function messagesService(){
         friend,
         fetchMessages,
         sendMessage,
-        receiveMessage
+        recallMessage
     }
 }
