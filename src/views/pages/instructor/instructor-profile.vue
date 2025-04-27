@@ -58,7 +58,7 @@
                       <p>{{ this.user.phone }}</p>
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                  <!-- <div class="col-sm-12">
                     <div class="contact-info mb-0">
                       <h6>Bio</h6>
                       <p> Very well thought out and articulate communication. Clear milestones,
@@ -70,7 +70,7 @@
                         conceptualizing, designing, and modifying consumer products specific to
                         interior design and home furnishings.</p>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

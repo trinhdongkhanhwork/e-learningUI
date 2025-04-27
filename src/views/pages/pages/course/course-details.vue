@@ -34,10 +34,10 @@
                 <img src="@/assets/img/icon/icon-01.svg" alt="" />
                 <p>{{ course.level }}</p>
               </div>
-              <div class="cou-info">
+              <!-- <div class="cou-info">
                 <img src="@/assets/img/icon/timer-icon.svg" alt="" />
                 <p>9hr 30min</p>
-              </div>
+              </div> -->
               <div class="cou-info">
                 <img src="@/assets/img/icon/people.svg" alt="" />
                 <p>{{ course.enrolledUserCount }} students enrolled</p>
@@ -153,7 +153,7 @@
                 <div class="about-instructor">
                   <div class="abt-instructor-img">
                     <router-link to="/instructor/instructor-profile">
-                      <img :src="`${review.avatarUrl}`" alt="img" class="img-fluid" />
+                      <img :src="review.avatarUrl" alt="img" class="img-fluid" />
                     </router-link>
                   </div>
                   <div class="instructor-detail">
@@ -257,7 +257,7 @@
             <!-- /Video -->
 
             <!-- Include -->
-            <div class="card include-sec">
+            <!-- <div class="card include-sec">
               <div class="card-body">
                 <div class="cat-title">
                   <h4>Includes</h4>
@@ -271,11 +271,11 @@
                   <li><img src="@/assets/img/icon/teacher.svg" class="me-2" alt="" />Certificate of Completion</li>
                 </ul>
               </div>
-            </div>
+            </div> -->
             <!-- /Include -->
 
             <!-- Features -->
-            <div class="card feature-sec">
+            <!-- <div class="card feature-sec">
               <div class="card-body">
                 <div class="cat-title">
                   <h4>Includes</h4>
@@ -288,7 +288,7 @@
                   <li><img src="@/assets/img/icon/chart.svg" class="me-2" alt="" />Level: <span>Beginner</span></li>
                 </ul>
               </div>
-            </div>
+            </div> -->
             <!-- /Features -->
           </div>
         </div>

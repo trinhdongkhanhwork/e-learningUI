@@ -3,7 +3,7 @@
 
   <section class="page-content course-sec course-lesson">
     <div class="container">
-      <div class="row" style="margin-top: 30px;">
+      <div class="row" style="margin-top: 30px; min-height: 700px;">
         <!-- Danh sách Sections và Lectures -->
         <div class="col-lg-4">
           <div class="lesson-group">

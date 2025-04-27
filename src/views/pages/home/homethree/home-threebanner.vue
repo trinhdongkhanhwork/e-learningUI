@@ -13,31 +13,31 @@
                 accumsan bibendum gravida maecenas augue elementum et
               </p>
             </div>
-            <div class="banner-three-content">
+            <!-- <div class="banner-three-content">
               <form class="form" @submit.prevent="submitForm">
                 <div class="form-inner-three">
                   <div class="input-group">
                     <h1 id="dynamic-text" style="margin-top:10px; font-size: 20px; margin-left: 120px; color: cadetblue;">Show all exciting courses.</h1>
-                    <!-- <input
+                    <input
                       type="email"
                       class="form-control"
                       placeholder="Search School, Online eductional centers, etc"
-                    /> -->
-                    <!-- <span class="drop-detail-three">
+                    />
+                    <span class="drop-detail-three">
                       <vue-select :options="Category" placeholder="Select Category" />
-                    </span> -->
+                    </span>
                     <button class="btn btn-three-primary sub-btn" type="submit" style="margin-left: 130px;">
                       <i class="fas fa-arrow-right"></i>
                     </button>
                   </div>
                 </div>
               </form>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="col-xl-6 col-lg-4 col-md-6 col-12" data-aos="fade-up">
           <div class="girl-slide-img aos">
-            <img class="img-fluid" src="@/assets/img/slider/home-slider.png" alt="" />
+            <img class="img-fluid" src="@/assets/img/object.png" alt="" />
           </div>
         </div>
       </div>
@@ -53,12 +53,13 @@
           <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up">
             <div class="course-details-three">
               <div class="align-items-center">
-                <div class="course-count-three course-count ms-0">
+                <div class="course-count-three">
                   <div class="course-img">
                     <img
                       class="img-fluid"
-                      src="@/assets/img/icon-three/course-01.svg"
+                      src="@/assets/img/icon-three/course.png"
                       alt=""
+                      style="width: 80%"
                     />
                   </div>
                   <div class="course-content-three">
@@ -83,12 +84,13 @@
           <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up">
             <div class="course-details-three">
               <div class="align-items-center">
-                <div class="course-count-three course-count ms-0">
+                <div class="course-count-three">
                   <div class="course-img">
                     <img
                       class="img-fluid"
-                      src="@/assets/img/icon-three/course-02.svg"
+                      src="@/assets/img/icon-three/teacher.png"
                       alt=""
+                      style="width: 80%"
                     />
                   </div>
                   <div class="course-content-three">
@@ -117,8 +119,9 @@
                   <div class="course-img">
                     <img
                       class="img-fluid"
-                      src="@/assets/img/icon-three/course-04.svg"
+                      src="@/assets/img/icon-three/student.png"
                       alt=""
+                      style="width: 80%"
                     />
                   </div>
                   <div class="course-content-three course-count ms-0">
@@ -148,9 +151,6 @@
 
   <!-- Master skills Career -->
   <section class="master-skill-three">
-    <div class="master-three-vector">
-      <img class="ellipse-right img-fluid" src="@/assets/img/bg/pattern-01.png" alt="" />
-    </div>
     <div class="container">
       <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-12" data-aos="fade-right">
@@ -158,7 +158,7 @@
             <div class="master-three-left">
               <img
                 class="img-fluid"
-                src="@/assets/img/students/career.png"
+                src="@/assets/img/join.png"
                 alt="image-banner"
                 title="image-banner"
               />

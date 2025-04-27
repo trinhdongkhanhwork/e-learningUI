@@ -75,7 +75,7 @@ html {
   height: 100%;
 }
 body {
-  background-color: #fff;
+  background: linear-gradient(to right, #FFE6E8, #C8FAFF);
   color: #22100d;
   font-family: "Inter", sans-serif;
   font-size: 16px;
@@ -5040,7 +5040,6 @@ html.menu-opened body {
 }
 .home-three-slide {
   position: relative;
-  background-image: url(../img/slider/home-three-banner.jpg);
   background-repeat: no-repeat;
   background-position: right;
   background-size: cover;
@@ -5064,7 +5063,7 @@ html.menu-opened body {
   letter-spacing: 0.02em;
 }
 .home-three-slide-face h1 span {
-  color: #7b1ffe;
+  color: #ff4667;
 }
 .home-three .drop-detail-three {
   width: 164px;
@@ -5075,7 +5074,7 @@ html.menu-opened body {
   height: 44px;
 }
 .home-three-slide-text h5 {
-  background: #7b1ffe;
+  background: #ff4667;
   border-radius: 30px;
   display: inline-flex;
   padding: 12px;
@@ -5260,10 +5259,10 @@ body.home-three :-ms-input-placeholder {
   color: #2e2e2e;
 }
 .login-three-head {
-  border: 1px solid #1cbeef;
+  border: 1px solid #ff4667;
   font-weight: 700 !important;
   color: #ffffff !important;
-  background: #1cbeef;
+  background: #ff4667;
   border-radius: 10px;
   text-align: center;
   padding: 10px 45px;
@@ -5279,9 +5278,9 @@ body.home-three :-ms-input-placeholder {
   transition: all 0.5s;
 }
 .login-three-head:hover {
-  background-color: #1cbeef;
-  border-color: #1cbeef;
-  color: #1cbeef !important;
+  background-color: white;
+  border-color: white;
+  color: #ff4667 !important;
   box-shadow: inset 0 50px 0 0 #ffffff;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
@@ -5289,10 +5288,10 @@ body.home-three :-ms-input-placeholder {
   transition: all 0.5s;
 }
 .signin-three-head {
-  border: 1px solid #fed700;
+  border: 1px solid #ff4667;
   font-weight: 700 !important;
-  color: #0d0d0d !important;
-  background: #fed700;
+  color: #ff4667 !important;
+  background: white;
   border-radius: 10px;
   text-align: center;
   padding: 10px 45px;
@@ -5308,9 +5307,8 @@ body.home-three :-ms-input-placeholder {
   transition: all 0.5s;
 }
 .signin-three-head:hover {
-  background-color: #1cbeef;
-  border-color: #1cbeef;
-  color: #1cbeef !important;
+  border-color: white;
+  color: #ff4667 !important;
   box-shadow: inset 0 50px 0 0 #ffffff;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
@@ -5490,7 +5488,6 @@ body.home-three :-ms-input-placeholder {
   position: absolute;
   display: block;
   width: 100%;
-  background: #f4f4ff;
   text-align: center;
   left: 0;
   right: 0;
@@ -5597,7 +5594,7 @@ body.home-three :-ms-input-placeholder {
 }
 .home-three-courses {
   padding: 60px 0 60px;
-  background: #fbfbff;
+  background: none;
 }
 .tablist-three .nav-tab.active {
   font-weight: 500;
@@ -5689,7 +5686,7 @@ body.home-three :-ms-input-placeholder {
 .course-three-text p {
   font-weight: 500;
   font-size: 14px;
-  color: #7b1ffe;
+  color: #392c7d;
   -webkit-transition: 0.7s;
   -moz-transition: 0.7s;
   -o-transition: 0.7s;
@@ -5744,7 +5741,7 @@ body.home-three :-ms-input-placeholder {
   margin-bottom: 20px;
 }
 .course-price-three h3 {
-  color: #7b1ffe;
+  color: #392c7d;
   font-weight: 600;
   font-size: 20px;
   margin-bottom: 0;
@@ -5785,7 +5782,7 @@ body.home-three :-ms-input-placeholder {
 .course-price-three span {
   text-decoration: line-through;
   font-size: 14px;
-  color: #dedede;
+  color: #392c7d;
   line-height: 0;
 }
 .student-counts-info {
@@ -5841,7 +5838,7 @@ body.home-three :-ms-input-placeholder {
   -webkit-transition: all 0.4s ease;
 }
 .course-box-three:hover .course-three-content {
-  background-color: #7b1ffe;
+  background-color: #392c7d;
   -webkit-transition: 0.7s;
   -moz-transition: 0.7s;
   -o-transition: 0.7s;
@@ -17256,9 +17253,13 @@ input[type="password"]::-ms-clear {
 }
 .chat-cont-left .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
-  color: #ff5837;
+  color: #392c7d;
   background-color: #fff;
   border-color: #dee2e6 #dee2e6 #fff;
+}
+.nav-item:hover a {
+  color: #ff4667 !important;
+  transition: color 0.3s ease-in-out;
 }
 .chat-cont-right .chat-body .media.received .media-body .msg-box {
   position: relative;

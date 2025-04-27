@@ -5,7 +5,7 @@
         <div class="settings-menu">
           <h3>Dashboard</h3>
           <ul>
-            <li
+            <!-- <li
                 class="nav-item"
                 :class="{ active: isActive('/instructor/instructor-dashboard') }"
             >
@@ -15,7 +15,7 @@
               >
                 <i class="bx bxs-tachometer"></i>Dashboard
               </router-link>
-            </li>
+            </li> -->
             <li
                 class="nav-item"
                 :class="{ active: isActive('/instructor/instructor-profile') }"
@@ -27,7 +27,7 @@
           </ul>
           <h3>Admin</h3>
           <ul>
-            <li
+            <!-- <li
                 class="nav-item"
                 :class="{ active: isActive('/instructor/instructor-earnings') }"
             >
@@ -37,7 +37,7 @@
               >
                 <i class="bx bxs-badge-dollar"></i>Earnings
               </router-link>
-            </li>
+            </li> -->
             <li
                 class="nav-item"
                 :class="{ active: isActive('/admin/approval-course') }"
@@ -108,11 +108,11 @@
                 <i class="bx bxs-cog"></i>Settings
               </router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/" class="nav-link">
                 <i class="bx bxs-log-out"></i>Logout
               </router-link>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>

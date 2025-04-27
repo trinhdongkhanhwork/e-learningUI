@@ -34,14 +34,14 @@
                 <i class="bx bxs-tachometer"></i>Dashboard
               </router-link>
             </li>
-            <li
+            <!-- <li
               class="nav-item"
               :class="{ active: isActive('/student/student-certificate') }"
             >
               <router-link to="/student/student-certificate" class="nav-link">
                 <i class="bx bxs-graduation"></i>Certificate
               </router-link>
-            </li>
+            </li> -->
             <li
               class="nav-item"
               :class="{ active: isActive('/student/student-profile') }"
@@ -66,15 +66,15 @@
                 <i class="bx bxs-heart"></i>Wishlist
               </router-link>
             </li>
-            <li
+            <!-- <li
               class="nav-item"
               :class="{ active: isActive('/student/student-reviews') }"
             >
               <router-link to="/student/student-reviews" class="nav-link">
                 <i class="bx bxs-star"></i>Reviews
               </router-link>
-            </li>
-            <li
+            </li> -->
+            <!-- <li
               class="nav-item"
               :class="{
                 active:
@@ -85,7 +85,7 @@
               <router-link to="/student/student-quiz" class="nav-link">
                 <i class="bx bxs-shapes"></i>My Quiz Attempts
               </router-link>
-            </li>
+            </li> -->
             <li
               class="nav-item"
               :class="{ active: isActive('/student/student-order-history') }"
@@ -94,22 +94,22 @@
                 <i class="bx bxs-cart"></i>Order History
               </router-link>
             </li>
-            <li
+            <!-- <li
               class="nav-item"
               :class="{ active: isActive('/student/student-qa') }"
             >
               <router-link to="/student/student-qa" class="nav-link">
                 <i class="bx bxs-bookmark-alt"></i>Question & Answer
               </router-link>
-            </li>
-            <li
+            </li> -->
+            <!-- <li
               class="nav-item"
               :class="{ active: isActive('/student/student-referral') }"
             >
               <router-link to="/student/student-referral" class="nav-link">
                 <i class="bx bxs-user-plus"></i>Referrals
               </router-link>
-            </li>
+            </li> -->
             <li
               class="nav-item"
               :class="{ active: isActive('/student/student-messages') }"
@@ -118,14 +118,14 @@
                 <i class="bx bxs-chat"></i>Messages
               </router-link>
             </li>
-            <li
+            <!-- <li
               class="nav-item"
               :class="{ active: isActive('/student/student-tickets') }"
             >
               <router-link to="/student/student-tickets" class="nav-link">
                 <i class="bx bxs-coupon"></i>Support Tickets
               </router-link>
-            </li>
+            </li> -->
           </ul>
           <h3>Account Settings</h3>
           <ul>
@@ -137,11 +137,11 @@
                 <i class="bx bxs-cog"></i>Settings
               </router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/home/" class="nav-link">
                 <i class="bx bxs-log-out"></i>Logout
               </router-link>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>

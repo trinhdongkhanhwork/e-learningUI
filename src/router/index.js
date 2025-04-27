@@ -153,7 +153,6 @@ const routes = [
       { path: "students-list", component: Student_List },
       { path: "setting-student-subscription", component: Setting_Student_Subscription },
     ],
-
   },
   {
     path: "/admin",

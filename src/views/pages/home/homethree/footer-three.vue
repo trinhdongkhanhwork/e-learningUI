@@ -13,18 +13,16 @@
                   <img class="img-fluid" src="@/assets/img/logo/logo.png" alt="logo" />
                 </div>
                 <div class="footer-three-about">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nulla
+                  <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nulla
                     gravida ut elit arcu egestas felis. Scelerisque at in magna dolor
                     massa ipsum arcu lacus. Lobortis posuere justo nunc diam ac massa.
                     Maecenas tellus adipiscing ac fames ut ac posuere. Aliquam, integer
-                    proin hendrerit euismod et.
-                  </p>
+                    proin hendrerit euismod et.</p>
                 </div>
-                <div class="newsletter-title">
+                <!-- <div class="newsletter-title">
                   <h6>Get Updates</h6>
-                </div>
-                <div class="box-form-newsletter">
+                </div> -->
+                <!-- <div class="box-form-newsletter">
                   <form class="form-newsletter">
                     <input
                       class="input-newsletter"
@@ -35,7 +33,7 @@
                       Subscribe Now
                     </button>
                   </form>
-                </div>
+                </div> -->
               </div>
               <!-- /Footer Widget -->
             </div>

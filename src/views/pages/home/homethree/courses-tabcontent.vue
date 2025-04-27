@@ -44,9 +44,7 @@
                     </div>
                   </div>
 
-                  <div
-                      class="price-three-group d-flex align-items-center justify-content-between justify-content-between"
-                  >
+                  <div class="price-three-group d-flex align-items-center justify-content-between justify-content-between">
                     <div class="price-three-view d-flex align-items-center">
                       <div class="course-price-three">
                         <h3>{{ course.price }}$</h3>

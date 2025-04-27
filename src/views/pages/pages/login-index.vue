@@ -2,7 +2,7 @@
   <div class="row">
     <login-banner></login-banner>
 
-    <div class="col-md-6 login-wrap-bg">
+    <div class="col-md-6 login-wrap-bg" style="background-color: white; height: 100%;">
       <!-- Login -->
       <div class="login-wrapper">
         <div class="loginbox">
@@ -70,19 +70,11 @@
         <div class="google-bg text-center">
           <span><a href="#">Or sign in with</a></span>
           <div class="sign-google">
-            <ul>
-              <li>
+            <li>
                 <a @click.prevent="redirectToGoogleLogin"><img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo"/>
                   Sign In using Google
                 </a>
               </li>
-              <li>
-                <a href="#">
-                  <img src="@/assets/img/net-icon-02.png" class="img-fluid" alt="Logo"/>
-                  Sign In using Facebook
-                </a>
-              </li>
-            </ul>
           </div>
           <p class="mb-0">
             New User?

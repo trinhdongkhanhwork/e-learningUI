@@ -80,8 +80,7 @@
             <div class="course-full-width">
               <div
                 class="blur-border course-radius align-items-center aos"
-                data-aos="fade-up"
-              >
+                data-aos="fade-up">
                 <div class="online-course d-flex align-items-center">
                   <div class="course-img">
                     <img src="@/assets/img/pencil-icon.svg" alt="" />

@@ -11,7 +11,7 @@
           <div class="product-img">
             <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
               <img v-if="course.coverImage" :src="`${course.coverImage}`"
-                   alt="Img" class="img-fluid" style="width: 300px;height: 270px;"/>
+                   alt="Img" class="img-fluid" style="width: 100%; height: 270px;"/>
             </router-link>
             <div class="price">
               <h3>{{ course.price }} <span>$99.00</span></h3>
