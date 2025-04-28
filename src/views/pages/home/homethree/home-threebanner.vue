@@ -18,14 +18,6 @@
                 <div class="form-inner-three">
                   <div class="input-group">
                     <h1 id="dynamic-text" style="margin-top:10px; font-size: 20px; margin-left: 120px; color: cadetblue;">Show all exciting courses.</h1>
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Search School, Online eductional centers, etc"
-                    />
-                    <span class="drop-detail-three">
-                      <vue-select :options="Category" placeholder="Select Category" />
-                    </span>
                     <button class="btn btn-three-primary sub-btn" type="submit" style="margin-left: 130px;">
                       <i class="fas fa-arrow-right"></i>
                     </button>
@@ -137,7 +129,7 @@
                           :autoinit="true" /></span
                       >+
                     </h4>
-                    <p>Online Students</p>
+                    <p>Students</p>
                   </div>
                 </div>
               </div>
@@ -205,6 +197,7 @@
   </section>
   <!-- /Master skills Career -->
 </template>
+
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -223,20 +216,27 @@ export default {
   methods: {
     async fetchCourses() {
       try {
-        const response = await baseApi.get("/api/v1/courses");
-        if (Array.isArray(response.data.content)) {
-          this.courses = response.data.content.map(course => ({
+        //tổng khóa học
+        const courseCountResponse = await baseApi.get("/api/v1/courses/count");
+        this.totalCourseCount = courseCountResponse.data;
+
+        //tổng số giảng viên
+        const tutorCountResponse = await baseApi.get("/users/count/instructor");
+        this.totalTutors = tutorCountResponse.data;
+
+        //tổng sinh viên
+        const coursesResponse = await baseApi.get("/api/v1/courses");
+        if (Array.isArray(coursesResponse.data.content)) {
+          this.courses = coursesResponse.data.content.map(course => ({
             ...course,
           }));
           this.calculateTotals();
         }
       } catch (error) {
-        console.error("Lỗi khi lấy danh sách khóa học:", error);
+        console.error("Error fetching data:", error);
       }
     },
     calculateTotals() {
-      this.totalCourseCount = this.courses.length;
-      this.totalTutors = this.courses.length;
       this.totalStudents = this.courses.reduce((sum, course) => sum + course.enrolledUserCount, 0);
     },
     submitForm() {
