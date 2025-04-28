@@ -18,17 +18,6 @@
                 <div class="form-inner-three">
                   <div class="input-group">
                     <h1 id="dynamic-text" style="margin-top:10px; font-size: 20px; margin-left: 120px; color: cadetblue;">Show all exciting courses.</h1>
-<<<<<<< HEAD
-=======
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Search School, Online eductional centers, etc"
-                    />
-                    <span class="drop-detail-three">
-                      <vue-select :options="Category" placeholder="Select Category" />
-                    </span>
->>>>>>> c28a550646e0ba314c90ec4af752c994bf4b9c39
                     <button class="btn btn-three-primary sub-btn" type="submit" style="margin-left: 130px;">
                       <i class="fas fa-arrow-right"></i>
                     </button>
