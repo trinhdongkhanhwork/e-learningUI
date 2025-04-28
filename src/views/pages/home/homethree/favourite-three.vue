@@ -254,7 +254,7 @@
   <!-- /Courses Section -->
 
   <!-- Call to Action -->
-  <section class="home-three-transform">
+  <!-- <section class="home-three-transform">
     <div class="container" data-aos="fade-up">
       <div class="row align-items-center">
         <div class="col-lg-9 col-md-8 col-sm-12">
@@ -272,7 +272,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <!-- /Call to Action -->
 </template>
 
