@@ -5,7 +5,8 @@
       <favourite-three></favourite-three>
       <!-- <acheive-goals></acheive-goals>
       <instructor-three></instructor-three> -->
-      <footer-three></footer-three>
+      <!-- <footer-three></footer-three> -->
+      <layouts1></layouts1>
   </div>
 </template>
 <script>

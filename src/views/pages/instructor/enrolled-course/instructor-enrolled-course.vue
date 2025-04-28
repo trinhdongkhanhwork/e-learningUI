@@ -21,7 +21,7 @@
                                 <h3>Enrolled Courses</h3>
                             </div>
                             <div class="checkout-form pb-0">
-                                <div class="wishlist-tab">
+                                <!-- <div class="wishlist-tab">
                                     <ul class="nav">
                                         <li class="nav-item">
                                             <a href="javascript:void(0);" class="active" data-bs-toggle="tab"
@@ -36,7 +36,7 @@
                                                 data-bs-target="#complete-courses">Completed Courses (03)</a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
 
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="enroll-courses">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="dash-pagination">
+                    <!-- <div class="dash-pagination">
                         <div class="row align-items-center">
                             <div class="col-6">
                                 <p>Page 1 of 2</p>
@@ -74,7 +74,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
                 <!-- /Instructor Courses -->

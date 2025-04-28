@@ -105,14 +105,14 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    <!-- <div class="col-md-12">
                       <div class="input-block">
                         <label class="form-label">Bio</label>
                         <textarea rows="4" class="form-control">
 Very well thought out and articulate communication. Clear milestones, deadlines and fast work. Patience. Infinite patience. No shortcuts. Even if the client is being careless. Some quick example text to build on the card title and bulk the card's content Moltin gives you platform. As a highly skilled and successfull product development and design specialist with more than 4 Years of My experience lies in successfully conceptualizing, designing, and modifying consumer products specific to interior design and home furnishings.</textarea
                         >
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-12">
                       <button class="btn btn-primary" type="submit">
                         Update Profile

@@ -89,7 +89,7 @@
                     <div class="table-course-detail">
                       <router-link :to="{ path: '/course/course-details', query: { id: course.id } }" class="course-table-img">
                         <img v-if="course.coverImage" :src="course.coverImage"
-                             alt="Img" class="img-fluid" style="width: 100px;"/>
+                             alt="Img" class="img-fluid" style="width: 100px; margin-right: 10px; aspect-ratio: 5/4; box-shadow: 1px 1px 2px;"/>
                         {{ course.title }}
                       </router-link>
                     </div>

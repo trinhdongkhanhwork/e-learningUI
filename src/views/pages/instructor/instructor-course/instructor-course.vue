@@ -49,7 +49,7 @@
 
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="enroll-courses">
-                    <instructor-enroll-course></instructor-enroll-course>
+                     <instructor-enroll-course></instructor-enroll-course>
                   </div>
 
                   <!-- <div class="tab-pane fade" id="active-courses">
@@ -64,7 +64,7 @@
             </div>
           </div>
 
-          <div class="dash-pagination">
+          <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page 1 of 2</p>
@@ -83,7 +83,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- /Instructor Courses -->
       </div>

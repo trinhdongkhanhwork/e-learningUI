@@ -3,7 +3,7 @@
 <div class="footer-top">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6 col-md-6">
             
                 <!-- Footer Widget -->
                 <div class="footer-widget footer-about">
@@ -18,9 +18,7 @@
                 
             </div>
             
-            <div class="col-lg-2 col-md-6">
-            
-                <!-- Footer Widget -->
+            <!-- <div class="col-lg-2 col-md-6">
                 <div class="footer-widget footer-menu">
                     <h2 class="footer-title">For Instructor</h2>
                     <ul>
@@ -31,13 +29,9 @@
                         <li><router-link to="/instructor/instructor-dashboard"> Dashboard</router-link></li>
                     </ul>
                 </div>
-                <!-- /Footer Widget -->
-                
             </div>
             
             <div class="col-lg-2 col-md-6">
-            
-                <!-- Footer Widget -->
                 <div class="footer-widget footer-menu">
                     <h2 class="footer-title">For Student</h2>
                     <ul>
@@ -48,20 +42,18 @@
                         <li><router-link to="/student/student-dashboard"> Dashboard</router-link></li>
                     </ul>
                 </div>
-                <!-- /Footer Widget -->
-                
-            </div>
+            </div> -->
             
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6 col-md-6">
             
                 <!-- Footer Widget -->
                 <div class="footer-widget footer-contact">
                     <h2 class="footer-title">News letter</h2>
-                    <div class="news-letter">
+                    <!-- <div class="news-letter">
                         <form>
                             <input type="text" class="form-control" placeholder="Enter your email address" name="email">
                         </form>
-                    </div>
+                    </div> -->
                     <div class="footer-contact-info">
                         <div class="footer-address">
                             <img src="@/assets/img/icon/icon-20.svg" alt="" class="img-fluid">

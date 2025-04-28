@@ -9,63 +9,48 @@
               <div class="col-lg-8 col-sm-12">
                 <h2>Choose favourite Course from top Category</h2>
               </div>
-              <div class="col-lg-4 col-sm-12">
+              <!-- <div class="col-lg-4 col-sm-12">
                 <div class="see-all">
                   <router-link to="/course/course-details">
                     See all<span class="see-all-icon"><i class="fas fa-arrow-right"></i></span>
                   </router-link>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
-          <Carousel
-              class="home-three-favourite-carousel"
+          <Carousel class="home-three-favourite-carousel"
               :settings="settings"
               :breakpoints="breakpoints"
               ref="favouriteCarousel"
-              @slide-change="updateFavouriteSlide"
-          >
-            <Slide
-                v-for="category in categories"
+              @slide-change="updateFavouriteSlide">
+            <Slide v-for="category in categories"
                 :key="category.categoryName"
-                class="favourite-box"
-            >
-              <div class="carousel__item favourite-item flex-fill text-start">
-                <div class="categories-icon">
-                  <img
-                      class="img-fluid"
-                      :src="`${category.coverImage}`"
-                      :alt="category.categoryName"
-                  />
-                </div>
+                class="backgroudColorPurple favourite-box">
+              <div class="carousel__item favourite-item flex-fill text-start" style="padding: 10px;">
+                <img class="img-fluid"
+                      :src="category.coverImage"
+                      :alt="category.categoryName" style="width: 50%; aspect-ratio: 1/1;"/>
                 <div class="categories-content course-info">
                   <h3>{{ category.categoryName }}</h3>
                 </div>
-                <div class="course-instructors">
+                <div class="course-instructors" style="height: 30px;">
                   <div class="instructors-info">
                     <p class="me-4">Courses</p>
                     <ul class="instructors-list">
-                      <li
-                          v-for="course in filteredCoursesByCategory(category.id).firstThreeCourses"
-                          :key="course.id"
-                      >
-                        <a
-                            href="javascript:;"
+                      <li v-for="course in filteredCoursesByCategory(category.id).firstThreeCourses" :key="course.id">
+                        <a href="javascript:;"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            :title="`Instructor: ${course.instructor?.name || 'Unknown'}`"
-                        >
+                            :title="`Instructor: ${course.instructor?.name || 'Unknown'}`">
                           <img :src="`${course.coverImage}`" alt="Instructor" />
                         </a>
                       </li>
                     </ul>
-                    <li
-                        class="more-set"
-                        v-if="filteredCoursesByCategory(category.id).remainingCoursesCount > 0"
-                    >
+                    <!-- <li class="more-set"
+                        v-if="filteredCoursesByCategory(category.id).remainingCoursesCount > 0">
                       <a href="javascript:;">+{{ filteredCoursesByCategory(category.id).remainingCoursesCount }}</a>
-                    </li>
+                    </li> -->
                   </div>
                 </div>
               </div>
@@ -75,7 +60,7 @@
             <template #addons>
               <div class="custom-pagination">
                 <!-- Chỉ giữ chấm tròn -->
-                <div class="pagination-dots">
+                <!-- <div class="pagination-dots">
                   <span
                       v-for="index in totalFavouriteSlides"
                       :key="index"
@@ -83,7 +68,7 @@
                       :class="{ active: currentFavouriteSlide === index - 1 }"
                       @click="goToSlide('favouriteCarousel', index - 1)"
                   ></span>
-                </div>
+                </div> -->
               </div>
             </template>
           </Carousel>
@@ -103,61 +88,52 @@
               <div class="col-lg-6 col-sm-8">
                 <h2>Courses</h2>
               </div>
-              <div class="col-lg-6 col-sm-4">
+              <!-- <div class="col-lg-6 col-sm-4">
                 <div class="see-all">
                   <a href="javascript:void(0);">
                     See all<span class="see-all-icon"><i class="fas fa-arrow-right"></i></span>
                   </a>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
           <!-- Category Carousel -->
           <div v-if="categories && categories.length" class="category-carousel-wrapper">
-            <Carousel
-                :settings="categorySettings"
-                :breakpoints="categoryBreakpoints"
-                :wrap-around="true"
-                :autoplay="0"
-                ref="categoryCarousel"
-                @slide-change="updateCategorySlide"
-            >
+            <Carousel :settings="categorySettings"
+                      :breakpoints="categoryBreakpoints"
+                      :wrap-around="true"
+                      :autoplay="0"
+                      ref="categoryCarousel"
+                      @slide-change="updateCategorySlide">
               <!-- Thêm mục lọc All -->
               <Slide key="all">
-                <div
-                    class="category-box"
+                <div class="category-box"
                     :class="{ active: activeFilter === 'all' }"
-                    @click="setActiveFilter('all')"
-                >
+                    @click="setActiveFilter('all')">
                   <div class="category-icon">
-                    <img
-                        class="img-fluid"
-                        src="@/assets/img/home.png"
-                        alt="All"
-                    />
+                    <img class="img-fluid"
+                        src="@/assets/img/getAllCategory.png"
+                        alt="All"/>
                   </div>
                   <div class="category-content">
-                    <h4>All Courses</h4>
+                    <h4 style="margin-left: 10px;">All Courses</h4>
                   </div>
                 </div>
               </Slide>
 
               <!-- Lặp qua các danh mục có sẵn -->
               <Slide v-for="category in categories" :key="category.id">
-                <div
-                    class="category-box"
+                <div class="category-box"
                     :class="{ active: activeFilter === category.id }"
-                    @click="setActiveFilter(category.id)"
-                >
+                    @click="setActiveFilter(category.id)">
                   <div class="category-icon">
-                    <img
-                        class="img-fluid"
+                    <img class="img-fluid"
                         :src="category.coverImage"
                         :alt="category.categoryName"
-                    />
+                        style="width: 100%; aspect-ratio: 1/1;"/>
                   </div>
-                  <div class="category-content">
+                  <div class="category-content" style="margin-left: 10px;">
                     <h4>{{ category.categoryName }}</h4>
                   </div>
                 </div>
@@ -167,7 +143,7 @@
 
           <!-- Danh sách khóa học -->
           <div class="all-corses-main" data-aos="fade-up">
-            <div class="tab-content mt-4">
+            <div class="mt-4">
               <div class="all-course">
                 <div class="row">
                   <div class="col-xl-3 col-lg-6 col-md-6 col-12"
@@ -181,7 +157,7 @@
                                  :src="course.coverImage"
                                  alt="Img"
                                  class="img-fluid"
-                                 style="width: 300px; height: 270px;" />
+                                 style="width: 100%; height: 270px;" />
                           </router-link>
                           <div class="heart-three">
                             <a @click.prevent="toggleFavorites(course)">
@@ -194,8 +170,7 @@
                             <div class="group-three-img">
                               <router-link to="/instructor/instructor-profile">
                                 <img :src="course.instructor?.avatarUrl || '@/assets/img/user/user1.jpg'"
-                                     alt=""
-                                     class="img-fluid" />
+                                     class="img-fluid"/>
                               </router-link>
                             </div>
                           </div>
@@ -231,8 +206,7 @@
                               </div>
                             </div>
                             <div class="price-three-time d-inline-flex align-items-center">
-                              <i class="fa-regular fa-clock me-2"></i>
-                              <span>{{ course.duration || "6hr 30min" }}</span>
+                              <span>{{ course.duration }}</span>
                             </div>
                           </div>
                         </div>
@@ -554,7 +528,6 @@ export default {
 }
 
 /* CSS cho Category Carousel trong Courses Section */
-
 .category-box {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -572,8 +545,7 @@ export default {
 }
 
 .category-box.active {
-  border-color: #007bff;
-  background-color: #f0f8ff;
+  border-color: #392c7d;
 }
 
 .category-icon img {
