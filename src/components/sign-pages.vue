@@ -81,12 +81,12 @@
                 class="dropdown-item"
                 to="/admin/admin-settings"
             ><i class="feather-star me-1"></i> Edit Admin Profile</router-link>
-            <div class="dropdown-item night-mode">
+            <!-- <div class="dropdown-item night-mode">
               <span><i class="feather-moon me-1"></i> Night Mode </span>
               <div class="form-check form-switch check-on m-0">
                 <input class="form-check-input" type="checkbox" id="night-mode">
               </div>
-            </div>
+            </div> -->
             <button class="dropdown-item" @click="logout"><i class="feather-log-out me-1"></i> Logout</button>
           </div>
         </li>

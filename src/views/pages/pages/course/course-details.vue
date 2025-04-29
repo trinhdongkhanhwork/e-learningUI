@@ -1,5 +1,5 @@
 <template>
-  <page-header></page-header>
+  <layouts-login></layouts-login>
   <coursedetails></coursedetails>
   <div>
     <div class="inner-banner" :style="{ backgroundImage: `url(${course.coverImage})` }">
@@ -49,7 +49,7 @@
     </div>
   </div>
   <!-- Course Content -->
-  <section class="page-content course-sec">
+  <section class="page-content course-sec" style="min-height: 800px;">
     <div class="container">
       <div class="row">
         <div class="col-lg-8">
