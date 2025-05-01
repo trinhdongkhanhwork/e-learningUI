@@ -1,6 +1,5 @@
 <template>
-  <page-header></page-header>
-  <coursegrid-breadcrumb></coursegrid-breadcrumb>
+  <layouts-index></layouts-index>
   <!-- Course -->
   <section class="course-content">
     <div class="container">

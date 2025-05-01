@@ -1,5 +1,5 @@
 <template>
-  <layouts></layouts>
+  <layouts-index></layouts-index>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
@@ -87,12 +87,12 @@
                         <img src="@/assets/img/icon/icon-01.svg" alt="Img" />
                         <p>{{ course.level }}</p>
                       </div>
-                      <div class="course-view d-flex align-items-center">
+                      <!-- <div class="course-view d-flex align-items-center">
                         <img src="@/assets/img/icon/icon-02.svg" alt="Img" />
                         <p>70hr 30min</p>
-                      </div>
+                      </div> -->
                     </div>
-                    <div class="rating mb-0">
+                    <!-- <div class="rating mb-0">
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star filled me-1"></i>
                       <i class="fas fa-star filled me-1"></i>
@@ -101,14 +101,14 @@
                       <span class="d-inline-block average-rating"
                       ><span>5.0</span> (20)</span
                       >
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
             </div>
             <!-- /Course Grid -->
           </div>
-          <div class="dash-pagination">
+          <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page 1 of 2</p>
@@ -127,7 +127,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- Student Dashboard -->
       </div>

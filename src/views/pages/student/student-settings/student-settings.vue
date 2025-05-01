@@ -1,5 +1,5 @@
 <template>
-  <layouts></layouts>
+  <layouts-index></layouts-index>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <div class="page-content">
     <div class="container">
@@ -16,7 +16,6 @@
                 <h3>Settings</h3>
                 <p>You have full control to manage your own account settings</p>
               </div>
-              <settings-sidebar></settings-sidebar>
               <form @submit.prevent="saveChanges">
                 <div class="course-group profile-upload-group mb-0 d-flex">
                   <div class="course-group-img profile-edit-field d-flex align-items-center">

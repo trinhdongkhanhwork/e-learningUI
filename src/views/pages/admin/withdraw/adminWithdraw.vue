@@ -1,5 +1,5 @@
 <template>
-  <admin-headerborder></admin-headerborder>
+  <layouts-index></layouts-index>
   <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
   <div class="page-content">
     <div class="container-fluid">

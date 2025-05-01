@@ -1,5 +1,5 @@
 <template>
-  <layouts></layouts>
+  <layouts-index></layouts-index>
   <student-breadcrumb :title="title" :text="text" :text1="text1" />
   <!-- Course Content -->
   <div class="page-content">
