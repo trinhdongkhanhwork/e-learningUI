@@ -48,7 +48,7 @@
                       <p>{{ this.user.phone }}</p>
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                  <!-- <div class="col-sm-12">
                     <div class="contact-info mb-0">
                       <h6>Bio</h6>
                       <p>
@@ -58,7 +58,7 @@
                         free time, I enjoy coding, reading, hiking etc.
                       </p>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

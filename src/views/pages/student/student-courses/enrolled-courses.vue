@@ -47,10 +47,10 @@
                 <img src="@/assets/img/icon/icon-01.svg" alt="Icon" />
                 <p>{{ course.level }}</p>
               </div>
-              <div class="course-view d-flex align-items-center">
+              <!-- <div class="course-view d-flex align-items-center">
                 <img src="@/assets/img/icon/icon-02.svg" alt="Icon" />
                 <p>70hr 30min</p>
-              </div>
+              </div> -->
             </div>
             <div class="rating mb-0">
               <i class="fas fa-star filled me-1"></i>
