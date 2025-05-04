@@ -30,19 +30,19 @@
                               v-for="(friendSearch, index) in friendsSearch" :key="index">
                             <a href="javascript:void(0);" class="status-active">
                               <div class="avatar avatar-online">
-                                <img :src="friendSearch?.user?.avatarUrl" class="rounded-circle"/>
+                                <img :src="friendSearch?.avatarUrl" class="rounded-circle"/>
                               </div>
                               <div class="users-list-body">
                                 <div>
-                                  <h5>{{ friendSearch?.user?.fullname }}</h5>
+                                  <h5>{{ friendSearch?.fullName }}</h5>
                                   <p></p>
                                 </div>
                               </div>
                               <div class="d-flex flex-column justify-content-center align-items-center">
                                 <button class="btn btn-pinkIcon"
-                                        :class="{ 'isFriend' : friendSearch?.friendStatus?.id !== null}"
-                                        :disabled="friendSearch?.friendStatus?.id !== null"
-                                        @click="addFriend(friendSearch?.user?.id)">
+                                        :class="{ 'isFriend' : friendSearch?.friendStatus !== null}"
+                                        :disabled="friendSearch?.friendStatus !== null"
+                                        @click="addFriend(friendSearch?.userId)">
                                   <img src="@/assets/img/addUser.png" style="aspect-ratio: 1 / 1; width: 20px;">
                                 </button>
                               </div>
