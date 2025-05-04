@@ -36,37 +36,37 @@
           </div>
           <div class="user-text">
             <h6> {{user?.fullname}} </h6>
-            <p class="text-muted mb-0"> {{user?.roleEntity.roleName}} </p>
+            <p class="text-muted mb-0"> {{userRoles}} </p>
           </div>
         </div>
         <router-link
-            v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
+            v-if="userRoles === 'INSTRUCTOR'"
             class="dropdown-item"
             to="/instructor/instructor-dashboard"
         ><i class="feather-home me-1"></i>Instructor Dashboard</router-link>
         <router-link
-            v-if="user?.roleEntity.roleName === 'STUDENT'"
+            v-if="userRoles === 'STUDENT'"
             class="dropdown-item"
             to="/student/student-dashboard"
         ><i class="feather-home me-1"></i>Student Dashboard</router-link>
         <router-link
-            v-if="user?.roleEntity.roleName === 'ADMIN'"
+            v-if="userRoles === 'ADMIN'"
             class="dropdown-item"
             to="/admin/admin-dashboard"
         ><i class="feather-home me-1"></i>Admin Dashboard</router-link>
 
         <router-link
-            v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
+            v-if="userRoles === 'INSTRUCTOR'"
             class="dropdown-item"
             to="/instructor/instructor-settings"
         ><i class="feather-star me-1"></i> Edit Instructor Profile</router-link>
         <router-link
-            v-if="user?.roleEntity.roleName === 'STUDENT'"
+            v-if="userRoles === 'STUDENT'"
             class="dropdown-item"
             to="/student/student-settings"
         ><i class="feather-star me-1"></i> Edit Student Profile</router-link>
         <router-link
-            v-if="user?.roleEntity.roleName === 'ADMIN'"
+            v-if="userRoles === 'ADMIN'"
             class="dropdown-item"
             to="/admin/admin-settings"
         ><i class="feather-star me-1"></i> Edit Admin Profile</router-link>
@@ -82,7 +82,7 @@
   </ul>
 </template>
 <script>
-import { ref, onMounted } from "vue";
+import {ref, onMounted, computed} from "vue";
 import {confirmLogout} from "@/utils/confirmDialogs";
 import { useStore } from "vuex";
 
@@ -92,6 +92,7 @@ export default {
     const lightModeToggle = ref(null);
     const store = useStore();
     const user = ref(store.state.userInfo);
+    const userRoles = computed(() => user.value?.roles.map(role => role.roleName).join(', '));
 
     // Function to enable dark mode
     function enableDarkMode() {
@@ -130,6 +131,7 @@ export default {
       disableDarkMode,
       logout,
       user,
+      userRoles,
     };
   },
 };

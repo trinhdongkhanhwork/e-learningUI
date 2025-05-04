@@ -35,7 +35,6 @@ import verificationcode from '@/views/pages/pages/verification-code.vue'
 
 import Homethree from '@/views/pages/home/homethree/homethree.vue'
 import Student_Dashboard from '@/views/pages/student/student-dashboard.vue';
-import Student_Certificate from '@/views/pages/student/student-certificate.vue';
 import Student_Index from '@/views/pages/student/student-index.vue'
 import Student_Profile from '@/views/pages/student/student-profile.vue'
 import Student_Grid from '@/views/pages/student/students-grid.vue'
@@ -102,6 +101,10 @@ import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
 import CategoryManagement from "@/views/pages/admin/CategoryManagement.vue";
 import WithdrawManagement from "@/views/pages/admin/withdraw/adminWithdraw.vue"
 import RevenueStatisticsChart from "@/views/pages/admin/revenueStatisticsChart/revenueStatisticsChart.vue";
+import ApprovalInstructors from "@/views/pages/admin/admin-approval-instructors/approval-instructors.vue";
+import AdminEarning from "@/views/pages/admin/admin-statistics/admin-statistics.vue";
+import AdminProfile from "@/views/pages/admin/admin-profile/admin-profile.vue";
+import AdminPermission from "@/views/pages/admin/admin-permission/permission.vue";
 
 const routes = [
   {
@@ -132,7 +135,6 @@ const routes = [
     children: [
       { path: "", redirect: "/student/student-dashboard" },
       { path: "student-dashboard", component: Student_Dashboard },
-      { path: "student-certificate", component: Student_Certificate },
       { path: "student-profile", component: Student_Profile },
       { path: "student-courses", component: Student_Courses },
       { path: "student-wishlist", component: Student_Wishlist },
@@ -153,6 +155,7 @@ const routes = [
       { path: "students-list", component: Student_List },
       { path: "setting-student-subscription", component: Setting_Student_Subscription },
     ],
+
   },
   {
     path: "/admin",
@@ -161,8 +164,11 @@ const routes = [
     children: [
       { path: "", redirect: "/admin/admin-dashboard" },
       { path: "admin-dashboard", component: Admin_Dashboard },
+      { path: "admin-permission", component: AdminPermission },
       { path: "approval-course", component: Admin_Approval_Course },
-      // { path: "approval-instructors", component: ApprovalInstructors }
+      { path: "approval-instructors", component: ApprovalInstructors },
+      { path: "admin-earning", component: AdminEarning },
+      { path: "admin-profile", component: AdminProfile },
     ]
   },
   {
@@ -325,6 +331,11 @@ const routes = [
     path: "/authenticate",
     name: "authenticate",
     component: Authenticate,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+      component: error404
   }
 ];
 
@@ -338,7 +349,7 @@ router.beforeEach(async (to, from, next) => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   const store = useStore();
-  const userRole = store.state.userInfo?.roleEntity.roleName;
+  const userRole = store.state.userInfo?.roles.map(role => role.roleName).join(", "); // Lấy danh sách roleName dưới dạng chuỗi // Lấy danh sách role từ Vuex store
   console.log("User Role:", userRole);
 
   const token = localStorage.getItem("token");
@@ -347,7 +358,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       // Gọi API introspect để kiểm tra token
       const response = await axios.post("http://localhost:8080/authentication/introspect", { token });
-      const isValid = response.data.result.valid;
+      const isValid = response.data.valid;
       console.log("Token valid:", isValid);
 
       if (isValid) {

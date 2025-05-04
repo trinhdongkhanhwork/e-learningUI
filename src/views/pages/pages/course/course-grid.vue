@@ -34,7 +34,7 @@
                             >{{course.instructor.fullname}}</router-link
                             >
                           </h4>
-                          <p>{{ course.instructor.roleEntity.roleName}}</p>
+                          <p>{{ course.instructor.roles.map(role => role.roleName).join(', ')}}</p>
                         </div>
                       </div>
                       <div class="course-share d-flex align-items-center justify-content-center">
@@ -69,16 +69,16 @@
                       >
                     </div>
                     <div class="all-btn all-category d-flex align-items-center">
-                      <router-link 
-                        v-if="!course.isPayment" 
-                        to="#" 
-                        class="btn btn-primary" 
+                      <router-link
+                        v-if="!course.isPayment"
+                        to="#"
+                        class="btn btn-primary"
                         @click.prevent="handleEnroll(course)">
                         BUY NOW
                       </router-link>
-                      <router-link 
-                        v-else 
-                        :to="{ path: '/course/course-details', query: { id: course.id } }" 
+                      <router-link
+                        v-else
+                        :to="{ path: '/course/course-details', query: { id: course.id } }"
                         class="btn btn-primary">
                         VIEW DETAIL
                       </router-link>

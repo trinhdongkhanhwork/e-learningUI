@@ -87,7 +87,7 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
-    const userRole = store.state.userInfo?.roleEntity.roleName;
+    const userRole = store.state.userInfo?.roles.map(role => role.roleName);
     return {
       userRole
     };

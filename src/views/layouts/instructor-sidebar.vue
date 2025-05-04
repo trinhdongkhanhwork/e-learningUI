@@ -16,7 +16,7 @@
                 <router-link to="/instructor/instructor-profile"
                 >{{user?.fullname}}</router-link>
               </h4>
-              <p>{{user?.roleEntity.roleName}}</p>
+              <p>{{user?.roles.map(role => role.roleName).join(", ")}}</p>
               <router-link
                 to="/course/add-course"
                 class="add-course btn-primary"
@@ -73,22 +73,22 @@
                 <i class="bx bxs-heart"></i>Wishlist
               </router-link>
             </li>
-            <!-- <li
-              class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-reviews') }"
-            >
-              <router-link to="/instructor/instructor-reviews" class="nav-link">
-                <i class="bx bxs-star"></i>Reviews
-              </router-link>
-            </li> -->
-            <!-- <li
-              class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-quiz') }"
-            >
-              <router-link to="/instructor/instructor-quiz" class="nav-link">
-                <i class="bx bxs-shapes"></i>My Quiz Attempts
-              </router-link>
-            </li> -->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-reviews') }"-->
+<!--            >-->
+<!--              <router-link to="/instructor/instructor-reviews" class="nav-link">-->
+<!--                <i class="bx bxs-star"></i>Reviews-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-quiz') }"-->
+<!--            >-->
+<!--              <router-link to="/instructor/instructor-quiz" class="nav-link">-->
+<!--                <i class="bx bxs-shapes"></i>My Quiz Attempts-->
+<!--              </router-link>-->
+<!--            </li>-->
             <li
               class="nav-item"
               :class="{ active: isActive('/instructor/instructor-orders') }"
@@ -97,24 +97,25 @@
                 <i class="bx bxs-cart"></i>Order History
               </router-link>
             </li>
-            <!-- <li
-              class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-qa') }"
-            >
-              <router-link to="/instructor/instructor-qa" class="nav-link">
-                <i class="bx bxs-bookmark-alt"></i>Question & Answer
-              </router-link>
-            </li> -->
-            <!-- <li class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-referral') }"
-            >
-              <router-link
-                to="/instructor/instructor-referral"
-                class="nav-link"
-              >
-                <i class="bx bxs-user-plus"></i>Referrals
-              </router-link>
-            </li> -->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-qa') }"-->
+<!--            >-->
+<!--              <router-link to="/instructor/instructor-qa" class="nav-link">-->
+<!--                <i class="bx bxs-bookmark-alt"></i>Question & Answer-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-referral') }"-->
+<!--            >-->
+<!--              <router-link-->
+<!--                to="/instructor/instructor-referral"-->
+<!--                class="nav-link"-->
+<!--              >-->
+<!--                <i class="bx bxs-user-plus"></i>Referrals-->
+<!--              </router-link>-->
+<!--            </li>-->
             <li
               class="nav-item"
               :class="{ active: isActive('/instructor/instructor-chat') }"
@@ -123,27 +124,27 @@
                 <i class="bx bxs-chat"></i>Messages
               </router-link>
             </li>
-            <!-- <li
-              class="nav-item"
-              :class="{
-                active: isActive('/instructor/instructor-notifications'),
-              }"
-            >
-              <router-link
-                to="/instructor/instructor-notifications"
-                class="nav-link"
-              >
-                <i class="bx bxs-bell"></i>Notifications
-              </router-link>
-            </li> -->
-            <!-- <li
-              class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-tickets') }"
-            >
-              <router-link to="/instructor/instructor-tickets" class="nav-link">
-                <i class="bx bxs-coupon"></i>Support Tickets
-              </router-link>
-            </li> -->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{-->
+<!--                active: isActive('/instructor/instructor-notifications'),-->
+<!--              }"-->
+<!--            >-->
+<!--              <router-link-->
+<!--                to="/instructor/instructor-notifications"-->
+<!--                class="nav-link"-->
+<!--              >-->
+<!--                <i class="bx bxs-bell"></i>Notifications-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-tickets') }"-->
+<!--            >-->
+<!--              <router-link to="/instructor/instructor-tickets" class="nav-link">-->
+<!--                <i class="bx bxs-coupon"></i>Support Tickets-->
+<!--              </router-link>-->
+<!--            </li>-->
           </ul>
           <h3>Instructor</h3>
           <ul>
@@ -155,19 +156,19 @@
                 <i class="bx bxs-rocket"></i>My Courses
               </router-link>
             </li>
-            <!-- <li
-              class="nav-item"
-              :class="{
-                active: isActive('/instructor/instructor-announcements'),
-              }"
-            >
-              <router-link
-                to="/instructor/instructor-announcements"
-                class="nav-link"
-              >
-                <i class="bx bxs-volume-full"></i>Announcements
-              </router-link>
-            </li> -->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{-->
+<!--                active: isActive('/instructor/instructor-announcements'),-->
+<!--              }"-->
+<!--            >-->
+<!--              <router-link-->
+<!--                to="/instructor/instructor-announcements"-->
+<!--                class="nav-link"-->
+<!--              >-->
+<!--                <i class="bx bxs-volume-full"></i>Announcements-->
+<!--              </router-link>-->
+<!--            </li>-->
             <li
               class="nav-item"
               :class="{ active: isActive('/instructor/instructor-withdraw') }"
@@ -190,41 +191,41 @@
               <i class="bx bx-bar-chart-alt-2"></i>Withdrawal statistics
               </router-link>
             </li>
-            <!-- <li
-              class="nav-item"
-              :class="{
-                active: isActive('/instructor/instructor-quiz-attempts'),
-              }"
-            >
-              <router-link
-                to="/instructor/instructor-quiz-attempts"
-                class="nav-link"
-              >
-                <i class="bx bxs-shapes"></i>Quiz Attempts
-              </router-link>
-            </li> -->
-            <!-- <li
-              class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-assignment') }"
-            >
-              <router-link
-                to="/instructor/instructor-assignment"
-                class="nav-link"
-              >
-                <i class="bx bxs-file"></i>Assignments
-              </router-link>
-            </li> -->
-            <!-- <li
-              class="nav-item"
-              :class="{ active: isActive('/instructor/instructor-earnings') }"
-            >
-              <router-link
-                to="/instructor/instructor-earnings"
-                class="nav-link"
-              >
-                <i class="bx bxs-badge-dollar"></i>Earnings
-              </router-link>
-            </li> -->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{-->
+<!--                active: isActive('/instructor/instructor-quiz-attempts'),-->
+<!--              }"-->
+<!--            >-->
+<!--              <router-link-->
+<!--                to="/instructor/instructor-quiz-attempts"-->
+<!--                class="nav-link"-->
+<!--              >-->
+<!--                <i class="bx bxs-shapes"></i>Quiz Attempts-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-assignment') }"-->
+<!--            >-->
+<!--              <router-link-->
+<!--                to="/instructor/instructor-assignment"-->
+<!--                class="nav-link"-->
+<!--              >-->
+<!--                <i class="bx bxs-file"></i>Assignments-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li-->
+<!--              class="nav-item"-->
+<!--              :class="{ active: isActive('/instructor/instructor-earnings') }"-->
+<!--            >-->
+<!--              <router-link-->
+<!--                to="/instructor/instructor-earnings"-->
+<!--                class="nav-link"-->
+<!--              >-->
+<!--                <i class="bx bxs-badge-dollar"></i>Earnings-->
+<!--              </router-link>-->
+<!--            </li>-->
           </ul>
           <h3>Account Settings</h3>
           <ul>
@@ -239,11 +240,11 @@
                 <i class="bx bxs-cog"></i>Settings
               </router-link>
             </li>
-            <!-- <li class="nav-item">
-              <router-link to="/" class="nav-link">
-                <i class="bx bxs-log-out"></i>Logout
-              </router-link>
-            </li> -->
+<!--            <li class="nav-item">-->
+<!--              <router-link to="/" class="nav-link">-->
+<!--                <i class="bx bxs-log-out"></i>Logout-->
+<!--              </router-link>-->
+<!--            </li>-->
           </ul>
         </div>
       </div>
