@@ -83,7 +83,7 @@
               </div>
             </div>
           </div>
-          <!-- <div class="dash-pagination">
+          <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page {{ listQuery.page + 1 }} of {{ Math.ceil(total / listQuery.size) }}</p>
@@ -99,7 +99,7 @@
                 </ul>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
