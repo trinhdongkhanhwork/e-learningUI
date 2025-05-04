@@ -1,0 +1,10 @@
+version: "3"
+services:
+  vue-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vue-frontend
+    ports:
+      - "8081:80"
+    restart: unless-stopped
