@@ -33,10 +33,6 @@
                   <span>{{ temp.value.instructor ? temp.value.instructor.fullname : '' }}</span>
                 </div>
                 <div class="form-item">
-                  <label>Category:</label>
-                  <span>{{ temp.value.category }}</span>
-                </div>
-                <div class="form-item">
                   <label>Created Date: </label>
                   <span>{{ formatDate(temp.value.createdAt) }}</span>
                 </div>
@@ -75,25 +71,26 @@
                             <video :src="video.videoUrl" controls style="width: 85%; aspect-ratio: 16 / 9;" />
                           </div>
                         </div>
-                        <div v-if="lecture.type === 'quiz'">
-                          <table class="quiz-table">
-                            <thead>
-                            <tr>
-                              <th>Question</th>
-                              <th>Options</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="question in lecture.quiz.questions" :key="question.title">
-                              <td>{{ question.title }}</td>
-                              <td>
-                                <span v-for="(option, index) in question.options" :key="index" class="tag option-tag">
-                                  {{ option.text }}
-                                </span>
-                              </td>
-                            </tr>
-                            </tbody>
-                          </table>
+                        <div v-if="lecture.type === 'quiz'" style="max-height: 400px; overflow-y: auto;">
+                          <div class="quiz-form text-start">
+                            <h2>{{lecture.quiz.title}}</h2>
+                            <form>
+                              <div v-for="(question, index) in lecture.quiz.questions" :key="index" class="question mb-5">
+                                <h3>{{ index + 1 }}. {{ question.title }}</h3>
+                                <div v-for="(option, idx) in question.options" :key="idx" class="option">
+                                  <label>
+                                    <input
+                                        type="checkbox"
+                                        disabled
+                                        :name="'question-' + index"
+                                        :checked="option.correct"
+                                    />
+                                    {{ option.text }}
+                                  </label>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -232,7 +229,6 @@ export default {
 }
 
 .form-item label {
-  font-weight: bold;
   color: #555;
   margin-bottom: 6px;
   margin-right: 10px;
@@ -294,30 +290,6 @@ export default {
   margin-top: 16px;
 }
 
-/* Quiz Table Styling */
-.quiz-table {
-  width: 90%;
-  border-collapse: collapse;
-}
-
-.quiz-table th, .quiz-table td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-}
-
-.quiz-table th {
-  background-color: #f8f9fa;
-  color: #333;
-  text-align: left;
-  font-weight: 600;
-}
-
-.quiz-table td {
-  color: #555;
-}
-
-
 /* Tags */
 .tag {
   display: inline-block;
@@ -369,5 +341,66 @@ export default {
 
 .button:hover {
   background-color: #45a049;
+}
+
+.quiz-form {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+.quiz-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.quiz-form p {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.question {
+  margin-bottom: 30px;
+}
+
+.question h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.option label {
+  font-size: 1rem;
+  color: #555;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.option input[type='radio'] {
+  accent-color: #4caf50; /* Thay đổi màu của radio button */
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+.option label:hover {
+  color: #4caf50;
 }
 </style>

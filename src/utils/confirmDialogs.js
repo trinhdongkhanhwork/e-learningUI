@@ -63,3 +63,21 @@ export function confirmLogout(store) {
     });
 }
 
+export function showError(message) {
+    return Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: message,
+        confirmButtonText: 'OK'
+    });
+}
+
+export function showSuccess(message) {
+    return Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        text: message,
+        confirmButtonText: 'OK'
+    });
+}
+
