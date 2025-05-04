@@ -1,6 +1,6 @@
 <template>
-  <student-header></student-header>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Wishlist" text="Home" text1="Wishlist" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -21,7 +21,7 @@
             </div>
           </div>
 
-          <div class="dash-pagination">
+          <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page 1 of 2</p>
@@ -40,7 +40,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- /Student Wishlist -->
       </div>
@@ -48,14 +48,3 @@
   </div>
   <layouts1></layouts1>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      title: "Wishlist",
-      text: "Home",
-      text1: "Wishlist",
-    };
-  },
-};
-</script>

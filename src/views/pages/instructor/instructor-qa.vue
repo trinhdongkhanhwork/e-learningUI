@@ -1,5 +1,6 @@
 <template>
-  <page-header></page-header>
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Edit Courses" text="Home" text1="Edit Courses" />
   <div class="page-content">
     <div class="container">
       <div class="row">

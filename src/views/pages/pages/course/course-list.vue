@@ -1,6 +1,5 @@
 <template>
-  <page-header></page-header>
-  <coursegrid-breadcrumb></coursegrid-breadcrumb>
+  <layouts-index></layouts-index>
   <!-- Course -->
   <section class="course-content">
     <div class="container">
@@ -81,7 +80,7 @@
               </div>
             </div>
           </div>
-          <pagination></pagination>
+          <!-- <pagination></pagination> -->
         </div>
         <course-sidebar :onFilterChange="handleFilterChange"></course-sidebar>
       </div>

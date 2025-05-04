@@ -22,7 +22,7 @@ export default {
 
         try {
           const response = await axios.post(
-              `http://localhost:8080/authentication/outbound/authentication?code=${authCode}`
+              `http://52.207.220.199:8080/authentication/outbound/authentication?code=${authCode}`
           );
 
           const token = response.data.result?.token;

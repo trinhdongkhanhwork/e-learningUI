@@ -1,6 +1,6 @@
 <template>
-    <layouts></layouts>
-    <student-breadcrumb :title="title" :text="text" :text1="text1" />
+    <layouts-index></layouts-index>
+    <student-breadcrumb title="Withdraw statistics" text="Home" text1="Withdraw statistics" />
     <div class="page-content">
       <div class="container">
         <div class="row">

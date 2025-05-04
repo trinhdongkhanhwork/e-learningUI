@@ -350,7 +350,7 @@ router.beforeEach(async (to, from, next) => {
   if (token) {
     try {
       // Gọi API introspect để kiểm tra token
-      const response = await axios.post("http://localhost:8080/authentication/introspect", { token });
+      const response = await axios.post("http://52.207.220.199:8080/authentication/introspect", { token });
       const isValid = response.data.valid;
       console.log("Token valid:", isValid);
 

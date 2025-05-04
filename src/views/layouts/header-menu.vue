@@ -17,22 +17,38 @@
                                         <router-link to="/" class="nav-link">Home</router-link>
                                     </li>
                                     <li class="nav-item">
+
                                         <router-link to="/instructor/instructor-dashboard" class="nav-link">Dashboard</router-link>
+
+                                        <router-link to="/course/course-list" class="nav-link">Courses</router-link>
+                                    </li>
+                                    <li class="nav-item">
+                                      <router-link to="/instructor/instructor-dashboard" class="nav-link">Dashboard</router-link>
+                                    </li>
+                                    <li class="nav-item">
+                                      <router-link to="/instructor/instructor-course" class="nav-link">My course</router-link>
+                                    </li>
+                                    <!-- <li class="nav-item">
+                                        <router-link to="/about" class="nav-link">About</router-link>
+
                                     </li>
                                     <li class="nav-item">
                                         <router-link to="/instructor/instructor-course" class="nav-link">My Courses</router-link>
                                     </li>
-                                    <li class="nav-item">
+   
                                         <router-link to="/course/add-course" class="nav-link">Add New Course</router-link>
                                     </li>
                                     <li class="nav-item">
                                         <router-link to="/course/course-list" class="nav-link">Courses</router-link>
                                     </li>
+
+                                        <router-link to="/contact" class="nav-link">Contact</router-link>
+                                    </li> -->
+
                                 </ul>
 
-                                <ul
-                                    v-else-if="userRole === 'STUDENT'"
-                                    class="navbar-nav ml-auto gap-3">
+                                <ul v-else-if="userRole === 'STUDENT'" class="navbar-nav ml-auto gap-3">
+                                    
                                     <li class="nav-item">
                                         <router-link to="/" class="nav-link">Home</router-link>
                                     </li>
@@ -40,14 +56,14 @@
                                         <router-link to="/course/course-list" class="nav-link">Courses</router-link>
                                     </li>
                                     <li class="nav-item">
+                                      <router-link to="/student/student-dashboard" class="nav-link">Dashboard</router-link>
+                                    </li>
+                                    <!-- <li class="nav-item">
                                         <router-link to="/instructor/instructor-list" class="nav-link">Instructors</router-link>
                                     </li>
                                     <li class="nav-item">
                                         <router-link to="/contact" class="nav-link">Teach on CFD-LMS</router-link>
-                                    </li>
-                                    <li class="nav-item">
-                                      <router-link to="/student/student-dashboard" class="nav-link">Dashboard</router-link>
-                                    </li>
+                                    </li> -->
                                 </ul>
 
                                 <ul
@@ -57,13 +73,19 @@
                                     <router-link to="/" class="nav-link">Home</router-link>
                                   </li>
                                   <li class="nav-item">
-                                    <router-link to="/admin/approval-course" class="nav-link">Approval Courses</router-link>
+                                    <router-link to="/admin/admin-dashboard" class="nav-link">Approval</router-link>
                                   </li>
+
                                   <li class="nav-item">
                                     <router-link to="/instructor/instructor-course" class="nav-link">Dashboard Instructors</router-link>
                                   </li>
+
+                                  <!-- <li class="nav-item">
+                                    <router-link to="/admin/approval-instructors" class="nav-link">Approval Instructors</router-link>
+                                  </li> -->
+
                                   <li class="nav-item">
-                                    <router-link to="/admin" class="nav-link">Dashboard</router-link>
+                                    <router-link to="/instructor/instructor-dashboard" class="nav-link">Dashboard</router-link>
                                   </li>
                                 </ul>
 

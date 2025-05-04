@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <login-banner></login-banner>
-    <div class="col-md-6 login-wrap-bg" style="background-color: white; height: 100%">
+    <div class="col-md-6 login-wrap-bg">
       <div class="login-wrapper">
         <div class="loginbox">
           <div class="img-logo">
@@ -56,7 +56,6 @@
                 <option value="">Select Gender</option>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
-                <option value="OTHER">Other</option>
               </Field>
             </div>
 
@@ -126,7 +125,7 @@ export default {
       formData.append("img", this.avatarFile);
 
       try {
-        const response = await fetch("http://localhost:8080/api/s3/upload/image", {
+        const response = await fetch("http://52.207.220.199:8080/api/s3/upload/image", {
           method: "POST",
           body: formData,
         });
@@ -152,7 +151,7 @@ export default {
           avatarUrl,
         };
 
-        const response = await fetch("http://localhost:8080/users", {
+        const response = await fetch("http://52.207.220.199:8080/users", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(userData),

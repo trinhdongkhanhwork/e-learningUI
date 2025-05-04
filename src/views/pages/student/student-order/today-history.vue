@@ -69,7 +69,7 @@ export default {
       }
 
       axios
-        .get(`http://localhost:8080/api/payment/history/${this.userId}`)
+        .get(`http://52.207.220.199:8080/api/payment/history/${this.userId}`)
         .then(response => {
           this.orders = response.data; // Gán dữ liệu từ API vào orders
           console.log(this.orders); // Kiểm tra dữ liệu trả về
@@ -101,7 +101,7 @@ export default {
     downloadOrder(courseId) {
       const order = this.orders.find(order => order.courseId === courseId);
       if (order && order.enrollment) {
-        const downloadUrl = `http://localhost:8080/api/courses/${courseId}/download`;
+        const downloadUrl = `http://52.207.220.199:8080/api/courses/${courseId}/download`;
         axios
           .get(downloadUrl, { responseType: 'arraybuffer' })
           .then(response => {

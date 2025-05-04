@@ -1,6 +1,6 @@
 <template>
-  <layouts></layouts>
-  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Approve Course" text="Home" text1="Approve Course" />
   <div class="page-content">
     <div class="container-fluid">
       <div class="row">

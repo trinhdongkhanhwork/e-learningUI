@@ -340,7 +340,7 @@ export default {
       try {
         const categoryPromises = categories.value.map(async (category) => {
           const response = await baseApi.get(`/api/v1/courses/by-category/${category.id}`);
-          categoryCourses.value[category.id] = response.data || [];
+          categoryCourses.value[category.id] = response.data.filter(course => course.published) || [];
         });
         await Promise.all(categoryPromises);
         await updateFavoriteStatus();

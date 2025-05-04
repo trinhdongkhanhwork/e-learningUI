@@ -96,3 +96,29 @@ form > div:not(:first-child) {
     background-color: #392c7d !important;
     transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out
 }
+.groupSearchBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+.groupSearchBar > input{
+    height: 100%;
+    padding: 0 15px;
+    outline: none;
+    border: solid 1px lightgray;
+    border-radius: 10px 0px 0px 10px;
+}
+.groupSearchBar > button{
+    height: 100%;
+    outline: none;
+    border-radius: 0px 10px 10px 0px;
+    border: none;
+    padding: 0px 10px;
+    background-color: #ff4667;
+    color: white;
+}
+.groupSearchBar > button:hover{
+    background-color: #fd5977;
+}

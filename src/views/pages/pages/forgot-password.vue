@@ -96,7 +96,7 @@ export default {
       this.showOtpDialog = true;
       this.startCountdown();
       try {
-        const response = await axios.post("http://localhost:8080/authentication/forgot-password", {
+        const response = await axios.post("http://52.207.220.199:8080/authentication/forgot-password", {
           email: this.email,
         });
 
@@ -143,7 +143,7 @@ export default {
       }
 
       try {
-        const response = await axios.post("http://localhost:8080/authentication/verify-otp", {
+        const response = await axios.post("http://52.207.220.199:8080/authentication/verify-otp", {
           otp: this.otp,
           hashedOtp: localStorage.getItem("hashedOtp"),
           creationTime: localStorage.getItem("creationTime"),
@@ -164,7 +164,7 @@ export default {
       if (this.newPassword === this.confirmPassword) {
         try {
           const response = await axios.put(
-              `http://localhost:8080/users/updatePassWord/${this.email}/${this.otpValid}`,
+              `http://52.207.220.199:8080/users/updatePassWord/${this.email}/${this.otpValid}`,
               {password: this.newPassword}
           );
 
