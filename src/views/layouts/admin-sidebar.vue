@@ -3,29 +3,29 @@
     <div class="stickysidebar">
       <div class="settings-widget account-settings">
         <div class="settings-menu">
-          <h3>Dashboard</h3>
+          <h3>Admin</h3>
           <ul>
-            <!-- <li
+            <li
                 class="nav-item"
                 :class="{ active: isActive('/instructor/instructor-dashboard') }"
             >
               <router-link
-                  to="/instructor/instructor-dashboard"
+                  to="/admin/admin-dashboard"
                   class="nav-link"
               >
-                <i class="bx bxs-tachometer"></i>Dashboard
+                <i class="bx bxs-tachometer"></i>Approve
               </router-link>
-            </li> -->
-            <li
+            </li>
+            <!-- <li
                 class="nav-item"
                 :class="{ active: isActive('/instructor/instructor-profile') }"
             >
               <router-link to="/instructor/instructor-profile" class="nav-link">
                 <i class="bx bxs-user"></i>My Profile
               </router-link>
-            </li>
+            </li> -->
           </ul>
-          <h3>Admin</h3>
+          <h3>Approve</h3>
           <ul>
             <!-- <li
                 class="nav-item"

@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
+  <student-breadcrumb title="Approve Course" text="Home" text1="Approve Course" />
   <div class="page-content">
     <div class="container-fluid">
       <div class="row">
@@ -57,7 +57,7 @@
               </div>
             </div>
           </div>
-          <div class="dash-pagination">
+          <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page 1 of 2</p>
@@ -76,7 +76,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div class="row">
     <login-banner></login-banner>
 
-    <div class="col-md-6 login-wrap-bg" style="background-color: white; height: 100%;">
+    <div class="col-md-6 login-wrap-bg">
       <!-- Login -->
       <div class="login-wrapper">
         <div class="loginbox">
@@ -54,13 +54,13 @@
                   <a class="forgot-link" href="forgot-password">Forgot Password ?</a>
                 </span>
               </div>
-              <div class="remember-me">
+              <!-- <div class="remember-me">
                 <label class="custom_check mr-2 mb-0 d-inline-flex remember-me">
                   Remember me
                   <input type="checkbox" name="radio"/>
                   <span class="checkmark"></span>
                 </label>
-              </div>
+              </div> -->
               <div class="d-grid">
                 <button type="submit" class="btn btn-primary btn-start">Sign In</button>
               </div>

@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
+  <student-breadcrumb title="Revenue Statistics" text="Home" text1="Revenue Statistics" />
   <div class="page-content">
     <div class="container-fluid">
       <div class="row">

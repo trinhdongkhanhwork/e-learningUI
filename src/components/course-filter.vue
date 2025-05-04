@@ -2,7 +2,7 @@
   <!-- Filter -->
   <div class="showing-list">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <div class="d-flex align-items-center">
           <div class="view-icons">
             <router-link
@@ -16,9 +16,9 @@
               class="list-view"
             ><i class="feather-list"></i></router-link>
           </div>
-          <div class="show-result">
+          <!-- <div class="show-result">
             <h4>Showing 1-12 of 50 results</h4>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="col-lg-6">

@@ -774,9 +774,9 @@ button.bg-danger:hover {
   font-size: 14px;
   transform-origin: left top 0;
 }
-.dropdown-item.active,
-.dropdown-item:active {
-  background-color: #f7f7f7;
+.dropdown-item {
+  color: black !important;
+  background-color: white !important;
 }
 .navbar-nav .open .dropdown-menu {
   border: 0;

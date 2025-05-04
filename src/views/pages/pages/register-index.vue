@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <login-banner></login-banner>
-    <div class="col-md-6 login-wrap-bg" style="background-color: white; height: 100%">
+    <div class="col-md-6 login-wrap-bg">
       <div class="login-wrapper">
         <div class="loginbox">
           <div class="img-logo">
@@ -56,7 +56,6 @@
                 <option value="">Select Gender</option>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
-                <option value="OTHER">Other</option>
               </Field>
             </div>
 

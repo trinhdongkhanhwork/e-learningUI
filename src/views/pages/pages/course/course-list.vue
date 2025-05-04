@@ -80,7 +80,7 @@
               </div>
             </div>
           </div>
-          <pagination></pagination>
+          <!-- <pagination></pagination> -->
         </div>
         <course-sidebar :onFilterChange="handleFilterChange"></course-sidebar>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <student-breadcrumb title="My Profile" text="Home" text1="My Profile" />
   <!-- Course Content -->
   <div class="page-content">
     <div class="container">
@@ -80,9 +80,6 @@ export default {
     const store = useStore();
     const user = ref(store.state.userInfo);
     return {
-      title: "My Profile",
-      text: "Home",
-      text1: "My Profile",
       user
     };
   },

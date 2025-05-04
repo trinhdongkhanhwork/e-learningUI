@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <student-breadcrumb title="Settings" text="Home" text1="Settings" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -90,7 +90,7 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import baseApi from '@/axios';
 import { confirmSave } from '@/utils/confirmDialogs';
 import Swal from 'sweetalert2';

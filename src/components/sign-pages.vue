@@ -1,6 +1,6 @@
 <template>
   <ul class="nav header-navbar-rht align-items-center">
-    <li class="nav-item">
+    <li class="nav-item" style="padding: 0;">
       <div>
         <a
             href="#"
@@ -23,9 +23,7 @@
       </div>
     </li>
     <li class="nav-item" v-if="!user">
-      <router-link class="nav-link login-three-head button" to="/">
-        <span>Login</span>
-      </router-link>
+      <router-link class="nav-link login-three-head button" to="/">Login</router-link>
     </li>
     <li class="nav-item" v-if="!user">
       <router-link class="nav-link signin-three-head" to="/register">Register</router-link>
@@ -35,10 +33,10 @@
       <ul class="nav header-navbar-rht">
         <li class="nav-item user-nav">
           <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-        <span class="user-img">
-          <img :src="user?.avatarUrl" alt="Img">
-          <span class="status online"></span>
-        </span>
+            <span class="user-img">
+              <img :src="user?.avatarUrl" alt="Img">
+              <span class="status online"></span>
+            </span>
           </a>
           <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
             <div class="user-header">
@@ -63,24 +61,9 @@
             <router-link
                 v-if="user?.roleEntity.roleName === 'ADMIN'"
                 class="dropdown-item"
-                to="/admin/admin-dashboard"
+                to="/instructor/instructor-dashboard"
             ><i class="feather-home me-1"></i>Admin Dashboard</router-link>
 
-            <router-link
-                v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
-                class="dropdown-item"
-                to="/instructor/instructor-settings"
-            ><i class="feather-star me-1"></i> Edit Instructor Profile</router-link>
-            <router-link
-                v-if="user?.roleEntity.roleName === 'STUDENT'"
-                class="dropdown-item"
-                to="/student/student-settings"
-            ><i class="feather-star me-1"></i> Edit Student Profile</router-link>
-            <router-link
-                v-if="user?.roleEntity.roleName === 'ADMIN'"
-                class="dropdown-item"
-                to="/admin/admin-settings"
-            ><i class="feather-star me-1"></i> Edit Admin Profile</router-link>
             <!-- <div class="dropdown-item night-mode">
               <span><i class="feather-moon me-1"></i> Night Mode </span>
               <div class="form-check form-switch check-on m-0">

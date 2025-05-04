@@ -4,9 +4,6 @@
       <div class="filter-clear">
         <div class="clear-filter d-flex align-items-center">
           <h4><i class="feather-filter"></i>Filters</h4>
-          <div class="clear-text">
-            <p>CLEAR</p>
-          </div>
         </div>
 
         <!-- Search Filter category -->
@@ -70,107 +67,6 @@
           </div>
         </div>
         <!-- /Search Filter -->
-
-        <!-- Latest Posts -->
-        <div class="card post-widget">
-          <div class="card-body">
-            <div class="latest-head">
-              <h4 class="card-title">Latest Courses</h4>
-            </div>
-            <ul class="latest-posts">
-              <li>
-                <div class="post-thumb">
-                  <router-link to="/course/course-details">
-                    <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-01.jpg"
-                        alt=""
-                    />
-                  </router-link>
-                </div>
-                <div class="post-info free-color">
-                  <h4>
-                    <router-link to="/course/course-details"
-                    >Introduction LearnPress – LMS plugin</router-link
-                    >
-                  </h4>
-                  <p>FREE</p>
-                </div>
-              </li>
-              <li>
-                <div class="post-thumb">
-                  <router-link to="/course/course-details">
-                    <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-02.jpg"
-                        alt=""
-                    />
-                  </router-link>
-                </div>
-                <div class="post-info">
-                  <h4>
-                    <router-link to="/course/course-details"
-                    >Become a PHP Master and Make Money</router-link
-                    >
-                  </h4>
-                  <p>$200</p>
-                </div>
-              </li>
-              <li>
-                <div class="post-thumb">
-                  <router-link to="/course/course-details">
-                    <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-03.jpg"
-                        alt=""
-                    />
-                  </router-link>
-                </div>
-                <div class="post-info free-color">
-                  <h4>
-                    <router-link to="/course/course-details">Learning jQuery Mobile for Beginners</router-link>
-                  </h4>
-                  <p>FREE</p>
-                </div>
-              </li>
-              <li>
-                <div class="post-thumb">
-                  <router-link to="/course/course-details">
-                    <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-01.jpg"
-                        alt=""
-                    />
-                  </router-link>
-                </div>
-                <div class="post-info">
-                  <h4>
-                    <router-link to="/course/course-details">Improve Your CSS Workflow with SASS</router-link>
-                  </h4>
-                  <p>$200</p>
-                </div>
-              </li>
-              <li>
-                <div class="post-thumb">
-                  <router-link to="/course/course-details">
-                    <img
-                        class="img-fluid"
-                        src="@/assets/img/blog/blog-02.jpg"
-                        alt=""
-                    />
-                  </router-link>
-                </div>
-                <div class="post-info free-color">
-                  <h4>
-                    <router-link to="/course/course-details">HTML5/CSS3 Essentials in 4-Hours</router-link>
-                  </h4>
-                  <p>FREE</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- /Latest Posts -->
       </div>
     </div>
   </div>

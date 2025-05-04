@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <student-breadcrumb title="Certificate" text="Home" text1="Certificate"/>
   <div class="page-content">
     <div class="container">
       <div class="row">

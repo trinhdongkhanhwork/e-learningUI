@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <student-breadcrumb title="Order History" text="Home" text1="Order History" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -66,14 +66,3 @@
   </div>
   <layouts1></layouts1>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      title: "Order History",
-      text: "Home",
-      text1: "Order History",
-    };
-  },
-};
-</script>

@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <student-breadcrumb title="Enrolled Courses" text="Home" text1="Enrolled Courses" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -97,9 +97,6 @@ export default {
   components: {Layouts},
   data() {
     return {
-      title: "Enrolled Courses",
-      text: "Home",
-      text1: "Enrolled Courses",
       totalCourses: 0,
     };
   },

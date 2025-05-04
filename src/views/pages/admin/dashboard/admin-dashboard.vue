@@ -1,6 +1,6 @@
 <template>
   <layouts-index></layouts-index>
-  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
+  <student-breadcrumb title="Approve" text="Home" text1="Approve" />
   <div class="page-content">
     <div class="container-fluid">
       <div class="row">
@@ -87,9 +87,9 @@ export default {
   components: {Layouts, PanelGroup, LineChart, AdminHeaderborder, AdminBreadcrumb, AdminSidebar},
   data() {
     return {
-      title: "Dashboard",
+      title: "Approve",
       text: "Home",
-      text1: "Dashboard",
+      text1: "Approve",
       LineChart,
       lineChartData: lineChartData.newVisitis
     };
