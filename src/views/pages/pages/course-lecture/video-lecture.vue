@@ -255,7 +255,7 @@ const sendProgress = async (currentSecond, completed = false) => {
     const lectureId = props.lecture?.id;
     console.log(lectureId);
     try {
-        const response = await fetch("http://localhost:8080/api/progress/update", {
+        const response = await fetch("http://52.207.220.199:8080/api/progress/update", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

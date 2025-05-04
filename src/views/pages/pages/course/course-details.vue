@@ -1,5 +1,5 @@
 <template>
-  <page-header></page-header>
+  <layouts-login></layouts-login>
   <coursedetails></coursedetails>
   <div>
     <div class="inner-banner" :style="{ backgroundImage: `url(${course.coverImage})` }">
@@ -49,7 +49,7 @@
     </div>
   </div>
   <!-- Course Content -->
-  <section class="page-content course-sec">
+  <section class="page-content course-sec" style="min-height: 800px;">
     <div class="container">
       <div class="row">
         <div class="col-lg-8">
@@ -197,8 +197,8 @@
               <div v-else>
                 <p style="font-size: 15px;">{{ review.comment }}</p>
                 <div v-if="user && review.userId === user.id" class="d-flex justify-content-end">
-                  <button @click="startEdit(review)" class="btn btn-sm btn-primary me-2">Edit</button>
-                  <button @click="deleteRating(review.id)" class="btn btn-sm btn-danger">Delete</button>
+                  <button @click="startEdit(review)" class="btn btn-sm btn-pink me-2">Edit</button>
+                  <button @click="deleteRating(review.id)" class="btn btn-sm btn-pink">Delete</button>
                 </div>
               </div>
             </div>

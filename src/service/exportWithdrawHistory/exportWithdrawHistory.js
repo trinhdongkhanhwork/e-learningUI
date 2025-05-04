@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:8080'; // Sử dụng biến môi trường hoặc fallback
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL || 'http://52.207.220.199:8080'; // Sử dụng biến môi trường hoặc fallback
 
 // Xuất tất cả lịch sử rút tiền admin
 export const exportWithdrawHistory = async (payload) => {

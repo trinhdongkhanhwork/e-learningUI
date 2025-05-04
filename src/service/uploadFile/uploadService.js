@@ -1,6 +1,6 @@
 export async function uploadService(formData){
     try {
-        const response = await fetch("http://localhost:8080/api/s3/upload/image", {
+        const response = await fetch("http://52.207.220.199:8080/api/s3/upload/image", {
             method: "POST",
             body: formData,
         });

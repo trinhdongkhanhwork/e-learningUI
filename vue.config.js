@@ -6,6 +6,7 @@ module.exports = defineConfig({
   transpileDependencies: ['vuetify'],
   lintOnSave: false,
   publicPath: "/vue/",
+  outputDir: 'dist',
   css: {
     extract: false,
   },

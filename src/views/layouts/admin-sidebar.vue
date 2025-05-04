@@ -3,7 +3,7 @@
     <div class="stickysidebar">
       <div class="settings-widget account-settings">
         <div class="settings-menu">
-          <h3>Dashboard</h3>
+          <h3>Admin</h3>
           <ul>
             <li
                 class="nav-item"
@@ -13,7 +13,7 @@
                   to="/admin/admin-dashboard"
                   class="nav-link"
               >
-                <i class="bx bxs-tachometer"></i>Dashboard
+                <i class="bx bxs-tachometer"></i>Approve
               </router-link>
             </li>
             <li
@@ -25,7 +25,7 @@
               </router-link>
             </li>
           </ul>
-          <h3>Admin</h3>
+          <h3>Approve</h3>
           <ul>
             <li
                 class="nav-item"

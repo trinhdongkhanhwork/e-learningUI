@@ -404,7 +404,7 @@ export default {
     },
     connectSocket() {
       this.stompClient = new StompJs.Client({
-        webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+        webSocketFactory: () => new SockJS("http://52.207.220.199:8080/ws"),
         debug: (str) => {
           console.log("Thông tin gỡ lỗi", str);
         },

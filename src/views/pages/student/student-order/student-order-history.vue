@@ -1,6 +1,6 @@
 <template>
-  <layouts></layouts>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Order History" text="Home" text1="Order History" />
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -16,38 +16,6 @@
                 <h3>Order History</h3>
               </div>
               <div class="checkout-form">
-                <!-- Order Tabs -->
-                <div class="wishlist-tab order-tab">
-                  <ul class="nav">
-                    <li class="nav-item">
-                      <a
-                        href="javascript:void(0);"
-                        class="active"
-                        data-bs-toggle="tab"
-                        data-bs-target="#today"
-                        >History</a
-                      >
-                    </li>
-                    <!-- <li class="nav-item">
-                      <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="tab"
-                        data-bs-target="#month"
-                        >Monthly</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="tab"
-                        data-bs-target="#year"
-                        >Yearly</a
-                      >
-                    </li> -->
-                  </ul>
-                </div>
-                <!-- /Order Tabs -->
-
                 <!-- Tab Content -->
                 <div class="tab-content">
                   <!-- Today -->
@@ -71,7 +39,7 @@
             </div>
           </div>
 
-          <div class="dash-pagination">
+          <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page 1 of 2</p>
@@ -90,7 +58,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- /Student Order History -->
       </div>
@@ -98,14 +66,3 @@
   </div>
   <layouts1></layouts1>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      title: "Order History",
-      text: "Home",
-      text1: "Order History",
-    };
-  },
-};
-</script>

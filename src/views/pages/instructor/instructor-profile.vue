@@ -1,7 +1,6 @@
 <template>
-  <layouts></layouts>
-
-  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="My Profile" text="Home" text1="My Profile" />
 
   <!-- Page Content -->
   <div class="page-content">

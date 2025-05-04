@@ -1,6 +1,6 @@
 <template>
-  <layouts></layouts>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Certificate" text="Home" text1="Certificate"/>
   <div class="page-content">
     <div class="container">
       <div class="row">
@@ -8,36 +8,49 @@
         <student-sidebar></student-sidebar>
         <!-- /Sidebar -->
 
-        <!-- Student Dashboard -->
+        <!-- Student Order History -->
         <div class="col-xl-9 col-lg-9">
-          <!-- Dashboard Grid -->
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex">
-              <div class="card dash-info flex-fill">
-                <div class="card-body">
-                  <h5>Student_Certificate</h5>
-                  <h2>{{ totalCourses }}</h2>
-                </div>
+          <div class="settings-widget card-details">
+            <div class="settings-menu p-0">
+              <div class="profile-heading">
+                <h3>Certificate</h3>
               </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex">
-              <div class="card dash-info flex-fill">
-                <div class="card-body">
-                  <h5>Active Courses</h5>
-                  <h2>03</h2>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-6 d-flex">
-              <div class="card dash-info flex-fill">
-                <div class="card-body">
-                  <h5>Completed Courses</h5>
-                  <h2>13</h2>
+              <div class="checkout-form">
+                <div class="tab-content">
+                  <div class="table-responsive custom-table">
+                    <table class="table table-nowrap mb-0">
+                      <thead>
+                      <tr>
+                        <th>Certificate Id</th>
+                        <th>Name</th>
+                        <th>áhgbáhdg</th>
+                        <th>dhdsf</th>
+                        <th>sdfgsdfg</th>
+                        <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr v-for="order in filteredOrders" :key="order.id">
+                        <td>{{ order.id }}</td>
+                        <td>
+                          <span class="title-course">{{ order.courseTitle }}</span>
+                        </td>
+                        <td>{{ formatDate(order.paymentDate) }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>{{ getStatusLabel(order.paymentStatusId) }}</td>
+                        <td>
+                          <a href="javascript:void(0);" class="action-icon" @click="downloadOrder(order.courseId)">
+                            <i class="bx bxs-download"></i>
+                          </a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- /Dashboard Grid -->
 
           <div class="dashboard-title">
             <h4>certificate</h4>
@@ -129,30 +142,12 @@
             </div>
           </div>
         </div>
-        <!-- Student Dashboard -->
+        <!-- /Student Order History -->
       </div>
     </div>
   </div>
   <layouts1></layouts1>
 </template>
-<script>
-import useCourses from '@/service/student/enrollCourse';
+<script setup>
 
-export default {
-  data() {
-    return {
-      title: "Dashboard",
-      text: "Home",
-      text1: "Dashboard",
-      totalCourses: 0, // Khởi tạo biến tổng số khóa học
-      paidCourses: [],
-    };
-  },
-  async mounted() {
-    const { totalCourses, fetchCourses, paidCourses } = useCourses(); // Gọi useCourses ở đây
-    await fetchCourses(); // Gọi fetchCourses để lấy danh sách khóa học
-    this.totalCourses = totalCourses.value; // Cập nhật tổng số khóa học vào data
-    this.paidCourses = paidCourses.value;
-  },
-};
 </script>

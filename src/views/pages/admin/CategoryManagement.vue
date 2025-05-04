@@ -1,6 +1,6 @@
 <template>
-  <admin-headerborder></admin-headerborder>
-  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Categorys" text="Home" text1="Categorys" />
   <div class="page-content">
     <div class="container-fluid">
       <div class="row">

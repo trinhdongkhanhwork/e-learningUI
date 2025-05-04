@@ -3,9 +3,7 @@
   <header class="header header-page">
     <div class="header-fixed">
       <nav
-        class="navbar navbar-expand-lg header-nav scroll-sticky"
-        :class="{ 'add-header-bg': isSticky }"
-      >
+        class="navbar navbar-expand-lg header-nav scroll-sticky">
         <div class="container">
           <div class="navbar-header">
             <a id="mobile_btn" href="javascript:void(0);" @click="toggleSidebar">

@@ -1,8 +1,6 @@
 <template>
-  <layouts></layouts>
-
-  <instructorbreadcrumb :title="title" :text="text" :text1="text1"></instructorbreadcrumb>
-
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="Dashboard" text="Home" text1="Dashboard" />
   <!-- Page Content -->
   <div class="page-content">
     <div class="container">
@@ -104,7 +102,7 @@
 
 
 
-          <div class="dash-pagination">
+          <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
                 <p>Page 1 of 2</p>
@@ -123,7 +121,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- Student Dashboard -->
 
@@ -145,9 +143,6 @@ export default {
     const store = useStore();
     const user = ref(store.state.userInfo);
     return {
-      title: "Dashboard",
-      text: "Home",
-      text1: "Dashboard",
       totalCoursesIsPayment:0,
       courses: [],
       user

@@ -1,6 +1,6 @@
 <template>
-  <layouts></layouts>
-  <student-breadcrumb :title="title" :text="text" :text1="text1" />
+  <layouts-index></layouts-index>
+  <student-breadcrumb title="My Profile" text="Home" text1="My Profile" />
   <!-- Course Content -->
   <div class="page-content">
     <div class="container">
@@ -48,7 +48,7 @@
                       <p>{{ this.user.phone }}</p>
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                  <!-- <div class="col-sm-12">
                     <div class="contact-info mb-0">
                       <h6>Bio</h6>
                       <p>
@@ -58,7 +58,7 @@
                         free time, I enjoy coding, reading, hiking etc.
                       </p>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -80,9 +80,6 @@ export default {
     const store = useStore();
     const user = ref(store.state.userInfo);
     return {
-      title: "My Profile",
-      text: "Home",
-      text1: "My Profile",
       user
     };
   },

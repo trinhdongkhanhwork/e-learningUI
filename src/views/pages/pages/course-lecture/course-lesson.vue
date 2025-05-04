@@ -180,7 +180,7 @@ export default {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/courses/getCourseById/${this.courseId}`
+        `http://52.207.220.199:8080/api/v1/courses/getCourseById/${this.courseId}`
       );
       this.course = response.data;
       // load đến bài học chưa hoàn thành
@@ -271,7 +271,7 @@ export default {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/answers/${lectureId}`,
+          `http://52.207.220.199:8080/api/answers/${lectureId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -320,7 +320,7 @@ export default {
         console.log("Dữ liệu gửi lên API:", JSON.stringify(payload, null, 2));
 
         // Nộp bài
-        await axios.post("http://localhost:8080/api/answers/submit", payload, {
+        await axios.post("http://52.207.220.199:8080/api/answers/submit", payload, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -342,7 +342,7 @@ export default {
     async loadFirstIncompleteLecture() {
       const token = localStorage.getItem("token");
       try {
-        const res = await axios.get(`http://localhost:8080/api/progress/first-incomplete/${this.courseId}`, {
+        const res = await axios.get(`http://52.207.220.199:8080/api/progress/first-incomplete/${this.courseId}`, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
@@ -397,7 +397,7 @@ export default {
 
     async loadFirstIncompleteLectureId() {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:8080/api/progress/first-incomplete/${this.courseId}`, {
+      const res = await axios.get(`http://52.207.220.199:8080/api/progress/first-incomplete/${this.courseId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

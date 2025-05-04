@@ -48,7 +48,7 @@
             
                 <!-- Footer Widget -->
                 <div class="footer-widget footer-contact">
-                    <h2 class="footer-title">News letter</h2>
+                    <h2 class="footer-title">Information</h2>
                     <!-- <div class="news-letter">
                         <form>
                             <input type="text" class="form-control" placeholder="Enter your email address" name="email">
@@ -57,15 +57,15 @@
                     <div class="footer-contact-info">
                         <div class="footer-address">
                             <img src="@/assets/img/icon/icon-20.svg" alt="" class="img-fluid">
-                            <p> 3556  Beech Street, San Francisco,<br> California, CA 94108 </p>
+                            <p> 10/19 Tan Thoi Nhat Street 10, Tan Thoi Nhat Ward,<br> District 12, Ho Chi Minh City </p>
                         </div>
                         <p>
                             <img src="@/assets/img/icon/icon-19.svg" alt="" class="img-fluid">
-                            dreamslms@example.com
+                            dreamslms@gmail.com
                         </p>
                         <p class="mb-0">
                             <img src="@/assets/img/icon/icon-21.svg" alt="" class="img-fluid">
-                            +19 123-456-7890
+                            +84 1900 1234
                         </p>
                     </div>
                 </div>
