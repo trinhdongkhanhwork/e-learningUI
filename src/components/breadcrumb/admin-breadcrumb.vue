@@ -15,10 +15,10 @@
             <div class="instructor-profile-content">
               <h4>
                 <router-link to="/instructor/instructor-profile"
-                >{{user?.fullname}} <span>{{user?.roleEntity.roleName}}</span></router-link
+                >{{user?.fullname}} <span>{{user?.roles.map(role => role.roleName).join(", ")}}</span></router-link
                 >
               </h4>
-              <p>{{user?.roleEntity.roleName}}</p>
+              <p>{{user?.roles.map(role => role.roleName).join(", ")}}</p>
             </div>
           </div>
         </div>

@@ -1,18 +1,19 @@
 <template>
-  <layouts-index></layouts-index>
-  <student-breadcrumb title="My Profile" text="Home" text1="My Profile" />
+  <layouts></layouts>
+
+  <admin-breadcrumb :title="title" :text="text" :text1="text1"></admin-breadcrumb>
 
   <!-- Page Content -->
   <div class="page-content">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
 
         <!-- sidebar -->
-        <instructor-sidebar></instructor-sidebar>
+        <admin-sidebar></admin-sidebar>
         <!-- /Sidebar -->
 
         <!-- Instructor profile -->
-        <div class="col-xl-9 col-lg-9">
+        <div class="col-xl-10 col-lg-10">
 
           <div class="settings-widget card-details mb-0">
             <div class="settings-menu p-0">
@@ -30,7 +31,7 @@
                   <div class="col-sm-6">
                     <div class="contact-info">
                       <h6>Role</h6>
-                      <p>{{ this.user.roles.map(role => role.roleName).join(", ") }}</p>
+                      <p>{{ this.user.roles.map(role => role.roleName).join(',') }}</p>
                     </div>
                   </div>
                   <div class="col-sm-6">
@@ -57,7 +58,7 @@
                       <p>{{ this.user.phone }}</p>
                     </div>
                   </div>
-                  <!-- <div class="col-sm-12">
+                  <div class="col-sm-12">
                     <div class="contact-info mb-0">
                       <h6>Bio</h6>
                       <p> Very well thought out and articulate communication. Clear milestones,
@@ -69,7 +70,7 @@
                         conceptualizing, designing, and modifying consumer products specific to
                         interior design and home furnishings.</p>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,8 +92,10 @@
 import { useStore } from 'vuex';
 import { ref, onMounted } from "vue";
 import Layouts from "@/views/layouts/layouts-header.vue";
+import AdminBreadcrumb from "@/components/breadcrumb/admin-breadcrumb.vue";
+import AdminSidebar from "@/views/layouts/admin-sidebar.vue";
 export default {
-  components: {Layouts},
+  components: {AdminSidebar, AdminBreadcrumb, Layouts},
   data() {
     const store = useStore();
     const user = ref(store.state.userInfo);

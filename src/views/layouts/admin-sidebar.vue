@@ -7,7 +7,7 @@
           <ul>
             <li
                 class="nav-item"
-                :class="{ active: isActive('/instructor/instructor-dashboard') }"
+                :class="{ active: isActive('/admin/admin-dashboard') }"
             >
               <router-link
                   to="/admin/admin-dashboard"
@@ -16,28 +16,39 @@
                 <i class="bx bxs-tachometer"></i>Approve
               </router-link>
             </li>
-            <!-- <li
+            <li
                 class="nav-item"
-                :class="{ active: isActive('/instructor/instructor-profile') }"
+                :class="{ active: isActive('/admin/admin-profile') }"
             >
-              <router-link to="/instructor/instructor-profile" class="nav-link">
+              <router-link to="/admin/admin-profile" class="nav-link">
                 <i class="bx bxs-user"></i>My Profile
               </router-link>
             </li> -->
           </ul>
           <h3>Approve</h3>
           <ul>
-            <!-- <li
+            <li
                 class="nav-item"
-                :class="{ active: isActive('/instructor/instructor-earnings') }"
+                :class="{ active: isActive('/admin/admin-permission') }"
             >
               <router-link
-                  to="/instructor/instructor-earnings"
+                  to="/admin/admin-permission"
                   class="nav-link"
               >
-                <i class="bx bxs-badge-dollar"></i>Earnings
+                <i class='bx bx-edit-alt'></i>Permission
               </router-link>
-            </li> -->
+            </li>
+            <li
+                class="nav-item"
+                :class="{ active: isActive('/admin/admin-earning') }"
+            >
+              <router-link
+                  to="/admin/admin-earning"
+                  class="nav-link"
+              >
+                <i class="bx bx-line-chart"></i>Statistics
+              </router-link>
+            </li>
             <li
                 class="nav-item"
                 :class="{ active: isActive('/admin/approval-course') }"
@@ -80,7 +91,7 @@
                   to="/admin/withdraw"
                   class="nav-link"
               >
-              <i class="bx bx-credit-card-front"></i>Withdraw 
+              <i class="bx bx-credit-card-front"></i>Withdraw
               </router-link>
             </li>
             <li
@@ -91,7 +102,7 @@
                   to="/admin/revenue-statistics-chart"
                   class="nav-link"
               >
-              <i class="bx bx-line-chart"></i>Revenue Statistics
+              <i class="bx bxs-badge-dollar"></i>Earnings
               </router-link>
             </li>
           </ul>
@@ -108,11 +119,11 @@
                 <i class="bx bxs-cog"></i>Settings
               </router-link>
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <router-link to="/" class="nav-link">
                 <i class="bx bxs-log-out"></i>Logout
               </router-link>
-            </li> -->
+            </li>
           </ul>
         </div>
       </div>

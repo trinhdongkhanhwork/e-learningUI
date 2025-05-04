@@ -4,7 +4,7 @@
       <transition name="fade">
         <div v-if="visible" class="dialog-content"  >
           <header class="dialog-header">
-            <h2>Instructor Details</h2>
+            <h2>Staff Details</h2>
             <button @click="closeDialog" class="close-button">&times;</button>
           </header>
 
@@ -13,34 +13,38 @@
               <div class="card mb-3">
                 <div class="row g-0 d-flex align-items-center">
                   <div class="col-md-4">
-                    <img :src="instructor.avatarUrl" class="img-fluid" alt="...">
+                    <img :src="staff.avatarUrl" class="img-fluid" alt="...">
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
                       <form class="form-control text-start">
                         <div class="mb-3">
                           <label for="fullname" class="form-label">User Name</label>
-                          <input type="text" class="form-control" id="fullname" :value="instructor.username" disabled>
+                          <input type="text" class="form-control" id="fullname" :value="staff.username" disabled>
                         </div>
                         <div class="mb-3">
                           <label for="fullname" class="form-label">Full Name</label>
-                          <input type="text" class="form-control" id="fullname" :value="instructor.fullname" disabled>
+                          <input type="text" class="form-control" id="fullname" :value="staff.fullname" disabled>
                         </div>
                         <div class="mb-3">
                           <label for="email" class="form-label">Email</label>
-                          <input type="email" class="form-control" id="email" :value="instructor.email" disabled>
+                          <input type="email" class="form-control" id="email" :value="staff.email" disabled>
                         </div>
                         <div class="mb-3">
                           <label for="phone" class="form-label">Phone</label>
-                          <input type="text" class="form-control" id="phone" :value="instructor.phone" disabled>
+                          <input type="text" class="form-control" id="phone" :value="staff.phone" disabled>
                         </div>
                         <div class="mb-3">
-                          <label for="dob" class="form-label">Created Date</label>
-                          <input type="text" class="form-control" id="dob" :value="formatDate(instructor.createdDate)" disabled>
+                          <label for="birthday" class="form-label">Birthday</label>
+                          <input type="text" class="form-control" id="dob" :value="formatDate(staff.birthday)" disabled>
                         </div>
                         <div class="mb-3">
-                          <label for="dob" class="form-label">Role</label>
-                          <input type="text" class="form-control" id="role" :value="instructor.roles.map(role => role.roleName).join(', ')" disabled>
+                          <label for="permissions" class="form-label">Permissions</label>
+                          <span class="form-control" id="permissions">
+                            <span v-for="(permission, index) in staff.permissions" :key="index">
+                              {{ permission}}<span v-if="index < staff.permissions.length - 1">, </span>
+                            </span>
+                          </span>
                         </div>
                       </form>
                     </div>
@@ -61,13 +65,13 @@
 <script>
 
 export default {
-  name: "InstructorDialog",
+  name: "StaffDialog",
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
-    instructor: {
+    staff: {
       type: Object,
       required: true,
     },

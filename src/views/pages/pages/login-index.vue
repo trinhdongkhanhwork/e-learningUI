@@ -71,10 +71,10 @@
           <span><a href="#">Or sign in with</a></span>
           <div class="sign-google">
             <li>
-                <a @click.prevent="redirectToGoogleLogin"><img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo"/>
-                  Sign In using Google
-                </a>
-              </li>
+              <a @click.prevent="redirectToGoogleLogin"><img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo"/>
+                Sign In using Google
+              </a>
+            </li>
           </div>
           <p class="mb-0">
             New User?
@@ -121,14 +121,27 @@ export default {
       baseApi
           .post("/authentication/token", form.value)
           .then((response) => {
-            const token = response.data.result.token;
+            const token = response.data.token;
             localStorage.setItem("token", token);
             checkTokenValidity();
           })
           .catch((error) => {
-            console.error("Error during authentication:", error);
-            toast.error("Invalid username or password");
+            if (error.response && error.response.status === 401) {
+              toast.error("Invalid username or password");
+            } else if (error.response && error.response.status === 500) {
+              toast.error("Server error, please try again later");
+            } else if (error.response && error.response.status === 403) {
+              toast.error("Access denied, please contact support");
+            } else if (error.response && error.response.status === 400) {
+              toast.error("Bad request, please check your input");
+            } else if (error.response && error.response.status === 404) {
+              toast.error("Resource not found");
+            } else {
+              toast.error("An unexpected error occurred");
+            }
+            console.error("Login error:", error);
           });
+
     };
 
     const redirectToGoogleLogin = () => {
@@ -148,8 +161,8 @@ export default {
       if (token) {
         try {
           const response = await axios.post("http://localhost:8080/authentication/introspect",{ token });
-          console.log(response.data.result.valid);
-          if (response.data.result.valid) {
+          console.log(response.data.valid);
+          if (response.data.valid) {
             const handleRedirect = await baseApi.get("/users/myInfo")
             console.log(handleRedirect)
             store.commit("setUserInfo", handleRedirect.data.result)

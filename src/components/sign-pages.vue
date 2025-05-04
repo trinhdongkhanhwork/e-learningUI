@@ -45,31 +45,46 @@
               </div>
               <div class="user-text">
                 <h6> {{user?.fullname}} </h6>
-                <p class="text-muted mb-0"> {{user?.roleEntity.roleName}} </p>
+                <p class="text-muted mb-0"> {{userRoles}} </p>
               </div>
             </div>
             <router-link
-                v-if="user?.roleEntity.roleName === 'INSTRUCTOR'"
+                v-if="userRoles === 'INSTRUCTOR'"
                 class="dropdown-item"
                 to="/instructor/instructor-dashboard"
             ><i class="feather-home me-1"></i>Instructor Dashboard</router-link>
             <router-link
-                v-if="user?.roleEntity.roleName === 'STUDENT'"
+                v-if="userRoles === 'STUDENT'"
                 class="dropdown-item"
                 to="/student/student-dashboard"
             ><i class="feather-home me-1"></i>Student Dashboard</router-link>
             <router-link
-                v-if="user?.roleEntity.roleName === 'ADMIN'"
+                v-if="userRoles === 'ADMIN'"
                 class="dropdown-item"
                 to="/instructor/instructor-dashboard"
             ><i class="feather-home me-1"></i>Admin Dashboard</router-link>
 
-            <!-- <div class="dropdown-item night-mode">
+            <router-link
+                v-if="userRoles === 'INSTRUCTOR'"
+                class="dropdown-item"
+                to="/instructor/instructor-settings"
+            ><i class="feather-star me-1"></i> Edit Instructor Profile</router-link>
+            <router-link
+                v-if="userRoles === 'STUDENT'"
+                class="dropdown-item"
+                to="/student/student-settings"
+            ><i class="feather-star me-1"></i> Edit Student Profile</router-link>
+            <router-link
+                v-if="userRoles === 'ADMIN' "
+                class="dropdown-item"
+                to="/admin/admin-settings"
+            ><i class="feather-star me-1"></i> Edit Admin Profile</router-link>
+            <div class="dropdown-item night-mode">
               <span><i class="feather-moon me-1"></i> Night Mode </span>
               <div class="form-check form-switch check-on m-0">
                 <input class="form-check-input" type="checkbox" id="night-mode">
               </div>
-            </div> -->
+            </div>
             <button class="dropdown-item" @click="logout"><i class="feather-log-out me-1"></i> Logout</button>
           </div>
         </li>
@@ -82,6 +97,7 @@ import {ref, onMounted} from "vue";
 import baseApi from "@/axios";
 import {confirmLogout} from "@/utils/confirmDialogs";
 import {useStore} from "vuex";
+import { computed } from 'vue';
 
 export default {
   setup() {
@@ -89,6 +105,9 @@ export default {
     const lightModeToggle = ref(null);
     const store = useStore();
     const user = ref(store.state.userInfo);
+    const userRoles = computed(() => user.value?.roles.map(role => role.roleName).join(', '));
+
+    console.log(user.value);
 
     function logout() {
         confirmLogout(store)
@@ -137,6 +156,7 @@ export default {
       disableDarkMode,
       user,
       logout,
+      userRoles,
     };
   },
 };

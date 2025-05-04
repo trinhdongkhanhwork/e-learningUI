@@ -8,6 +8,36 @@
         <admin-sidebar></admin-sidebar>
         <!-- /Sidebar -->
         <div class="col-xl-10 col-lg-10">
+
+          <!-- Dashboard Grid -->
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex">
+              <div class="card dash-info flex-fill">
+                <div class="card-body">
+                  <h5>Published Courses</h5>
+                  <h2>{{publishedCourseCount}}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex">
+              <div class="card dash-info flex-fill">
+                <div class="card-body">
+                  <h5>Draft Courses</h5>
+                  <h2>{{draftCourseCount}}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex">
+              <div class="card dash-info flex-fill">
+                <div class="card-body">
+                  <h5>Course is pending approval</h5>
+                  <h2>{{pendingCourseCount}}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Dashboard Grid -->
+
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Course Approval</h4>
@@ -19,7 +49,6 @@
                     <th scope="col" class="text-start">Course Name</th>
                     <th scope="col" class="text-start">Instructor</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Category</th>
                     <th scope="col">Status</th>
                     <th scope="col" style="width: 125px;">Action</th>
                   </tr>
@@ -37,9 +66,6 @@
                     </td>
                     <td>
                       <p class="text-muted">{{course.price}}</p>
-                    </td>
-                    <td>
-                      <p class="text-muted">{{course.category}}</p>
                     </td>
                     <td>
                       <span :class="['badge', course.published ? 'badge-soft-success' : 'badge-soft-warning', 'text-sm']">{{course.published ? 'Published' : 'Draft'}}</span>
@@ -60,18 +86,15 @@
           <!-- <div class="dash-pagination">
             <div class="row align-items-center">
               <div class="col-6">
-                <p>Page 1 of 2</p>
+                <p>Page {{ listQuery.page + 1 }} of {{ Math.ceil(total / listQuery.size) }}</p>
               </div>
               <div class="col-6">
                 <ul class="pagination">
-                  <li class="active">
-                    <a href="#">1</a>
+                  <li :class="{ disabled: listQuery.page === 0 }">
+                    <button @click="changePage(listQuery.page - 1)">Previous</button>
                   </li>
-                  <li>
-                    <a href="#">2</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="feather-arrow-right"></i></a>
+                  <li :class="{ disabled : listQuery.page === totalPages - 1 }">
+                    <button @click="changePage(listQuery.page + 1)">Next</button>
                   </li>
                 </ul>
               </div>
@@ -91,7 +114,6 @@
   <layouts1></layouts1>
 </template>
 <script>
-import AdminHeaderborder from "@/views/layouts/admin-headerborder.vue";
 import AdminBreadcrumb from "@/components/breadcrumb/admin-breadcrumb.vue";
 import AdminSidebar from "@/views/layouts/admin-sidebar.vue";
 import baseApi from "@/axios";
@@ -103,7 +125,7 @@ import toast from "@/utils/Toast";
 import { confirmDelete, confirmSave } from "@/utils/confirmDialogs";
 
 export default {
-  components: { AdminHeaderborder, AdminBreadcrumb, AdminSidebar, CourseDialog, InstructorDialog, MessageDialog },
+  components: { AdminBreadcrumb, AdminSidebar, CourseDialog, InstructorDialog, MessageDialog },
   data() {
     return {
       title: "Dashboard",
@@ -116,7 +138,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 0,
-        size: 20,
+        size: 5,
         title: undefined,
         type: undefined,
         sort: '+id'
@@ -164,36 +186,45 @@ export default {
       statusLoading: false,
       selectedCourse: null,
       showModal: ref(false),
+      publishedCourseCount: null,
+      draftCourseCount: null,
+      pendingCourseCount: null
     };
   },
   methods: {
     async getAllCourses() {
       this.listLoading = true;
-      await baseApi.get('/api/v1/courses',
-          {
+      await baseApi
+          .get('/api/v1/courses', {
             params: {
               page: this.listQuery.page,
-              size: this.listQuery.size
-            }
+              size: this.listQuery.size,
+            },
           })
-          .then(response => {
+          .then((response) => {
             this.list = response.data.content;
-            this.total = response.data.content.length;
-            console.log(this.list);
-            console.log(this.total);
-
-            setTimeout(() => {
-              this.listLoading = false
-            },1.5 * 1000);
+            this.total = response.data.totalElements; // Tổng số phần tử
+            this.totalPages = response.data.totalPages; // Tổng số trang
+            console.log('Courses:', this.list);
+            this.listLoading = false;
           })
-          .catch(error => {
-            console.error('Error fetching users:', error)
-            toast.error('Error fetching users')
-          })
+          .catch((error) => {
+            console.error('Error fetching courses:', error);
+            toast.error('Error fetching courses');
+            this.listLoading = false;
+          });
+    },
+    changePage(page) {
+      if (page < 0 || page >= this.totalPages) {
+        // Không cho phép chuyển trang ngoài giới hạn
+        return;
+      }
+      this.listQuery.page = page;
+      this.getAllCourses();
+      console.log('Page:', page);
     },
 
     async handleModifyStatus(message) {
-      this.statusLoading = true;
       this.statusMessage = message;
       confirmSave().then(() => {
         this.selectedCourse.published = this.temp.published;
@@ -251,25 +282,80 @@ export default {
       baseApi.post('/api/v1/email', approvedCourseRequest).then(response => {
         console.log('Email sent successfully:', response.data)
         toast.success(response.data.message)
-      }).catch(error => { 
+      }).catch(error => {
         console.error('Error sending email:', error)
         toast.error('Error sending email')
       })
-    }
+    },
+    getStatusCountCourse() {
+      baseApi.get('/api/v1/courses/countStatusCourse').then(response => {
+        this.pendingCourseCount = response.data.pendingCourseCount
+        this.publishedCourseCount = response.data.publishedCourseCount
+        this.draftCourseCount = response.data.draftCourseCount
+      }).catch(error => {
+        console.error('Error fetching course status:', error)
+        toast.error('Error fetching course status')
+      })
+    },
   },
   mounted() {
     this.getAllCourses()
+    this.getStatusCountCourse()
   }
-};
+} ;
 </script>
 
 <style scoped>
-  .link-type {
-    color: #007bff;
-    cursor: pointer;
-  }
-  button {
-    cursor: pointer;
-    min-width: 80px;
-  }
+.link-type {
+  color: #007bff;
+  cursor: pointer;
+}
+button {
+  cursor: pointer;
+  min-width: 80px;
+}
+.badge{
+  min-width: 80px;
+  min-height: 20px;
+  border-radius: 0%;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+.pagination li {
+  margin: 0 5px;
+}
+.pagination li button {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+.pagination li.active button {
+  font-weight: bold;
+  color: #495057;
+}
+.pagination li.disabled button {
+  color: #ccc;
+  pointer-events: none;
+  cursor: default;
+}
+.pagination li button {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.pagination li button:hover {
+  background-color: #f1f1f1;
+}
+
+.pagination li.active button {
+  background-color: #007bff;
+  color: #fff;
+}
+
 </style>
