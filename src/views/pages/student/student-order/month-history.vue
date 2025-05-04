@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     loadOrders() {
-      axios.get('http://localhost:8080/api/payments')
+      axios.get('http://52.207.220.199:8080/api/payments')
           .then(response => {
             this.orders = response.data;
           })
@@ -100,7 +100,7 @@ export default {
       // Tìm đơn hàng có courseId tương ứng
       const order = this.orders.find(order => order.courseId === courseId);
       if (order && order.enrollment) {
-        const downloadUrl = `http://localhost:8080/api/courses/${courseId}/download`; // Thay đổi API nếu cần
+        const downloadUrl = `http://52.207.220.199:8080/api/courses/${courseId}/download`; // Thay đổi API nếu cần
         axios.get(downloadUrl, { responseType: 'arraybuffer' })  // Sử dụng 'arraybuffer' để nhận dữ liệu nhị phân
             .then(response => {
               const blob = new Blob([response.data], { type: 'application/pdf' });

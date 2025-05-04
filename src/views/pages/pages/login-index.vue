@@ -160,7 +160,7 @@ export default {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await axios.post("http://localhost:8080/authentication/introspect",{ token });
+          const response = await axios.post("http://52.207.220.199:8080/authentication/introspect",{ token });
           console.log(response.data.valid);
           if (response.data.valid) {
             const handleRedirect = await baseApi.get("/users/myInfo")
