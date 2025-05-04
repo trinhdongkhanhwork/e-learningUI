@@ -34,14 +34,14 @@
                 <i class="bx bxs-tachometer"></i>Dashboard
               </router-link>
             </li>
-            <!-- <li
+            <li
               class="nav-item"
               :class="{ active: isActive('/student/student-certificate') }"
             >
               <router-link to="/student/student-certificate" class="nav-link">
                 <i class="bx bxs-graduation"></i>Certificate
               </router-link>
-            </li> -->
+            </li>
             <li
                 class="nav-item"
                 :class="{ active: isActive('/student/student-profile') }"
