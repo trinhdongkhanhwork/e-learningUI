@@ -33,7 +33,7 @@
                       {{course.instructor.fullname }}
                     </router-link>
                   </h4>
-                  <p>{{ course.instructor.roleEntity.roleName }}</p>
+                  <p>{{ course.instructor.roles.map(role => role.roleName).join(", ") }}</p>
                 </div>
               </div>
               <div

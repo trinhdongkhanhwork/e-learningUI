@@ -3,14 +3,22 @@ import Swal from 'sweetalert2';
 import {router} from "@/router";
 
 export function confirmDelete() {
-    return Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you really want to delete this item?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-    })
+    return new Promise((resolve, reject) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete this item?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+    });
 }
 
 export function confirmSave() {
@@ -52,21 +60,6 @@ export function confirmLogout(store) {
             router.push("/");
             Swal.fire("Logged out!", "You have been logged out.", "success");
         }
-    })
+    });
 }
-    export function showError(message) {
-        return Swal.fire({
-            icon: 'error',
-            text: message,
-        });
-    }
-
-    export function showSuccess(message) {
-        return Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            text: message,
-        });
-    }
-
 

@@ -27,7 +27,7 @@
                   <div class="col-sm-6">
                     <div class="contact-info">
                       <h6>Role</h6>
-                      <p>{{ this.user.roleEntity.roleName }}</p>
+                      <p>{{ this.user.roles.map(role => role.roleName).join(', ') }}</p>
                     </div>
                   </div>
                   <div class="col-sm-6">
