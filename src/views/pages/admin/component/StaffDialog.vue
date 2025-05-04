@@ -9,45 +9,43 @@
           </header>
 
           <form class="dialog-body">
-            <div class="dialog-row">
-              <div class="card mb-3">
-                <div class="row g-0 d-flex align-items-center">
-                  <div class="col-md-4">
-                    <img :src="staff.avatarUrl" class="img-fluid" alt="...">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <form class="form-control text-start">
-                        <div class="mb-3">
-                          <label for="fullname" class="form-label">User Name</label>
-                          <input type="text" class="form-control" id="fullname" :value="staff.username" disabled>
-                        </div>
-                        <div class="mb-3">
-                          <label for="fullname" class="form-label">Full Name</label>
-                          <input type="text" class="form-control" id="fullname" :value="staff.fullname" disabled>
-                        </div>
-                        <div class="mb-3">
-                          <label for="email" class="form-label">Email</label>
-                          <input type="email" class="form-control" id="email" :value="staff.email" disabled>
-                        </div>
-                        <div class="mb-3">
-                          <label for="phone" class="form-label">Phone</label>
-                          <input type="text" class="form-control" id="phone" :value="staff.phone" disabled>
-                        </div>
-                        <div class="mb-3">
-                          <label for="birthday" class="form-label">Birthday</label>
-                          <input type="text" class="form-control" id="dob" :value="formatDate(staff.birthday)" disabled>
-                        </div>
-                        <div class="mb-3">
-                          <label for="permissions" class="form-label">Permissions</label>
-                          <span class="form-control" id="permissions">
+            <div class="card mb-3">
+              <div class="row g-0 d-flex align-items-center">
+                <div class="col-md-4">
+                  <img :src="staff.avatarUrl" class="img-fluid" alt="..." style="width: 400px; height: 400px; fit-content: cover;"/>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <form class="form-control text-start">
+                      <div class="mb-3">
+                        <label for="fullname" class="form-label">User Name</label>
+                        <input type="text" class="form-control" id="fullname" :value="staff.username" disabled>
+                      </div>
+                      <div class="mb-3">
+                        <label for="fullname" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullname" :value="staff.fullname" disabled>
+                      </div>
+                      <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" :value="staff.email" disabled>
+                      </div>
+                      <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" :value="staff.phone" disabled>
+                      </div>
+                      <div class="mb-3">
+                        <label for="birthday" class="form-label">Birthday</label>
+                        <input type="text" class="form-control" id="dob" :value="formatDate(staff.birthday)" disabled>
+                      </div>
+                      <div class="mb-3">
+                        <label for="permissions" class="form-label">Permissions</label>
+                        <span class="form-control" id="permissions">
                             <span v-for="(permission, index) in staff.permissions" :key="index">
                               {{ permission}}<span v-if="index < staff.permissions.length - 1">, </span>
                             </span>
                           </span>
-                        </div>
-                      </form>
-                    </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>

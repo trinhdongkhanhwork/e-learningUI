@@ -328,7 +328,7 @@ export default {
       try {
         const response = await baseApi.get("/api/v1/courses");
         if (Array.isArray(response.data.content)) {
-          courses.value = response.data.content;
+          courses.value = response.data.content.filter(course => course.published);
           await updateFavoriteStatus();
         }
       } catch (error) {
