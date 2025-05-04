@@ -107,20 +107,10 @@ import AdminProfile from "@/views/pages/admin/admin-profile/admin-profile.vue";
 import AdminPermission from "@/views/pages/admin/admin-permission/permission.vue";
 
 const routes = [
-  {
-    path: '/admin/categories',
-    name: 'CategoryManagement',
-    component: CategoryManagement
-  },
-  {
-    path: '/admin/withdraw',
-    name: 'WithdrawManagement',
-    component: WithdrawManagement
-  },
-  {
-    path: '/admin/revenue-statistics-chart',
-    name: 'RevenueStatisticsChart',
-    component: RevenueStatisticsChart
+
+  { path: "/instructor/instructor-list",
+    name: "InstructorList",
+    component: Instructor_List
   },
   {
     path: '/payment-success',
@@ -169,6 +159,10 @@ const routes = [
       { path: "approval-instructors", component: ApprovalInstructors },
       { path: "admin-earning", component: AdminEarning },
       { path: "admin-profile", component: AdminProfile },
+      { path: 'categories',component: CategoryManagement },
+      { path: 'withdraw',component: WithdrawManagement },
+      { path: 'revenue-statistics-chart',component: RevenueStatisticsChart },
+
     ]
   },
   {
@@ -178,7 +172,6 @@ const routes = [
     children: [
       { path: "", redirect: "/instructor/instructor-dashboard" },
       { path: "instructor-dashboard", component: Instructor_Dashboard },
-      { path: "instructor-list", component: Instructor_List },
       { path: "instructor-grid", component: Instructor_Grid },
       { path: "instructor-settings", component: Instructor_Settings },
       { path: "instructor-change-password",component: Instructor_Change_Password,},

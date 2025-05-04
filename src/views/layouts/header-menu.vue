@@ -17,13 +17,16 @@
                                         <router-link to="/" class="nav-link">Home</router-link>
                                     </li>
                                     <li class="nav-item">
-                                        <router-link to="/about" class="nav-link">About</router-link>
+                                        <router-link to="/instructor/instructor-dashboard" class="nav-link">Dashboard</router-link>
                                     </li>
                                     <li class="nav-item">
-                                        <router-link to="/services" class="nav-link">Services</router-link>
+                                        <router-link to="/instructor/instructor-course" class="nav-link">My Courses</router-link>
                                     </li>
                                     <li class="nav-item">
-                                        <router-link to="/contact" class="nav-link">Contact</router-link>
+                                        <router-link to="/course/add-course" class="nav-link">Add New Course</router-link>
+                                    </li>
+                                    <li class="nav-item">
+                                        <router-link to="/course/course-list" class="nav-link">Courses</router-link>
                                     </li>
                                 </ul>
 
@@ -57,7 +60,7 @@
                                     <router-link to="/admin/approval-course" class="nav-link">Approval Courses</router-link>
                                   </li>
                                   <li class="nav-item">
-                                    <router-link to="/admin/approval-instructors" class="nav-link">Approval Instructors</router-link>
+                                    <router-link to="/instructor/instructor-course" class="nav-link">Dashboard Instructors</router-link>
                                   </li>
                                   <li class="nav-item">
                                     <router-link to="/admin" class="nav-link">Dashboard</router-link>
