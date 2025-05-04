@@ -140,7 +140,7 @@
                 </ul>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
         <!-- /Student Order History -->
       </div>

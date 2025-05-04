@@ -91,8 +91,16 @@
     </div>
 </template>
 
-<script setup>
+<script>
 import { useStore } from "vuex";
-const store = useStore();
-const userRole = store.state.userInfo?.roleEntity.roleName;
+
+export default {
+    data() {
+        const store = useStore();
+        const userRole = store.state.userInfo?.roles.map(role => role.roleName).join(', ');
+        return {
+            userRole,
+        }
+    },
+}
 </script>

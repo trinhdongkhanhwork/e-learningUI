@@ -23,7 +23,7 @@
               <router-link to="/admin/admin-profile" class="nav-link">
                 <i class="bx bxs-user"></i>My Profile
               </router-link>
-            </li> -->
+            </li>
           </ul>
           <h3>Approve</h3>
           <ul>
